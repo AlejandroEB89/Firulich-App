@@ -1,22 +1,10 @@
 
-# Bienvenid@!! 
+# Repositorio Proyecto Mascotas 
 
-En este repositorio podés encontrar un template de Framework7 listo para usar para el desarrollo de aplicaciones con Apache Cordova.
 
-## Qué es [Framework7](https://framework7.io/)?
+Se trata de una aplicación para ayudar al grupo de animaleros de la zona a reducir el tiempo que les lleva publicar en redes casos de animales encontrados, y gestionar fácilmente la búsqueda de familias adoptantes o transitorias. 
+Esta aplicación les permitiría tener los datos de las familias que se postulan como hogares de tránsito, una sección para publicar los animales que buscan hogar, otra donde queden guardados los datos de los animales adoptados y de sus nuevas familias. También tendrá un botón para donar de forma rápida. 
+Y por ultimo tendrá una sección para que cualquier persona pueda publicar mascotas perdidas o encontradas con fotos y ubicación. 
 
-Es un framework CSS con una librería propia de manejo del DOM, similar a JQuery.
-El resultado de las aplicaciones respeta los estilos de iOS/Android como si fueran nativas.
 
-## [Apache Cordova](https://cordova.apache.org/)
-
-Nos permite el desarrollo de aplicaciones híbridas. Y de esta manera con un solo código poner tener aplicaciones para Android e iOS.
-
-## Cómo descargo el template?
-
-Crea y/o ingresa a tu carpeta inicial del desarrollo. Descarga el template con el comando:
-
-    git clone https://github.com/JorgePHI/f7-v606
-
-Ingresando luego en la carpeta f7-v606 podrá usar el template de Framework 7, Version 6.0.6
 
