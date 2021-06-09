@@ -1,4 +1,4 @@
-  
+
 // If we need to use custom DOM library, let's save it to $$ variable:
 var $$ = Dom7;
 
@@ -16,8 +16,8 @@ var app = new Framework7({
     // Add default routes
     routes: [
       {
-        path: '/about/',
-        url: 'about.html',
+        path: '/registro/',
+        url: 'registro.html',
       },
     ]
     // ... other parameters
@@ -36,9 +36,39 @@ $$(document).on('page:init', function (e) {
     console.log(e);
 })
 
-// Option 2. Using live 'page:init' event handlers for each page
-$$(document).on('page:init', '.page[data-name="about"]', function (e) {
+// PAGE INIT INDEX
+$$(document).on('page:init', '.page[data-name="index"]', function (e) {
     // Do something here when page with data-name="about" attribute loaded and initialized
-    console.log(e);
-    alert('Hello');
+
+
+    var email= "alejandro@google.com"
+    var clave = "1234"
+
+    firebase.auth().createUserWithEmailAndPassword(email, clave);
+    .then( function(){
+        console.log("que paso?");
+
+    });
+
+  .catch( function(error) {
+      console.error(error.code);
+      console.error(error.message);
+
+      });
+
+
+
+
+})
+
+
+//PAGE INIT REGISTRO
+$$(document).on('page:init', '.page[data-name="registro"]', function (e) {
+    // Do something here when page with data-name="about" attribute loaded and initialized
+
+
+
+
+
+
 })

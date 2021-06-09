@@ -1,0 +1,123 @@
+<!-- We don't need a full layout in this file because this page will be parsed with Ajax.  -->
+<div class="page" data-name="registro">
+  <div class="list no-hairlines-md">
+        <ul>
+<!-- -------------Toggle     ( "OFF" para Usuario comun - "ON" para Organización)-------------- -->
+          <li>
+            <div class="item-content">
+              <div class="item-inner">
+                <div class="item-title">¿Querés registar una Organización?</div>
+                <div class="item-after">
+                  <label class="toggle toggle-init">
+                    <input id="tipo_usuario" type="checkbox" name="toggle" value="yes" /><i class="toggle-icon"></i>
+                  </label>
+                </div>
+              </div>
+            </div>
+          </li>
+
+          <!-- ----------   INPUT email ------------------- -->
+                <li class="item-content item-input item-input-with-info">
+                  <div class="item-media">
+                    <i class="icon demo-list-icon"></i>
+                  </div>
+                  <div class="item-inner">
+                    <div class="item-title item-label">E-mail</div>
+                    <div class="item-input-wrap">
+                      <input id="email" type="email" placeholder="Tu correo electrónico" required validate />
+                      <span class="input-clear-button"></span>
+                      <div class="item-input-info">Requerido</div>
+                    </div>
+                  </div>
+                </li>
+
+          <!-- ----------   INPUT contraseña ------------------- -->
+
+                <li class="item-content item-input item-input-with-info">
+                  <div class="item-media">
+                    <i class="icon demo-list-icon"></i>
+                  </div>
+                  <div class="item-inner">
+                    <div class="item-title item-label">Contraseña</div>
+                    <div class="item-input-wrap">
+                      <input id="passwordUsu" type="password" name="password" placeholder="Contraseña" />
+                      <span class="input-clear-button"></span>
+                      <div class="item-input-info">Default URL validation</div>
+                    </div>
+                  </div>
+                </li>
+
+        <!-- -------------INPUT NOMBRE Organización (Tiene que aparecer cuando el toggle está "On")-------------- -->
+
+          <li class="item-content item-input item-input-with-info">
+              <div class="item-media">
+                <i class="icon demo-list-icon"></i>
+              </div>
+              <div class="item-inner ">
+                <div id="nombreOrg" class="item-title item-label"> Nombre </div>
+                <div class="item-input-wrap">
+                  <input type="text" placeholder="Ingresa el nombre de tu Organización" required validate />
+                  <span class="input-clear-button"></span>
+                  <div class="item-input-info">Requerido</div>
+                </div>
+              </div>
+            </li>
+
+<!-- -------------INPUT NOMBRE -------------- -->
+          <li class="item-content item-input item-input-with-info">
+            <div class="item-media">
+              <i class="icon demo-list-icon"></i>
+            </div>
+            <div class="item-inner">
+              <div id="nombreUsu" class="item-title item-label" value=""> Nombre </div>
+              <div class="item-input-wrap">
+                <input type="text" placeholder="Ingresa tu nombre" required validate />
+                <span class="input-clear-button"></span>
+                <div class="item-input-info">Requerido</div>
+              </div>
+            </div>
+          </li>
+  <!-- ----------   INPUT APELLIDO ------------------- -->
+          <li class="item-content item-input item-input-with-info">
+            <div class="item-media">
+              <i class="icon demo-list-icon"></i>
+            </div>
+            <div class="item-inner">
+              <div id="apellido" class="item-title item-label"> Apellido </div>
+              <div class="item-input-wrap">
+                <input type="text" placeholder="Ingresa tu Apellido'" required validate />
+                <span class="input-clear-button"></span>
+                <div class="item-input-info">Requerido</div>
+              </div>
+            </div>
+          </li>
+
+
+
+
+      <!-- ----------   INPUT LOCALIDAD ------------------- -->
+          <li class="item-content item-input item-input-with-info">
+            <div class="item-media">
+              <i class="icon demo-list-icon"></i>
+            </div>
+            <div class="item-inner">
+              <div class="item-title item-label">Localidad</div>
+              <div class="item-input-wrap">
+                <input type="text" placeholder="Ingresa tu localidad" required validate/>
+                  <!--data-error-message="Only numbers please!"-->
+                <span class="input-clear-button"></span>
+                <div class="item-input-info">Requerido</div>
+              </div>
+            </div>
+          </li>
+
+
+
+
+
+
+
+
+        </ul>
+      </div>
+</div>

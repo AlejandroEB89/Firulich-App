@@ -84,4 +84,16 @@
 	font-family: 'Poppins', Arial, sans-serif;
 }
 
+.centradoFlx{
+  display: flex;
+  justify-content:center;
+}
 
+.esconder{
+  display:none;
+  visibility: hidden;
+}
+
+.flex{
+  display: flex;
+}
