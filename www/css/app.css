@@ -84,8 +84,29 @@
 	font-family: 'Poppins', Arial, sans-serif;
 }
 
-.centradoFlx{
+:root {
+    --f7-theme-color: #673ab7;
+    --f7-theme-color-rgb: 103, 58, 183;
+    --f7-theme-color-shade: #563098;
+    --f7-theme-color-tint: #7c52c8
+}
+
+.centrar{
+  text-align: center;
+}
+
+.hidden {
+display: none !important;
+}
+
+.activo{
+  display: block !important;
+}
+
+
+.contenedorRegsitrarme{
   display: flex;
+  flex-direction: column;
   justify-content:center;
 }
 

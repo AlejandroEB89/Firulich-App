@@ -1,8 +1,24 @@
 <!-- We don't need a full layout in this file because this page will be parsed with Ajax.  -->
 <div class="page" data-name="registro">
+  <div class="navbar">
+      <div class="navbar-bg"></div>
+      <div class="navbar-inner">
+          <div class="left">
+            <a href="#" class="link back">
+                <i class="icon icon-back"></i>
+                <span class="ios-only">Back</span>
+            </a>
+          </div>
+          <div class="title">Registrate</div>
+
+      </div>
+  </div>
+<!--
   <div class="list no-hairlines-md">
-        <ul>
-<!-- -------------Toggle     ( "OFF" para Usuario comun - "ON" para Organización)-------------- -->
+
+
+       <ul>
+<!- - -------------Toggle     ( "OFF" para Usuario comun - "ON" para Organización)-------------- - ->
           <li>
             <div class="item-content">
               <div class="item-inner">
@@ -16,7 +32,7 @@
             </div>
           </li>
 
-          <!-- ----------   INPUT email ------------------- -->
+          <!-- ----------   INPUT email ------------------- -- >
                 <li class="item-content item-input item-input-with-info">
                   <div class="item-media">
                     <i class="icon demo-list-icon"></i>
@@ -24,14 +40,14 @@
                   <div class="item-inner">
                     <div class="item-title item-label">E-mail</div>
                     <div class="item-input-wrap">
-                      <input id="email" type="email" placeholder="Tu correo electrónico" required validate />
+                      <input id="emailRegistro" type="email" placeholder="Tu correo electrónico" required validate />
                       <span class="input-clear-button"></span>
                       <div class="item-input-info">Requerido</div>
                     </div>
                   </div>
                 </li>
 
-          <!-- ----------   INPUT contraseña ------------------- -->
+          <!-- ----------   INPUT contraseña ------------------- -- >
 
                 <li class="item-content item-input item-input-with-info">
                   <div class="item-media">
@@ -40,14 +56,14 @@
                   <div class="item-inner">
                     <div class="item-title item-label">Contraseña</div>
                     <div class="item-input-wrap">
-                      <input id="passwordUsu" type="password" name="password" placeholder="Contraseña" />
+                      <input id="passwordRegistro" type="password" name="password" placeholder="Contraseña" />
                       <span class="input-clear-button"></span>
                       <div class="item-input-info">Default URL validation</div>
                     </div>
                   </div>
                 </li>
 
-        <!-- -------------INPUT NOMBRE Organización (Tiene que aparecer cuando el toggle está "On")-------------- -->
+        <!-- -------------INPUT NOMBRE Organización (Tiene que aparecer cuando el toggle está "On")-------------- -- >
 
           <li class="item-content item-input item-input-with-info">
               <div class="item-media">
@@ -63,7 +79,7 @@
               </div>
             </li>
 
-<!-- -------------INPUT NOMBRE -------------- -->
+<!-- -------------INPUT NOMBRE -------------- -- >
           <li class="item-content item-input item-input-with-info">
             <div class="item-media">
               <i class="icon demo-list-icon"></i>
@@ -77,7 +93,7 @@
               </div>
             </div>
           </li>
-  <!-- ----------   INPUT APELLIDO ------------------- -->
+  <!-- ----------   INPUT APELLIDO ------------------- -- >
           <li class="item-content item-input item-input-with-info">
             <div class="item-media">
               <i class="icon demo-list-icon"></i>
@@ -95,7 +111,7 @@
 
 
 
-      <!-- ----------   INPUT LOCALIDAD ------------------- -->
+      <!-- ----------   INPUT LOCALIDAD ------------------- -- >
           <li class="item-content item-input item-input-with-info">
             <div class="item-media">
               <i class="icon demo-list-icon"></i>
@@ -104,20 +120,149 @@
               <div class="item-title item-label">Localidad</div>
               <div class="item-input-wrap">
                 <input type="text" placeholder="Ingresa tu localidad" required validate/>
-                  <!--data-error-message="Only numbers please!"-->
+                  <!--data-error-message="Only numbers please!"-- >
                 <span class="input-clear-button"></span>
                 <div class="item-input-info">Requerido</div>
               </div>
             </div>
           </li>
 
+</ul>
+-->
+<form class="list" id="formRegistro">
+        <ul>
+  <!--  ------------TOGGLE TIPO DE USUARIO ------------   -->
+          <li>
+            <div class="item-content">
+              <div class="item-inner">
+                <div class="item-title">Dar de Alta una Organización</div>
+                <div class="item-after">
+                  <label class="toggle toggle-init">
+                    <input id="toggleTipoUsuario" type="checkbox" name="toggle" value="yes" /><i class="toggle-icon"></i>
+                  </label>
+                </div>
+              </div>
+            </div>
+          </li>
+  <!--  ------------ INPUT EMAIL------------   -->
+          <li>
+            <div class="item-content item-input">
+              <div class="item-inner">
+                <div class="item-title item-label">E-mail</div>
+                <div class="item-input-wrap">
+                  <input id="emailRegistro" type="email" name="email" placeholder="E-mail" required validate />
+                </div>
+              </div>
+            </div>
+          </li>
+    <!--  ------------ INPUT CONTRASEÑA------------   -->
 
+          <li class="item-content item-input">
+            <div class="item-inner">
+              <div class="item-title item-label">Contraseña</div>
+              <div class="item-input-wrap">
+                <input id="passwordRegistro" type="password" name="password" placeholder="Contraseña" required validate/>
+                <span class="input-clear-button"></span>
+              </div>
+            </div>
+          </li>
 
+    <!--  ------------ INPUT NOMBRE Y APELLIDO ------------   -->
+          <li>
+            <div id="nomUsu" class="item-content item-input activo">
+              <div class="item-inner">
+                <div class="item-title item-label">Nombre</div>
+                <div class="item-input-wrap">
+                  <input type="text" name="name" placeholder="Tu Nombre y Apellido" />
+                </div>
+              </div>
+            </div>
+          </li>
 
-
-
+    <!--  ------------ INPUT NOMBRE ORGANIZACION ------------   -->
+            <li>
+              <div id="nomOrg" class="item-content item-input hidden">
+                <div class="item-inner ">
+                  <div class="item-title item-label ">Nombre Organización</div>
+                  <div class="item-input-wrap">
+                    <input type="text" name="name" placeholder="Ingresa el nombre de la organización" />
+                  </div>
+                </div>
+              </div>
+            </li>
+    <!--  ------------ INPUT Descripción  Organización------------   -->
+              <li>
+                <div id="descOrg" class="item-content item-input hidden">
+                  <div class="item-inner ">
+                    <div class="item-title item-label ">Descripción</div>
+                    <div class="item-input-wrap">
+                      <input type="text" name="name" placeholder="Agrega una descrpción de tu organización" />
+                    </div>
+                  </div>
+                </div>
+              </li>
+<!--  ------------ INPUT Provincia------------   -->
+          <li>
+            <div id="provincia" class="item-content item-input">
+              <div class="item-inner">
+                <div class="item-title item-label">Provincia</div>
+                <div class="item-input-wrap">
+                  <select id="provincia" name="provincia">
+                    <option value="rionegro" selected="selected">Rio Negro</option>
+                    <option value="chubut">Chubut</option>
+                    <option value="neuquen">Neuquén</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </li>
+<!--  ------------ INPUT LOCALIDAD ------------   -->
+          <li>
+            <div id="localidad" class="item-content item-input">
+              <div class="item-inner ">
+                <div class="item-title item-label ">Localidad</div>
+                <div class="item-input-wrap">
+                  <input type="text" name="name" placeholder="Ingresa tu localidad" />
+                </div>
+              </div>
+            </div>
+          </li>
 
 
         </ul>
+      </form>
+
+
+
+          <div class="block block-strong">
+            <button id="btnRegistrar" class="button button-large button-fill button-preloader ${isLoading ? 'button-loading' : ''}"
+              @click=${load}>
+              <span class="preloader"></span>
+              <span>Registrar</span>
+            </button>
+          </div>
+
+    <!-- POPUP DE AVISO DE REGISTRO COMPLETO -->
+          <div id="popupRegistrado" class="popup my-popup-registrado">
+              <div class="view">
+                  <div class="page">
+                      <div class="navbar">
+                          <div class="navbar-bg"></div>
+                          <div class="navbar-inner">
+                              <div class="title">Ya estas registrado!! </div>
+                            <!-- <div class="right">
+                                  <a class="link popup-close">Iniciar Sesion</a>
+                              </div>
+                              -->
+                          </div>
+                      </div>
+                      <div class="page-content">
+                        <h1> GRACIAS !! </h1>
+                        <a class="link popup-close">Iniciar Sesión</a>
+                      </div>
+
+
+
+
       </div>
 </div>

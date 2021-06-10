@@ -72,17 +72,13 @@
                       <div class="navbar-bg"></div>
                       <div class="navbar-inner">
                             <!--<div class="left"><i class="icon icon-back"></i></div>-->
-                          <div class="title  centradoFlx">Mascotas de la Comarca</div>
+                          <div class="title">Mascotas de la Comarca</div>
                           <!--<div class="right"><i class="icon icon-forward"></i></div>-->
                       </div>
                   </div>
 
 
-
-
-
-
-                        <!-- INICIO login (BLOQUE) -->
+                <!-- INICIO login (BLOQUE) -->
                         <!--<div class="login-screen-title">Mascotas</div>-->
                         <div class="block">
                             <form>
@@ -106,21 +102,27 @@
                                   </li>
                                 </ul>
                               </div>
-                              <div class="list">
-                                <ul>
-                                  <li><a href="#" class="list-button">Iniciar Sesión</a></li>
-                                </ul>
-                                <div class="block-footer">
-                                  <p>Si no tenes cuenta registrate! </p>
-                                  <p><a href="/registro/" class="link">Registrarme</a></p>
-                                </div>
-                              </div>
                             </form>
+                          </div>
+
+              <!--BOTON INICIAR SESION -->
+
+                              <div class="block block-strong">
+                                <button id="btnIniciarSesion" class="button button-large button-fill button-preloader ${isLoading ? 'button-loading' : ''}"
+                                  @click=${load}>
+                                  <span class="preloader"></span>
+                                  <span>Iniciar Sesión</span>
+                                </button>
+                              </div>
 
 
+              <!-- registrate -->
 
+                            <div class="block-footer contenedorRegsitrarme">
+                              <p class="centrar">Si no tenes cuenta registrate! </p>
+                              <p class="centrar"><a href="/registro/" class="link">Registrarme</a></p>
+                            </div>
 
-                        <!-- fin login -->
 
 
                     </div>
