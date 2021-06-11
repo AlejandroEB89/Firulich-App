@@ -15,10 +15,12 @@ var app = new Framework7({
     },
     // Add default routes
     routes: [
+      {path: '/index/',url: 'index.html',},
       {path: '/registro/',url: 'registro.html',},
       {path: '/gracias/',url: 'gracias.html',},
       {path: '/usuarioHome/',url: 'usuarioHome.html',},
       {path: '/orgHome/',url: 'orgHome.html',},
+      {path: '/listaOrg/',url: 'listaOrg.html',},
     ]
     // ... other parameters
   });
@@ -39,6 +41,8 @@ $$(document).on('page:init', function (e) {
 //  -------------------------- PAGE INIT INDEX ----------------------------------------------------
 $$(document).on('page:init', '.page[data-name="index"]', function (e) {
     // Do something here when page with data-name="about" attribute loaded and initialized
+
+    $$("#btnIniciarSesion").on("click", fnIniciarSesion);
 
 
 })
@@ -94,9 +98,11 @@ function fnRegistrarUsuario(){
             console.error(error.code);
             if (error.code == "auth/email-already-in-use") {
                 console.error("el mail ya existe...");
+                app.dialog.alert("Ya existe una cuenta con este correo!", "Oops");
               }
             if (error.code == "auth/invalid-email") {
                 console.error("El mail es inválido");
+                app.dialog.alert("No es una direccion de correo valida!", "Oops");
               }
             //console.error(error.message);
         } )
@@ -127,8 +133,8 @@ function fnTipodeRegistro (){
 
     $$("#nomOrg").removeClass("hidden");
     $$("#nomOrg").addClass("activo");
-    $$("#descOrg").removeClass("hidden");
-    $$("#descOrg").addClass("activo");
+    $$("#NomRespOrg").removeClass("hidden");
+    $$("#NomRespOrg").addClass("activo");
 
     console.log("El tipo de usuario es : " + tipodeUsuario );
 
@@ -136,12 +142,44 @@ function fnTipodeRegistro (){
     var tipodeUsuario="usuario"
     $$("#nomOrg").removeClass("activo");
     $$("#nomOrg").addClass("hidden");
-    $$("#descOrg").removeClass("activo");
-    $$("#descOrg").addClass("hidden");
+    $$("#NomRespOrg").removeClass("activo");
+    $$("#NomRespOrg").addClass("hidden");
 
     $$("#nomUsu").removeClass("hidden");
     $$("#nomUsu").addClass("activo");
     console.log ("El tipo de usuario es : " + tipodeUsuario) ;
   }
+
+}
+
+
+function fnIniciarSesion (){
+    var email=$$("#emailISesion").val();
+    var password=$$("#passwordISesion").val();
+    firebase.auth().signInWithEmailAndPassword(email, password)
+  .then((userCredential) => {
+    // Signed in
+    console.log("El usuario es correcto y su correo es: " + email);
+    var user = userCredential.user;
+    mainView.router.navigate("/usuarioHome/");
+    // ...
+ })
+  .catch((error) => {
+    var errorCode = error.code;
+    var errorMessage = error.message;
+    console.error(error.code);
+    console.error(error.message);
+    if (error.code == "auth/user-not-found"){
+      console.log('el usuario no existe');
+      app.dialog.alert("El usuario no existe!", "Oops");
+    }
+
+    if (error.code == "auth/wrong-password"){
+      console.log('La contraseña es incorrecta');
+      app.dialog.alert("La constraseña es incorrecta", "Oops");
+    }
+
+  });
+
 
 }
