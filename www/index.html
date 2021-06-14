@@ -70,7 +70,7 @@
 
                   <div class="navbar">
                       <div class="navbar-bg"></div>
-                      <div class="navbar-inner">
+                      <div class="navbar-inner flexJustifyCenter">
                             <!--<div class="left"><i class="icon icon-back"></i></div>-->
                           <div class="title">Mascotas de la Comarca</div>
                           <!--<div class="right"><i class="icon icon-forward"></i></div>-->
@@ -78,8 +78,9 @@
                   </div>
 
 
-                <!-- INICIO login (BLOQUE) -->
+      <!-- INICIO login (BLOQUE) -->
                         <!--<div class="login-screen-title">Mascotas</div>-->
+                      <div class="block formatoBloques no-hairlines">
                         <div class="block">
                             <form>
                               <div class="list">
@@ -107,7 +108,7 @@
 
               <!--BOTON INICIAR SESION -->
 
-                              <div class="block block-strong">
+                              <div class="block block-strong no-hairlines">
                                 <button id="btnIniciarSesion" class="button button-large button-fill button-preloader ${isLoading ? 'button-loading' : ''}"
                                   @click=${load}>
                                   <span class="preloader"></span>
@@ -119,7 +120,7 @@
               <!-- registrate -->
 
                             <div class="block-footer contenedorRegsitrarme">
-                              <p class="centrar">Si no tenes cuenta registrate! </p>
+                              <p class="centrar">Si aún no tenes cuenta registrate que es rapidísimo!! </p>
                               <p class="centrar"><a href="/registro/" class="link">Registrarme</a></p>
                             </div>
 
@@ -140,6 +141,8 @@
        https://firebase.google.com/docs/web/setup#available-libraries -->
 
     <script src="https://www.gstatic.com/firebasejs/8.6.2/firebase-auth.js"></script>
+
+    <script src="https://www.gstatic.com/firebasejs/8.2.7/firebase-firestore.js"></script>
 
     <script>
       // Your web app's Firebase configuration

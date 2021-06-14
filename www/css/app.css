@@ -85,11 +85,40 @@
 }
 
 :root {
-    --f7-theme-color: #673ab7;
-    --f7-theme-color-rgb: 103, 58, 183;
-    --f7-theme-color-shade: #563098;
-    --f7-theme-color-tint: #7c52c8
+    --f7-theme-color: #9c27b0;
+    --f7-theme-color-rgb: 156, 39, 176;
+    --f7-theme-color-shade: #7e208f;
+    --f7-theme-color-tint: #b92fd1;
 }
+
+
+
+
+
+
+
+/* Formato INDEX */
+.formatoBloques{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 10vh;
+}
+
+/*.alinearIses{
+  align-items: center;
+}*/
+
+.mrgTitNav{
+  margin-left: 20vw !important;
+}
+
+.noMargin{
+  margin: 0px !important;
+}
+
+
+
 
 .centrar{
   text-align: center;
@@ -115,6 +144,27 @@ display: none !important;
   visibility: hidden;
 }
 
-.flex{
+.flexJustifyCenter{
   display: flex;
+  justify-content: center !important;
 }
+
+
+.botonesOrg{   /* de la vista de la organizacion (desde un usuario)*/
+  font-size: 8px;
+  width:100px;
+}
+
+.colbtn{          /*  ((PRUEBA EN BTN DE POSTURLAME)de la vista de la organizacion (desde un usuario) */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+
+.demo-card-header-pic .card-header {         /*formato cards Animales en Adopcion*/
+    height: 40vw;
+    background-size: cover;
+    background-position: center;
+    color: #fff;
+  }

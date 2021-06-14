@@ -21,11 +21,27 @@ var app = new Framework7({
       {path: '/usuarioHome/',url: 'usuarioHome.html',},
       {path: '/orgHome/',url: 'orgHome.html',},
       {path: '/listaOrg/',url: 'listaOrg.html',},
+      {path: '/VerOrgDesdeUsu/',url: 'VerOrgDesdeUsu.html',},
+      {path: '/enAdopcion/',url: 'enAdopcion.html',},
     ]
     // ... other parameters
   });
 
 var mainView = app.views.create('.view-main');
+
+
+
+// -------------- Variables de datos del usuario /Organización ------------------//
+
+var tipodeUsuario="";
+var nombreUsuario="";
+var apellidoUsuario="";
+var nombreOrganizacion="";
+var nombreRespOrganizacion="";
+var email="";
+var password="";
+
+
 
 // Handle Cordova Device Ready Event
 $$(document).on('deviceready', function() {
@@ -42,6 +58,15 @@ $$(document).on('page:init', function (e) {
 $$(document).on('page:init', '.page[data-name="index"]', function (e) {
     // Do something here when page with data-name="about" attribute loaded and initialized
 
+    var tipodeUsuario="";
+    var nombreUsuario="";
+    var apellidoUsuario="";
+    var nombreOrganizacion="";
+    var nombreRespOrganizacion="";
+    var email="";
+    var password="";
+    console.log("ahora tipo de usuario es : " + tipodeUsuario);
+
     $$("#btnIniciarSesion").on("click", fnIniciarSesion);
 
 
@@ -52,11 +77,17 @@ $$(document).on('page:init', '.page[data-name="index"]', function (e) {
 $$(document).on('page:init', '.page[data-name="registro"]', function (e) {
     // Do something here when page with data-name="about" attribute loaded and initialized
 
-    var tipodeUsuario= "usuario";
-    var email = $$("#emailRegistro").val();
-    var clave = $$("#passwordRegistro").val();
 
-    $$("#btnRegistrar").on("click", fnRegistrarUsuario);  // fnComprobarDatos (deberia chequear primero)
+    calendarModal = app.calendar.create({
+           inputEl: '#fechanac',
+           openIn: 'customModal',
+           header: true,
+           footer: true,
+         });
+
+
+
+    $$("#btnRegistrar").on("click", fnRegistrar);  // fnComprobarDatos (deberia chequear primero)
     $$("#toggleTipoUsuario").on("change", fnTipodeRegistro);
 
 
@@ -83,36 +114,17 @@ $$(document).on('page:init', '.page[data-name="gracias"]', function (e) {
 // ------------------------- FUNCIONES -------------------------------------------------
 
 
-function fnRegistrarUsuario(){
+function fnRegistrar(){
+    if (tipodeUsuario=="org"){
+          console.log("ES una Organizaciony estoy por registrarla");
+          fnRegistrarOrg();
+    } else {
+          tipodeUsuario=="usuario";
+          console.log("ES un usuario  y estoy por registrarlo");
+          fnRegistrarUsuario();
+          }
+    }
 
-
-  var email = $$("#emailRegistro").val();
-  var clave = $$("#passwordRegistro").val();
-
-
-
-
-
-    firebase.auth().createUserWithEmailAndPassword(email, clave)
-        .catch( function(error) {
-            console.error(error.code);
-            if (error.code == "auth/email-already-in-use") {
-                console.error("el mail ya existe...");
-                app.dialog.alert("Ya existe una cuenta con este correo!", "Oops");
-              }
-            if (error.code == "auth/invalid-email") {
-                console.error("El mail es inválido");
-                app.dialog.alert("No es una direccion de correo valida!", "Oops");
-              }
-            //console.error(error.message);
-        } )
-        .then( function() {
-            console.log('Se registró el Usuario correctamente');
-            //var popup = app.popup.create({"#popupRegistrado"});
-            mainView.router.navigate('/gracias/');
-
-      });
-}
 
 
 /*
@@ -123,30 +135,135 @@ function fnComprobarDatos(){  //aprieto registrar y viene aca, comprueba si esta
 }
 */
 
+function fnRegistrarUsuario(){
+  email = $$("#emailRegistro").val();
+  password = $$("#passwordRegistro").val();
+  nombreUsuario = $$("#nomUsu").val();
+  apellidoUsuario = $$("#apeUsu").val();
+
+  if (email=="" || password=="" || nombreUsuario=="" || apellidoUsuario=="") {
+    app.dialog.alert("Completá todos los campos!!", "Oops");
+  } else {
+      firebase.auth().createUserWithEmailAndPassword(email, password)
+              .then( function() {
+                    //var popup = app.popup.create({"#popupRegistrado"});
+                    app.dialog.confirm("Ya te registraste!! Iniciá sesión para ingresar!", "Genial!");
+                    mainView.router.navigate('/index/');
+                    console.log('Se registró el Usuario ' + nombreUsuario + " " + apellidoUsuario +  " correctamente");
+                })
+              .catch( function(error) {
+                  console.error(error.code);
+                  switch (error.code){
+                    case "auth/email-already-in-use" :
+                        console.error("el mail ya existe...");
+                        app.dialog.alert("Ya existe una cuenta con este correo!", "Oops");
+                        break;
+
+                    case "auth/invalid-email":
+                        console.error("El mail es inválido");
+                        app.dialog.alert("Esa no es una dirección de correo valida!", "Oops");
+                        break;
+                        default:
+                    case "auth/weak-password":
+                        console.error("contraseña debil");
+                        app.dialog.alert("La contraseña debe contener al menos 8 caracteres", "Oops");
+                        break;
+                  }
+              });
+
+          }
+      }
+
+
+function fnRegistrarOrg(){
+  email = $$("#emailRegistro").val();
+  password = $$("#passwordRegistro").val();
+  nombreOrganizacion = $$("#nomOrg").val();
+  nombreRespOrganizacion = $$("#nomRespOrg").val();
+  apellidoUsuario = $$("#apeUsu").val();
+
+  if (email=="" || password=="" || nombreRespOrganizacion=="" || apellidoUsuario=="" || nombreOrganizacion=="") {
+    app.dialog.alert("Completá todos los campos!!", "Oops");
+  } else {
+      firebase.auth().createUserWithEmailAndPassword(email, password)
+              .then( function() {
+                    //var popup = app.popup.create({"#popupRegistrado"});
+                    app.dialog.confirm("Ya registraste a tu Organización!! Iniciá sesión para empezar!!", "Genial!");
+                    var db=firebase.firestore();
+                    colOrganizaciones=db.collection("organizaciones");
+
+                    var nuevaOrg={
+                      Nombre:nombreOrganizacion,
+                      nomResponsable:nombreRespOrganizacion,
+                      apellidoResponsable:apellidoUsuario,
+                      TipoUsuario: tipodeUsuario,
+                    }
+
+                    MiId=email;
+                    colOrganizaciones.doc(MiId).set(nuevaOrg)
+                      .then(function (docDevuelto){
+                        console.log("Se guardo en bd con el id: " + docDevuelto.id);
+
+                      })
+                      .catch(function(error){
+                        console.error(error.code);
+                      });
+
+
+
+
+                    console.log('Se registró la organizacion: ' + nombreOrganizacion + " correctamente, y su responsable es: " + nombreRespOrganizacion + " " + apellidoUsuario );
+                    mainView.router.navigate('/index/');
+                })
+              .catch( function(error) {
+                  console.error(error.code);
+                  switch (error.code){
+                    case "auth/email-already-in-use" :
+                        console.error("el mail ya existe...");
+                        app.dialog.alert("Ya existe una cuenta con este correo!", "Oops");
+                        break;
+
+                    case "auth/invalid-email":
+                        console.error("El mail es inválido");
+                        app.dialog.alert("Esa no es una dirección de correo valida!", "Oops");
+                        break;
+                        default:
+                    case "auth/weak-password":
+                        console.error("contraseña debil");
+                        app.dialog.alert("La contraseña debe contener al menos 8 caracteres", "Oops");
+                        break;
+                  }
+              });
+        }
+}
+
+
+
+
 
 function fnTipodeRegistro (){
   var toggleTipoUsuario = app.toggle.get('.toggle');  // si el toggle esta "off" el tipo de usuario es "usuario" y en "on" es organización
   if(toggleTipoUsuario.checked){
-    var tipodeUsuario="org"                 // dependiendo que tipo de usuario es se esconden algunos inputs y se muestran otros
-    $$("#nomUsu").removeClass("activo");
-    $$("#nomUsu").addClass("hidden");
+    tipodeUsuario="org";                 // dependiendo que tipo de usuario es se esconden algunos inputs y se muestran otros
+    $$("#nomUsuManejador").removeClass("activo");
+    $$("#nomUsuManejador").addClass("hidden");
 
-    $$("#nomOrg").removeClass("hidden");
-    $$("#nomOrg").addClass("activo");
-    $$("#NomRespOrg").removeClass("hidden");
-    $$("#NomRespOrg").addClass("activo");
+    $$("#nomOrgManejador").removeClass("hidden");
+    $$("#nomOrgManejador").addClass("activo");
+    $$("#nomRespOrgManejador").removeClass("hidden");
+    $$("#nomRespOrgManejador").addClass("activo");
 
     console.log("El tipo de usuario es : " + tipodeUsuario );
 
   } else {
-    var tipodeUsuario="usuario"
-    $$("#nomOrg").removeClass("activo");
-    $$("#nomOrg").addClass("hidden");
-    $$("#NomRespOrg").removeClass("activo");
-    $$("#NomRespOrg").addClass("hidden");
+    tipodeUsuario="usuario";
+    $$("#nomOrgManejador").removeClass("activo");
+    $$("#nomOrgManejador").addClass("hidden");
+    $$("#nomRespOrgManejador").removeClass("activo");
+    $$("#nomRespOrgManejador").addClass("hidden");
 
-    $$("#nomUsu").removeClass("hidden");
-    $$("#nomUsu").addClass("activo");
+    $$("#nomUsuManejador").removeClass("hidden");
+    $$("#nomUsuManejador").addClass("activo");
     console.log ("El tipo de usuario es : " + tipodeUsuario) ;
   }
 
@@ -154,12 +271,13 @@ function fnTipodeRegistro (){
 
 
 function fnIniciarSesion (){
-    var email=$$("#emailISesion").val();
-    var password=$$("#passwordISesion").val();
+    email=$$("#emailISesion").val();
+    password=$$("#passwordISesion").val();
     firebase.auth().signInWithEmailAndPassword(email, password)
   .then((userCredential) => {
     // Signed in
     console.log("El usuario es correcto y su correo es: " + email);
+
     var user = userCredential.user;
     mainView.router.navigate("/usuarioHome/");
     // ...

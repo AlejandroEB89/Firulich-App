@@ -9,12 +9,14 @@
                 <span class="ios-only">Back</span>
             </a>
           </div>
-          <div class="title">Registrate</div>
+          <div class="title mrgTitNav">Registrate</div>
 
       </div>
   </div>
 
-<form class="list" id="formRegistro">
+
+<div class="block formatoBloques no-hairlines">
+  <form class="list" id="formRegistro">
         <ul>
   <!--  ------------TOGGLE TIPO DE USUARIO ------------   -->
           <li>
@@ -52,40 +54,67 @@
             </div>
           </li>
 
-    <!--  ------------ INPUT NOMBRE Y APELLIDO ------------   -->
+  <!--  ------------ INPUT NOMBRE ORGANIZACION ------------   -->
           <li>
-            <div id="nomUsu" class="item-content item-input activo">
-              <div class="item-inner">
-                <div class="item-title item-label">Nombre</div>
+            <div id="nomOrgManejador" class="item-content item-input hidden">
+              <div class="item-inner ">
+                <div class="item-title item-label ">Nombre Organización</div>
                 <div class="item-input-wrap">
-                  <input type="text" name="name" placeholder="Tu Nombre y Apellido" required />
+                  <input id="nomOrg" type="text"  name="name" placeholder="Ingresa el nombre de la organización" required />
                 </div>
               </div>
             </div>
           </li>
 
-    <!--  ------------ INPUT NOMBRE ORGANIZACION ------------   -->
+
+    <!--  ------------ INPUT NOMBRE------------   -->
+          <li>
+            <div id="nomUsuManejador" class="item-content item-input activo">
+              <div class="item-inner">
+                <div class="item-title item-label">Nombre</div>
+                <div class="item-input-wrap">
+                  <input id="nomUsu" type="text" name="name" placeholder="Tu Nombre" required />
+                </div>
+              </div>
+            </div>
+          </li>
+  <!--  ------------ INPUT NOMBRE RESPONSABLE DE LA ORGANIZACIón ------------   -->
             <li>
-              <div id="nomOrg" class="item-content item-input hidden">
+              <div id="nomRespOrgManejador"  class="item-content item-input hidden">
                 <div class="item-inner ">
-                  <div class="item-title item-label ">Nombre Organización</div>
+                  <div class="item-title item-label ">Responsable de la Organización</div>
                   <div class="item-input-wrap">
-                    <input type="text" name="name" placeholder="Ingresa el nombre de la organización" required />
+                    <input id="nomRespOrg" type="text"  name="name" placeholder="Ingresa el Nombre" required />
                   </div>
                 </div>
               </div>
             </li>
-    <!--  ------------ INPUT NOMBRE RESPONSABLE DE LA ORGANIZACIón ------------   -->
-              <li>
-                <div id="NomRespOrg" class="item-content item-input hidden">
-                  <div class="item-inner ">
-                    <div class="item-title item-label ">Responsable de la Organización</div>
-                    <div class="item-input-wrap">
-                      <input type="text" name="name" placeholder="Ingresa Nombre y apellido" required />
-                    </div>
-                  </div>
+
+    <!--  ------------ INPUT APELLIDO ------------   -->
+          <li>
+            <div id="apeUsuManejador"  class="item-content item-input activo">
+              <div class="item-inner">
+                <div class="item-title item-label"> Apellido</div>
+                <div class="item-input-wrap">
+                  <input id="apeUsu" type="text"  name="name" placeholder="Ingresa el Apellido" required />
                 </div>
-              </li>
+              </div>
+            </div>
+          </li>
+
+  <!--  ------------ INPUT Fecha de nacimiento------------   -->
+        <li>
+          <div class="item-content item-input  hidden">
+              <div class="list no-hairlines-md">
+                  <div class="block-title">Fecha de nacimiento </div>
+                    <div class="item-inner">
+                      <div class="item-input-wrap">
+                        <input type="text" placeholder="Seleccioná tu fecha de nacimiento" readonly="readonly" id="fechanac" />
+                      </div>
+                    </div>
+              </div>
+          </div>
+        </li>
 <!--  ------------ INPUT Provincia------------   -->
           <li>
             <div id="provincia" class="item-content item-input">
@@ -115,17 +144,18 @@
 
 
         </ul>
-      </form>
+    </form>
 
 
 
-          <div class="block block-strong">
+          <div class="block block-strong noMargin no-hairlines">
             <button id="btnRegistrar" class="button button-large button-fill button-preloader ${isLoading ? 'button-loading' : ''}"
               @click=${load}>
               <span class="preloader"></span>
               <span>Registrar</span>
             </button>
           </div>
+</div>
 
     <!-- POPUP DE AVISO DE REGISTRO COMPLETO -->
           <div id="popupRegistrado" class="popup my-popup-registrado">
