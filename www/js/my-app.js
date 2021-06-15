@@ -40,6 +40,8 @@ var nombreOrganizacion="";
 var nombreRespOrganizacion="";
 var email="";
 var password="";
+var provincia="";
+var localidad="";
 
 
 
@@ -65,6 +67,9 @@ $$(document).on('page:init', '.page[data-name="index"]', function (e) {
     var nombreRespOrganizacion="";
     var email="";
     var password="";
+    var provincia="";
+    var localidad="";
+
     console.log("ahora tipo de usuario es : " + tipodeUsuario);
 
     $$("#btnIniciarSesion").on("click", fnIniciarSesion);
@@ -94,21 +99,6 @@ $$(document).on('page:init', '.page[data-name="registro"]', function (e) {
 
 })
 
-//    -------------------------PAGE INIT GRACIAS-----------------------------------------------
-$$(document).on('page:init', '.page[data-name="gracias"]', function (e) {
-    // Do something here when page with data-name="about" attribute loaded and initialized
-    if (tipodeUsuario= "usuario"){
-      nombreUsuario=$$("#nomUsu").val();
-      $$("#mensajeRegistro").html( nombreUsuario + " ¡gracias por registrarte! ")
-    }
-    else{
-      nombreOrganizacion=$$("#nomOrg").val();
-      console.log("la organización registrada es: " + nombreOrganizacion)
-      $$("#mensajeRegistro").html("Registraste La organización: " + nombreOrganizacion);
-    }
-
-
-})
 
 
 // ------------------------- FUNCIONES -------------------------------------------------
@@ -119,7 +109,7 @@ function fnRegistrar(){
           console.log("ES una Organizaciony estoy por registrarla");
           fnRegistrarOrg();
     } else {
-          tipodeUsuario=="usuario";
+          tipodeUsuario="usuario";
           console.log("ES un usuario  y estoy por registrarlo");
           fnRegistrarUsuario();
           }
@@ -140,16 +130,41 @@ function fnRegistrarUsuario(){
   password = $$("#passwordRegistro").val();
   nombreUsuario = $$("#nomUsu").val();
   apellidoUsuario = $$("#apeUsu").val();
+  provincia = $$("#provincia").val();
+  localidad = $$("#localidad").val();
 
-  if (email=="" || password=="" || nombreUsuario=="" || apellidoUsuario=="") {
-    app.dialog.alert("Completá todos los campos!!", "Oops");
+  if (email=="" || password=="" || nombreUsuario=="" || apellidoUsuario=="" || provincia=="" || localidad=="" ) {
+    app.dialog.alert("Completá todos los campos!!", "Oops");                    /*Comprobar que esten todos los campos comletos*/
   } else {
       firebase.auth().createUserWithEmailAndPassword(email, password)
               .then( function() {
-                    //var popup = app.popup.create({"#popupRegistrado"});
-                    app.dialog.confirm("Ya te registraste!! Iniciá sesión para ingresar!", "Genial!");
-                    mainView.router.navigate('/index/');
-                    console.log('Se registró el Usuario ' + nombreUsuario + " " + apellidoUsuario +  " correctamente");
+
+                    var db=firebase.firestore();
+                    colUsuarios=db.collection("usuarios");
+
+                    var nuevoUsuario={
+                      Nombre:nombreUsuario,
+                      Apellido:apellidoUsuario,
+                      TipoUsuario: tipodeUsuario,
+                      Provincia: provincia,
+                      Localidad: localidad,
+                    }
+
+                    MiId=email;
+                    colUsuarios.doc(MiId).set(nuevoUsuario)
+                      .then(function (docDevuelto){
+                        console.log("Se guardo en bd con el id: " + docDevuelto.id);
+
+                      })
+                      .catch(function(error){
+                        console.log("Error: " + error);
+                      });
+
+                      app.dialog.confirm("Ya te registraste!! Iniciá sesión para ingresar!", "Genial!");
+                      mainView.router.navigate('/index/');
+                      console.log('Se registró el Usuario ' + nombreUsuario + " " + apellidoUsuario +  " correctamente");
+
+
                 })
               .catch( function(error) {
                   console.error(error.code);
@@ -181,14 +196,15 @@ function fnRegistrarOrg(){
   nombreOrganizacion = $$("#nomOrg").val();
   nombreRespOrganizacion = $$("#nomRespOrg").val();
   apellidoUsuario = $$("#apeUsu").val();
+  provincia = $$("#provincia").val();
+  localidad = $$("#localidad").val();
 
-  if (email=="" || password=="" || nombreRespOrganizacion=="" || apellidoUsuario=="" || nombreOrganizacion=="") {
+  if (email=="" || password=="" || nombreRespOrganizacion=="" || apellidoUsuario=="" || nombreOrganizacion=="" || provincia=="" || localidad=="" ) {
     app.dialog.alert("Completá todos los campos!!", "Oops");
   } else {
       firebase.auth().createUserWithEmailAndPassword(email, password)
               .then( function() {
-                    //var popup = app.popup.create({"#popupRegistrado"});
-                    app.dialog.confirm("Ya registraste a tu Organización!! Iniciá sesión para empezar!!", "Genial!");
+
                     var db=firebase.firestore();
                     colOrganizaciones=db.collection("organizaciones");
 
@@ -197,24 +213,25 @@ function fnRegistrarOrg(){
                       nomResponsable:nombreRespOrganizacion,
                       apellidoResponsable:apellidoUsuario,
                       TipoUsuario: tipodeUsuario,
+                      Provincia: provincia,
+                      Localidad: localidad,
                     }
 
                     MiId=email;
                     colOrganizaciones.doc(MiId).set(nuevaOrg)
-                      .then(function (docDevuelto){
+                      .then(function (docRef){
                         console.log("Se guardo en bd con el id: " + docDevuelto.id);
 
                       })
                       .catch(function(error){
-                        console.error(error.code);
+                        console.log("Error: " + error);
                       });
 
-
-
-
+                    app.dialog.confirm("Ya registraste a tu Organización!! Iniciá sesión para empezar!!", "Genial!");
                     console.log('Se registró la organizacion: ' + nombreOrganizacion + " correctamente, y su responsable es: " + nombreRespOrganizacion + " " + apellidoUsuario );
                     mainView.router.navigate('/index/');
                 })
+
               .catch( function(error) {
                   console.error(error.code);
                   switch (error.code){
