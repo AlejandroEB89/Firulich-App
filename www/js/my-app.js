@@ -18,7 +18,7 @@ var app = new Framework7({
       {path: '/index/',url: 'index.html',},
       {path: '/registro/',url: 'registro.html',},
       {path: '/gracias/',url: 'gracias.html',},
-      {path: '/usuarioHome/',url: 'usuarioHome.html',},
+      {path: '/usuarioHome/',url: 'usuarioHome.html', options : { transition: "f7-fade"}},
       {path: '/orgHome/',url: 'orgHome.html',},
       {path: '/listaOrg/',url: 'listaOrg.html',},
       {path: '/VerOrgDesdeUsu/',url: 'VerOrgDesdeUsu.html',},
@@ -44,6 +44,10 @@ var provincia="";
 var localidad="";
 
 
+// -------------- Variables para base de datos  ------------------//
+var db=firebase.firestore();
+colUsuarios=db.collection("usuarios");
+colOrganizaciones=db.collection("organizaciones");
 
 // Handle Cordova Device Ready Event
 $$(document).on('deviceready', function() {
@@ -139,10 +143,7 @@ function fnRegistrarUsuario(){
       firebase.auth().createUserWithEmailAndPassword(email, password)
               .then( function() {
 
-                    var db=firebase.firestore();
-                    colUsuarios=db.collection("usuarios");
-
-                    var nuevoUsuario={
+                      var nuevoUsuario={
                       Nombre:nombreUsuario,
                       Apellido:apellidoUsuario,
                       TipoUsuario: tipodeUsuario,
@@ -152,8 +153,8 @@ function fnRegistrarUsuario(){
 
                     MiId=email;
                     colUsuarios.doc(MiId).set(nuevoUsuario)
-                      .then(function (docDevuelto){
-                        console.log("Se guardo en bd con el id: " + docDevuelto.id);
+                      .then(function(docRef){
+                        console.log("Se guardo en bd con el id: ", docRef.id);
 
                       })
                       .catch(function(error){
@@ -205,9 +206,6 @@ function fnRegistrarOrg(){
       firebase.auth().createUserWithEmailAndPassword(email, password)
               .then( function() {
 
-                    var db=firebase.firestore();
-                    colOrganizaciones=db.collection("organizaciones");
-
                     var nuevaOrg={
                       Nombre:nombreOrganizacion,
                       nomResponsable:nombreRespOrganizacion,
@@ -220,7 +218,7 @@ function fnRegistrarOrg(){
                     MiId=email;
                     colOrganizaciones.doc(MiId).set(nuevaOrg)
                       .then(function (docRef){
-                        console.log("Se guardo en bd con el id: " + docDevuelto.id);
+                        console.log("Se guardo en bd con el id: ", docRef.id);
 
                       })
                       .catch(function(error){
@@ -293,10 +291,39 @@ function fnIniciarSesion (){
     firebase.auth().signInWithEmailAndPassword(email, password)
   .then((userCredential) => {
     // Signed in
-    console.log("El usuario es correcto y su correo es: " + email);
+      var user = userCredential.user;
+      console.log("El usuario es correcto y su correo es: " + email);
 
-    var user = userCredential.user;
-    mainView.router.navigate("/usuarioHome/");
+      var usuRef = db.collection("usuarios").doc(email);        //compruebo si es usuario o ORGANIZACION
+      var orgRef = db.collection("organizaciones").doc(email);
+
+      usuRef.get()
+      .then((doc) => {
+          if (doc.exists) {
+              console.log("es un usuario!");
+              console.log("Document data:", doc.data());
+              mainView.router.navigate("/usuarioHome/");
+          }
+      }).catch((error) => {
+          console.log("Error getting document:", error);
+      });
+
+      orgRef.get()
+      .then((doc) => {
+          if (doc.exists) {
+              console.log("Es una organizacion!");
+              console.log("Document data:", doc.data());
+              mainView.router.navigate("/orgHome/");
+          }
+      }).catch((error) => {
+          console.log("Error getting document:", error);
+      });
+
+
+
+
+
+
     // ...
  })
   .catch((error) => {
