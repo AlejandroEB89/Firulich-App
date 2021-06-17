@@ -49,6 +49,7 @@ var db=firebase.firestore();
 colUsuarios=db.collection("usuarios");
 colOrganizaciones=db.collection("organizaciones");
 
+
 // Handle Cordova Device Ready Event
 $$(document).on('deviceready', function() {
     console.log("Device is ready!");
@@ -62,7 +63,7 @@ $$(document).on('page:init', function (e) {
 
 //  -------------------------- PAGE INIT INDEX ----------------------------------------------------
 $$(document).on('page:init', '.page[data-name="index"]', function (e) {
-    // Do something here when page with data-name="about" attribute loaded and initialized
+
 
     var tipodeUsuario="";
     var nombreUsuario="";
@@ -102,6 +103,72 @@ $$(document).on('page:init', '.page[data-name="registro"]', function (e) {
 
 
 })
+
+
+//    -------------------------PAGE INIT ORG HOME-----------------------------------------------
+$$(document).on('page:init', '.page[data-name="orgHome"]', function (e) {
+    // Do something here when page with data-name="about" attribute loaded and initialized
+
+
+
+    $$("#orgNombrePerfil").html(nombreOrganizacion);
+
+
+
+
+
+})
+
+//    -------------------------PAGE INIT USUARIO HOME-----------------------------------------------
+$$(document).on('page:init', '.page[data-name="usuarioHome"]', function (e) {
+    // Do something here when page with data-name="about" attribute loaded and initialized
+
+
+
+    $$("#usuNombrePerfil").html(nombreUsuario);
+
+    $$("#cerrarSUsu").on("click", fnCerrarSesion);
+
+
+
+
+
+})
+
+
+//    -------------------------PAGE INIT LISTA ORGANIZACIONES (desde usuario)-----------------------------------------------
+$$(document).on('page:init', '.page[data-name="listaOrg"]', function (e) {
+    // Do something here when page with data-name="about" attribute loaded and initialized
+
+
+  refOrganizaciones= colOrganizaciones;
+
+  refOrganizaciones.get()
+    .then(function(querySnapshot) {
+        querySnapshot.forEach(function(docActual){
+          nombreOrganizacion=docActual.data().Nombre
+          localidadOrg= docActual.data().Localidad
+          provinciaOrg= docActual.data().Provincia
+          console.log(nombreOrganizacion + " de " + localidadOrg + " " + provinciaOrg );
+        //  $$("#listaOrganiza").append()
+        })
+    })
+    .catch( function(error){
+      console.log("Error: "+ error);
+    });
+
+
+
+
+
+})
+
+
+
+
+
+
+
 
 
 
@@ -294,14 +361,20 @@ function fnIniciarSesion (){
       var user = userCredential.user;
       console.log("El usuario es correcto y su correo es: " + email);
 
-      var usuRef = db.collection("usuarios").doc(email);        //compruebo si es usuario o ORGANIZACION
+      var usuRef = db.collection("usuarios").doc(email);
       var orgRef = db.collection("organizaciones").doc(email);
 
-      usuRef.get()
-      .then((doc) => {
-          if (doc.exists) {
+      usuRef.get()                                          //compruebo si es usuario o ORGANIZACION
+      .then((doc) => {                                      //esto me lo traje de la documentacion de firebase
+          if (doc.exists) {                                  //si es usaurio se agrega nombreusuario y va a al perfil de usuario
               console.log("es un usuario!");
               console.log("Document data:", doc.data());
+              nombreUsuario= doc.data().Nombre
+              apellidoUsuario= doc.data().Apellido
+              tipodeUsuario= doc.data().TipoUsuario
+              provincia= doc.data().Provincia
+              localidad= doc.data().Localidad
+              console.log( "Accedió: " +  nombreUsuario+ " " + apellidoUsuario + " que es " + tipodeUsuario + " de " + localidad  + " " + provincia );
               mainView.router.navigate("/usuarioHome/");
           }
       }).catch((error) => {
@@ -310,9 +383,16 @@ function fnIniciarSesion (){
 
       orgRef.get()
       .then((doc) => {
-          if (doc.exists) {
+          if (doc.exists) {                                     //si es organizacion se agrega nombreorg y va a al perfil de usuario
               console.log("Es una organizacion!");
               console.log("Document data:", doc.data());
+              nombreOrganizacion=doc.data().Nombre
+              nombreRespOrganizacion=doc.data().nomResponsable
+              apellidoUsuario = doc.data().apellidoResponsable
+              tipodeUsuario=doc.data().TipoUsuario
+              localidad=doc.data().Localidad
+              provincia=doc.data().Provincia
+              console.log( "Accedió: " +  nombreOrganizacion+ " que es una " + tipodeUsuario + " de " + localidad  + " " + provincia + " y su responsable es: " + nombreRespOrganizacion + " " + apellidoUsuario);
               mainView.router.navigate("/orgHome/");
           }
       }).catch((error) => {
@@ -344,4 +424,10 @@ function fnIniciarSesion (){
   });
 
 
+}
+
+
+function fnCerrarSesion(){
+  app.dialog.confirm("¿Querés cerrar la sesión actual?", "Hey!");
+  // mainView.router.navigate("/index/")
 }
