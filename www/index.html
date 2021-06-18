@@ -68,7 +68,7 @@
                 <div class="page-content">
 
 
-                  <div class="navbar formatoNavbar">
+                  <div class="navbar">
                       <div class="navbar-bg"></div>
                       <div class="navbar-inner flexJustifyCenter">
                             <!--<div class="left"><i class="icon icon-back"></i></div>-->
@@ -109,7 +109,7 @@
               <!--BOTON INICIAR SESION -->
 
                               <div class="block block-strong no-hairlines">
-                                <button id="btnIniciarSesion" class="button button-large button-fill button-preloader ${isLoading ? 'button-loading' : ''}"
+                                <button id="btnIniciarSesion" class="button button-large button-fill button-preloader ${isLoading ? 'button-loading' : ''} @click=${()=> showInfinite(true)}"
                                   @click=${load}>
                                   <span class="preloader"></span>
                                   <span>Iniciar Sesión</span>

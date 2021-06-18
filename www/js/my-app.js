@@ -112,7 +112,7 @@ $$(document).on('page:init', '.page[data-name="orgHome"]', function (e) {
 
 
     $$("#orgNombrePerfil").html(nombreOrganizacion);
-
+    $$("#cerrarSOrg").on("click", fnCerrarSesion);
 
 
 
@@ -428,6 +428,6 @@ function fnIniciarSesion (){
 
 
 function fnCerrarSesion(){
-  app.dialog.confirm("¿Querés cerrar la sesión actual?", "Hey!");
-  // mainView.router.navigate("/index/")
+  app.dialog.confirm("¿Querés cerrar la sesión actual?", "Hey!", function(){mainView.router.navigate("/index/")});
 }
+//

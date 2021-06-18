@@ -89,13 +89,14 @@
     --f7-theme-color-rgb: 156, 39, 176;
     --f7-theme-color-shade: #7e208f;
     --f7-theme-color-tint: #b92fd1;
+    --f7-navbar-bg-color: #9c27b0;
+    --f7-navbar-bg-color-rgb:  156, 39, 176;
+    --f7-navbar-bg-image: var(--f7-bars-bg-image);
+    --f7-navbar-border-color: var(--f7-bars-border-color);
+    --f7-navbar-link-color: #FFFFFF;
+    --f7-navbar-text-color: #FFFFFF;
 }
 
-
-
-.formatoNavbar{
-  
-}
 
 
 
