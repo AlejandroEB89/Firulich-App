@@ -17,12 +17,31 @@ var app = new Framework7({
     routes: [
       {path: '/index/',url: 'index.html',},
       {path: '/registro/',url: 'registro.html',},
-      {path: '/gracias/',url: 'gracias.html',},
       {path: '/usuarioHome/',url: 'usuarioHome.html', options : { transition: "f7-fade"}},
       {path: '/orgHome/',url: 'orgHome.html',},
+      {path: '/verZona/',url: 'verZona.html',},
+
+      // Rutas de usuario
       {path: '/listaOrg/',url: 'listaOrg.html',},
       {path: '/VerOrgDesdeUsu/',url: 'VerOrgDesdeUsu.html',},
-      {path: '/enAdopcion/',url: 'enAdopcion.html',},
+      {path: '/enAdopcionOrg/',url: 'enAdopcionOrg.html',},
+      {path: '/rescatadosOrg/',url: 'rescatadosOrg.html',},
+      {path: '/recomendacionesOrg/',url: 'recomendacionesOrg.html',},
+      {path: '/serTransito/',url: 'serTransito.html',},
+      {path: '/donar/',url: 'donar.html',},
+      {path: '/infoOrg/',url: 'infoOrg.html',},
+
+
+
+      // Rutas de organizacion
+      {path: '/miPerfil/',url: 'miPerfil.html',},
+      {path: '/fliasTransito/',url: 'fliasTransito.html',},
+      {path: '/misRecomendaciones/',url: 'misRecomendaciones.html',},
+      {path: '/misRescatados/',url: 'misRescatados.html',},
+      {path: '/misAdopcion/',url: 'misAdopcion.html',},
+      {path: '/publicarOrg/',url: 'publicarOrg.html',},
+
+
     ]
     // ... other parameters
   });
