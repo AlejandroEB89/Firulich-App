@@ -42,7 +42,7 @@ var app = new Framework7({
       {path: '/misRescatados/',url: 'misRescatados.html',},
       {path: '/misAdopcion/',url: 'misAdopcion.html',},
       {path: '/publicarOrg/',url: 'publicarOrg.html',},
-
+      {path: '/verAnimal/',url: 'verAnimal.html',},
 
     ]
     // ... other parameters
@@ -159,7 +159,7 @@ $$(document).on('page:init', '.page[data-name="listaOrg"]', function (e) {
           localidadOrg= docActual.data().Localidad
           provinciaOrg= docActual.data().Provincia
           console.log(nombreOrganizacion + " de " + localidadOrg + " " + provinciaOrg );
-        //  $$("#listaOrganiza").append()
+          //$$("#listaOrganiza").append('')
         })
     })
     .catch( function(error){
@@ -270,15 +270,23 @@ $$(document).on('page:init', '.page[data-name="misAdopcion"]', function (e) {
     console.log("estoy en misAdopcion");
 
     var refAnimalesEnAdopcion= colAnimalesEnAdopcion;
-
+    var indice=0;
     refAnimalesEnAdopcion.get()
       .then(function(querySnapshot) {
           querySnapshot.forEach(function(docActual){
+            indice+=1;
             nombre_Animal=docActual.data().Nombre_Animal
             genero_Animal= docActual.data().Genero_Animal
             provinciaOrg= docActual.data().Provincia
-            console.log(nombre_Animal + " que es " + genero_Animal);
-          //  $$("#listaOrganiza").append()
+            descripcion_Animal=docActual.data().Descripcion_Animal
+            console.log(nombre_Animal + " que es " + genero_Animal + " indice: " + indice);
+            $$("#bloqueAdopcion").append('<div class="card demo-card-header-pic"><div style="background-image:url(https://www.ecestaticos.com/image/clipping/557/418/79776773aab795837282c7d4947abaf7/por-que-nos-parece-que-los-perros-sonrien-una-historia-de-30-000-anos.jpg)" class="card-header align-items-flex-end">' + nombre_Animal +
+              '</div> <div class="card-content card-content-padding"><p class="date"> ' + genero_Animal +
+              '</p> <p>' + descripcion_Animal  + '</p> </div> <div class="card-footer"> <a id="verAnimal'+ indice + '" href="/verAnimal/" class="link">' + 'Leer Más' + '</a></div> </div>'  );
+
+
+
+
           })
       })
       .catch( function(error){
@@ -294,6 +302,20 @@ $$(document).on('page:init', '.page[data-name="misAdopcion"]', function (e) {
 
 
 })
+
+//    -------------------------PAGE INIT verAnimal (Selecciono animal de la lista de Adopción)  -----------------------------------------------
+$$(document).on('page:init', '.page[data-name="verAnimal"]', function (e) {
+    // Do something here when page with data-name="about" attribute loaded and initialized
+    console.log("estoy en verAnimal");
+
+    $$("#nombreAnimalEnAdopcion").html()
+
+
+
+
+
+})
+
 
 //    -------------------------PAGE INIT misRescatados (animales rescatados de org que inicio sesion)  -----------------------------------------------
 $$(document).on('page:init', '.page[data-name="misRescatados"]', function (e) {
@@ -625,13 +647,14 @@ function fnPublicarEnAdopcion(){
   app.dialog.confirm("¿Querés publicar un nuevo animal en adopción?", "Hey!", function(){
     nombreAnimal=$$("#nombreAnimal").val();
     generoAnimal=$$("#generoAnimal").val();
+    descripcionAnimal=$$("#descripcion_animal").text();
     console.log("se va a publicar: "+ nombreAnimal + " que es: " + generoAnimal);
 
     var nuevoAnimalEnAdopcion={
       email:email,
       Nombre_Animal: nombreAnimal,
       Genero_Animal: generoAnimal,
-
+      Descripcion_Animal: descripcionAnimal,
     }
 
     colAnimalesEnAdopcion.add(nuevoAnimalEnAdopcion)
