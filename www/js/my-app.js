@@ -17,11 +17,12 @@ var app = new Framework7({
     routes: [
       {path: '/index/',url: 'index.html',},
       {path: '/registro/',url: 'registro.html',},
-      {path: '/usuarioHome/',url: 'usuarioHome.html', options : { transition: "f7-fade"}},
-      {path: '/orgHome/',url: 'orgHome.html',},
       {path: '/verZona/',url: 'verZona.html',},
 
+
+
       // Rutas de usuario
+      {path: '/usuarioHome/',url: 'usuarioHome.html', options : { transition: "f7-fade"}},
       {path: '/listaOrg/',url: 'listaOrg.html',},
       {path: '/VerOrgDesdeUsu/',url: 'VerOrgDesdeUsu.html',},
       {path: '/enAdopcionOrg/',url: 'enAdopcionOrg.html',},
@@ -34,8 +35,9 @@ var app = new Framework7({
 
 
       // Rutas de organizacion
-      {path: '/miPerfil/',url: 'miPerfil.html',},
-      {path: '/fliasTransito/',url: 'fliasTransito.html',},
+      {path: '/orgHome/',url: 'orgHome.html',},
+      {path: '/miPerfilOrg/',url: 'miPerfilOrg.html',},
+      {path: '/misFliasTransito/',url: 'misFliasTransito.html',},
       {path: '/misRecomendaciones/',url: 'misRecomendaciones.html',},
       {path: '/misRescatados/',url: 'misRescatados.html',},
       {path: '/misAdopcion/',url: 'misAdopcion.html',},
@@ -67,7 +69,7 @@ var localidad="";
 var db=firebase.firestore();
 colUsuarios=db.collection("usuarios");
 colOrganizaciones=db.collection("organizaciones");
-
+colAnimalesEnAdopcion=db.collection("animalesEnAdopcion");
 
 // Handle Cordova Device Ready Event
 $$(document).on('deviceready', function() {
@@ -82,7 +84,7 @@ $$(document).on('page:init', function (e) {
 
 //  -------------------------- PAGE INIT INDEX ----------------------------------------------------
 $$(document).on('page:init', '.page[data-name="index"]', function (e) {
-
+    console.log("estoy en index");
 
     var tipodeUsuario="";
     var nombreUsuario="";
@@ -105,7 +107,7 @@ $$(document).on('page:init', '.page[data-name="index"]', function (e) {
 //    -------------------------PAGE INIT REGISTRO-----------------------------------------------
 $$(document).on('page:init', '.page[data-name="registro"]', function (e) {
     // Do something here when page with data-name="about" attribute loaded and initialized
-
+    console.log("estoy en registro");
 
     calendarModal = app.calendar.create({
            inputEl: '#fechanac',
@@ -124,24 +126,12 @@ $$(document).on('page:init', '.page[data-name="registro"]', function (e) {
 })
 
 
-//    -------------------------PAGE INIT ORG HOME-----------------------------------------------
-$$(document).on('page:init', '.page[data-name="orgHome"]', function (e) {
-    // Do something here when page with data-name="about" attribute loaded and initialized
 
-
-
-    $$("#orgNombrePerfil").html(nombreOrganizacion);
-    $$("#cerrarSOrg").on("click", fnCerrarSesion);
-
-
-
-
-})
-
+//    --------------------------    SESION DE USUARIOS  ------------------------------------------------------
 //    -------------------------PAGE INIT USUARIO HOME-----------------------------------------------
 $$(document).on('page:init', '.page[data-name="usuarioHome"]', function (e) {
     // Do something here when page with data-name="about" attribute loaded and initialized
-
+    console.log("estoy en usuarioHome");
 
 
     $$("#usuNombrePerfil").html(nombreUsuario);
@@ -158,9 +148,9 @@ $$(document).on('page:init', '.page[data-name="usuarioHome"]', function (e) {
 //    -------------------------PAGE INIT LISTA ORGANIZACIONES (desde usuario)-----------------------------------------------
 $$(document).on('page:init', '.page[data-name="listaOrg"]', function (e) {
     // Do something here when page with data-name="about" attribute loaded and initialized
+  console.log("estoy en listaOrg");
 
-
-  refOrganizaciones= colOrganizaciones;
+  var refOrganizaciones= colOrganizaciones;
 
   refOrganizaciones.get()
     .then(function(querySnapshot) {
@@ -182,8 +172,188 @@ $$(document).on('page:init', '.page[data-name="listaOrg"]', function (e) {
 
 })
 
+//    -------------------------PAGE INIT VerOrgDesdeUsu (desde el perfil de usuario) -----------------------------------------------
+$$(document).on('page:init', '.page[data-name="VerOrgDesdeUsu"]', function (e) {
+    // Do something here when page with data-name="about" attribute loaded and initialized
+
+    console.log("estoy en VerOrgDesdeUsu");
 
 
+
+
+
+})
+
+
+//    -------------------------PAGE INIT enAdopcionOrg (lista de adopcion de x org (desde usuario)) -----------------------------------------------
+$$(document).on('page:init', '.page[data-name="enAdopcionOrg"]', function (e) {
+    // Do something here when page with data-name="about" attribute loaded and initialized
+    console.log("estoy en enAdopcionOrg");
+
+
+
+
+
+
+})
+
+
+//    -------------------------PAGE INIT serTransito (usuario quiere ser transito) -----------------------------------------------
+$$(document).on('page:init', '.page[data-name="serTransito"]', function (e) {
+    // Do something here when page with data-name="about" attribute loaded and initialized
+      console.log("estoy en serTransito");
+
+
+
+
+
+
+})
+
+
+//    -------------------------PAGE INIT rescatadosOrg (rescatados de X org (desde usuario)) -----------------------------------------------
+$$(document).on('page:init', '.page[data-name="rescatadosOrg"]', function (e) {
+    // Do something here when page with data-name="about" attribute loaded and initialized
+    console.log("estoy en rescatadosOrg");
+
+
+
+
+
+
+})
+
+//    -------------------------PAGE INIT recomendacionesOrg (recomendaciones de X org (desde usuario)) -----------------------------------------------
+$$(document).on('page:init', '.page[data-name="recomendacionesOrg"]', function (e) {
+    // Do something here when page with data-name="about" attribute loaded and initialized
+    console.log("estoy en recomendacionesOrg");
+
+
+
+
+
+
+})
+
+
+//    -------------------------PAGE INIT infoOrg (info de X org (desde usuario)) -----------------------------------------------
+$$(document).on('page:init', '.page[data-name="infoOrg"]', function (e) {
+    // Do something here when page with data-name="about" attribute loaded and initialized
+    console.log("estoy en infoOrg");
+
+
+
+
+
+
+})
+// ---------------------------------------SESION DE ORGANIZACION ---------------------------------------------------------------------------------
+
+//    -------------------------PAGE INIT ORG HOME-----------------------------------------------
+$$(document).on('page:init', '.page[data-name="orgHome"]', function (e) {
+    // Do something here when page with data-name="about" attribute loaded and initialized
+    console.log("estoy en orgHome" );
+
+
+    $$("#orgNombrePerfil").html(nombreOrganizacion);
+    $$("#cerrarSOrg").on("click", fnCerrarSesion);
+
+
+
+
+})
+
+
+//    -------------------------PAGE INIT misAdopcion (animales en adopcion de org que inicio sesion)  -----------------------------------------------
+$$(document).on('page:init', '.page[data-name="misAdopcion"]', function (e) {
+    // Do something here when page with data-name="about" attribute loaded and initialized
+    console.log("estoy en misAdopcion");
+
+    var refAnimalesEnAdopcion= colAnimalesEnAdopcion;
+
+    refAnimalesEnAdopcion.get()
+      .then(function(querySnapshot) {
+          querySnapshot.forEach(function(docActual){
+            nombre_Animal=docActual.data().Nombre_Animal
+            genero_Animal= docActual.data().Genero_Animal
+            provinciaOrg= docActual.data().Provincia
+            console.log(nombre_Animal + " que es " + genero_Animal);
+          //  $$("#listaOrganiza").append()
+          })
+      })
+      .catch( function(error){
+        console.log("Error: "+ error);
+      });
+
+
+
+
+
+
+
+
+
+})
+
+//    -------------------------PAGE INIT misRescatados (animales rescatados de org que inicio sesion)  -----------------------------------------------
+$$(document).on('page:init', '.page[data-name="misRescatados"]', function (e) {
+    // Do something here when page with data-name="about" attribute loaded and initialized
+    console.log("estoy en misRescatados");
+
+
+
+
+
+
+})
+
+//    -------------------------PAGE INIT misRecomendaciones (recomendaciones de org que inicio sesion)  -----------------------------------------------
+$$(document).on('page:init', '.page[data-name="misRecomendaciones"]', function (e) {
+    // Do something here when page with data-name="about" attribute loaded and initialized
+    console.log("estoy en misRecomendaciones");
+
+
+
+
+
+
+})
+
+//    -------------------------PAGE INIT fliasTransito (familias transito de org que inicio sesion)  -----------------------------------------------
+$$(document).on('page:init', '.page[data-name="misFliasTransito"]', function (e) {
+    // Do something here when page with data-name="about" attribute loaded and initialized
+    console.log("estoy en misFliasTransito");
+
+
+
+
+
+
+})
+
+//    -------------------------PAGE INIT miPerfil (perfil de org que inicio sesion)  -----------------------------------------------
+$$(document).on('page:init', '.page[data-name="miPerfilOrg"]', function (e) {
+    // Do something here when page with data-name="about" attribute loaded and initialized
+    console.log("estoy en miPerfilOrg");
+
+
+
+
+
+
+})
+
+//    -------------------------PAGE INIT publicarOrg (org publica nuevo animal en adopcion)  -----------------------------------------------
+$$(document).on('page:init', '.page[data-name="publicarOrg"]', function (e) {
+    // Do something here when page with data-name="about" attribute loaded and initialized
+    console.log("estoy en publicarOrg");
+
+$$("#publicarEnAdopcion").on("click", fnPublicarEnAdopcion);
+
+
+
+
+})
 
 
 
@@ -449,4 +619,29 @@ function fnIniciarSesion (){
 function fnCerrarSesion(){
   app.dialog.confirm("¿Querés cerrar la sesión actual?", "Hey!", function(){mainView.router.navigate("/index/")});
 }
-//
+
+
+function fnPublicarEnAdopcion(){
+  app.dialog.confirm("¿Querés publicar un nuevo animal en adopción?", "Hey!", function(){
+    nombreAnimal=$$("#nombreAnimal").val();
+    generoAnimal=$$("#generoAnimal").val();
+    console.log("se va a publicar: "+ nombreAnimal + " que es: " + generoAnimal);
+
+    var nuevoAnimalEnAdopcion={
+      email:email,
+      Nombre_Animal: nombreAnimal,
+      Genero_Animal: generoAnimal,
+
+    }
+
+    colAnimalesEnAdopcion.add(nuevoAnimalEnAdopcion)
+      .then(function (docRef){
+        console.log("Se guardo en bd con el id: ", docRef.id);
+        app.dialog.confirm("¡Ya está publicado! ¡¡Ahora a encontrarle Familia!! ", "Genial!", function(){mainView.router.navigate("/orgHome/")});
+      })
+      .catch(function(error){
+        console.log("Error: " + error);
+      });
+  });
+
+}

@@ -4,7 +4,7 @@
       <div class="navbar-bg"></div>
       <div class="navbar-inner">
           <div class="left">
-            <a href="#" class="link back">
+            <a href="/misAdopcion/" class="link">
                 <i class="icon icon-back"></i>
                 <span class="ios-only">Back</span>
             </a>
@@ -12,8 +12,62 @@
           <div class="title mrgTitNav"> Publicar Nuevo! </div>
 
       </div>
-  </div>
-    <div class="page-content">
 
+  </div>
+
+  <!-- Toolbar -->
+  <div class="toolbar tabbar toolbar-bottom">
+      <div class="toolbar-inner">
+          <a id="publicarEnAdopcion" href="#" class="tab-link btnToolbar">PUBLICAR!</a>
+      </div>
+  </div>
+
+
+
+    <div class="page-content">
+      <form>
+        <div class="block-title">Completá todos los campos</div>
+
+          <div class="list no-hairlines-md">                       <!-- Inputs formulario -->
+            <ul>
+              <li class="item-content item-input">
+                <div class="item-media">
+                  <i class="icon demo-list-icon"></i>
+                </div>
+                <div class="item-inner">
+                  <div class="item-title item-label">Nombre</div>
+                  <div class="item-input-wrap">
+                    <input id="nombreAnimal" type="text" placeholder="Ingresa su Nombre" />
+                    <span class="input-clear-button"></span>
+                  </div>
+                </div>
+              </li>
+              <li class="item-content item-input">
+                <div class="item-media">
+                  <i class="icon demo-list-icon"></i>
+                </div>
+                <div class="item-inner">
+                  <div class="item-title item-label">Género</div>
+                  <div class="item-input-wrap input-dropdown-wrap">
+                    <select id="generoAnimal" placeholder="Please choose...">
+                      <option value="Hembra">Hembra</option>
+                      <option value="Macho">Macho</option>
+                    </select>
+                  </div>
+                </div>
+              </li>
+
+            </ul>
+          </div>
+          <div class="block-title">Contá su historia</div>
+          <div class="block-header">Completá toda la información que crees necesaria para la familia que quiera adoptar</div>
+          <div class="text-editor text-editor-init" data-placeholder="Enter text..."
+              data-buttons='[["bold", "italic", "underline", "strikeThrough"], ["orderedList", "unorderedList"]]'>
+            <div class="text-editor-content" contenteditable></div>
+          </div>
+
+
+
+      </form>
     </div>
 </div>
