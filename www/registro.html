@@ -14,170 +14,168 @@
       </div>
   </div>
 
-
-<div class="block formatoBloques no-hairlines">
-  <form class="list" id="formRegistro">
-        <ul>
-  <!--  ------------TOGGLE TIPO DE USUARIO ------------   -->
-          <li>
-            <div class="item-content">
-              <div class="item-inner">
-                <div class="item-title">Dar de Alta una Organización</div>
-                <div class="item-after">
-                  <label class="toggle toggle-init">
-                    <input id="toggleTipoUsuario" type="checkbox" name="toggle" value="yes" /><i class="toggle-icon"></i>
-                  </label>
-                </div>
-              </div>
-            </div>
-          </li>
-  <!--  ------------ INPUT EMAIL------------   -->
-          <li>
-            <div class="item-content item-input">
-              <div class="item-inner">
-                <div class="item-title item-label">E-mail</div>
-                <div class="item-input-wrap">
-                  <input id="emailRegistro" type="email" name="email" placeholder="E-mail" required validate />
-                </div>
-              </div>
-            </div>
-          </li>
-    <!--  ------------ INPUT CONTRASEÑA------------   -->
-
-          <li class="item-content item-input">
-            <div class="item-inner">
-              <div class="item-title item-label">Contraseña</div>
-              <div class="item-input-wrap">
-                <input id="passwordRegistro" type="password" name="password" placeholder="Contraseña" required validate/>
-                <span class="input-clear-button"></span>
-              </div>
-            </div>
-          </li>
-
-  <!--  ------------ INPUT NOMBRE ORGANIZACION ------------   -->
-          <li>
-            <div id="nomOrgManejador" class="item-content item-input hidden">
-              <div class="item-inner ">
-                <div class="item-title item-label ">Nombre Organización</div>
-                <div class="item-input-wrap">
-                  <input id="nomOrg" type="text"  name="name" placeholder="Ingresa el nombre de la organización" required />
-                </div>
-              </div>
-            </div>
-          </li>
-
-
-    <!--  ------------ INPUT NOMBRE------------   -->
-          <li>
-            <div id="nomUsuManejador" class="item-content item-input activo">
-              <div class="item-inner">
-                <div class="item-title item-label">Nombre</div>
-                <div class="item-input-wrap">
-                  <input id="nomUsu" type="text" name="name" placeholder="Tu Nombre" required />
-                </div>
-              </div>
-            </div>
-          </li>
-  <!--  ------------ INPUT NOMBRE RESPONSABLE DE LA ORGANIZACIón ------------   -->
+<div class="page-content">
+  <div class="block formatoBloques no-hairlines">
+    <form class="list" id="formRegistro">
+          <ul>
+    <!--  ------------TOGGLE TIPO DE USUARIO ------------   -->
             <li>
-              <div id="nomRespOrgManejador"  class="item-content item-input hidden">
-                <div class="item-inner ">
-                  <div class="item-title item-label ">Responsable de la Organización</div>
+              <div class="item-content">
+                <div class="item-inner">
+                  <div class="item-title">Dar de Alta una Organización</div>
+                  <div class="item-after">
+                    <label class="toggle toggle-init">
+                      <input id="toggleTipoUsuario" type="checkbox" name="toggle" value="yes" /><i class="toggle-icon"></i>
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </li>
+    <!--  ------------ INPUT EMAIL------------   -->
+            <li>
+              <div class="item-content item-input">
+                <div class="item-inner">
+                  <div class="item-title item-label">E-mail</div>
                   <div class="item-input-wrap">
-                    <input id="nomRespOrg" type="text"  name="name" placeholder="Ingresa el Nombre" required />
+                    <input id="emailRegistro" type="email" name="email" placeholder="E-mail" required validate />
+                  </div>
+                </div>
+              </div>
+            </li>
+      <!--  ------------ INPUT CONTRASEÑA------------   -->
+
+            <li class="item-content item-input">
+              <div class="item-inner">
+                <div class="item-title item-label">Contraseña</div>
+                <div class="item-input-wrap">
+                  <input id="passwordRegistro" type="password" name="password" placeholder="Contraseña" required validate/>
+                  <span class="input-clear-button"></span>
+                </div>
+              </div>
+            </li>
+
+    <!--  ------------ INPUT NOMBRE ORGANIZACION ------------   -->
+            <li>
+              <div id="nomOrgManejador" class="item-content item-input hidden">
+                <div class="item-inner ">
+                  <div class="item-title item-label ">Nombre Organización</div>
+                  <div class="item-input-wrap">
+                    <input id="nomOrg" type="text"  name="name" placeholder="Ingresa el nombre de la organización" required />
                   </div>
                 </div>
               </div>
             </li>
 
-    <!--  ------------ INPUT APELLIDO ------------   -->
-          <li>
-            <div id="apeUsuManejador"  class="item-content item-input activo">
-              <div class="item-inner">
-                <div class="item-title item-label"> Apellido</div>
-                <div class="item-input-wrap">
-                  <input id="apeUsu" type="text"  name="name" placeholder="Ingresa el Apellido" required />
+
+      <!--  ------------ INPUT NOMBRE------------   -->
+            <li>
+              <div id="nomUsuManejador" class="item-content item-input activo">
+                <div class="item-inner">
+                  <div class="item-title item-label">Nombre</div>
+                  <div class="item-input-wrap">
+                    <input id="nomUsu" type="text" name="name" placeholder="Ingresa Tu Nombre" required />
+                  </div>
                 </div>
               </div>
-            </div>
-          </li>
-
-  <!--  ------------ INPUT Fecha de nacimiento------------   -->
-        <li>
-          <div class="item-content item-input  hidden">
-              <div class="list no-hairlines-md">
-                  <div class="block-title">Fecha de nacimiento </div>
-                    <div class="item-inner">
-                      <div class="item-input-wrap">
-                        <input type="text" placeholder="Seleccioná tu fecha de nacimiento" readonly="readonly" id="fechanac" />
-                      </div>
+            </li>
+    <!--  ------------ INPUT NOMBRE RESPONSABLE DE LA ORGANIZACIón ------------   -->
+              <li>
+                <div id="nomRespOrgManejador"  class="item-content item-input hidden">
+                  <div class="item-inner ">
+                    <div class="item-title item-label ">Responsable de la Organización</div>
+                    <div class="item-input-wrap">
+                      <input id="nomRespOrg" type="text"  name="name" placeholder="Ingresa el Nombre" required />
                     </div>
+                  </div>
+                </div>
+              </li>
+
+      <!--  ------------ INPUT APELLIDO ------------   -->
+            <li>
+              <div id="apeUsuManejador"  class="item-content item-input activo">
+                <div class="item-inner">
+                  <div class="item-title item-label"> Apellido</div>
+                  <div class="item-input-wrap">
+                    <input id="apeUsu" type="text"  name="name" placeholder="Ingresa el Apellido" required />
+                  </div>
+                </div>
               </div>
-          </div>
-        </li>
-<!--  ------------ INPUT Provincia------------   -->
+            </li>
+
+    <!--  ------------ INPUT Fecha de nacimiento------------   -->
           <li>
-            <div class="item-content item-input">
+            <div id="fechaNacManejador" class="item-content item-input">
+                <div class="item-inner">
+                    <div class="item-title item-label">Fecha de nacimiento </div>
+                        <div class="item-input-wrap">
+                          <input id="fechanac" type="text" placeholder="Seleccioná tu fecha de nacimiento" readonly="readonly" " />
+                        </div>
+                </div>
+            </div>
+          </li>
+    <!--  ------------ INPUT Fecha de Creacion de la organizacion------------   -->
+          <li>
+            <div id="fechaCreaOrgManejador" class="item-content item-input hidden">
+                <div class="item-inner">
+                    <div class="item-title item-label">Fecha de Creación de la Organización </div>
+                        <div class="item-input-wrap">
+                          <input id="fechaCreaOrg" type="text" placeholder="Seleccioná una fecha" readonly="readonly" " />
+                        </div>
+                </div>
+            </div>
+          </li>
+  <!--  ------------ INPUT Provincia------------   -->
+            <li>
+              <div class="item-content item-input">
+                <div class="item-inner">
+                  <div class="item-title item-label">Provincia</div>
+                  <div class="item-input-wrap">
+                    <select id="provincia" name="provincia">
+                      <option value="rionegro" selected="selected">Rio Negro</option>
+                      <option value="chubut">Chubut</option>
+                      <option value="neuquen">Neuquén</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </li>
+  <!--  ------------ INPUT LOCALIDAD ------------   -->
+            <li>
+              <div class="item-content item-input">
+                <div class="item-inner ">
+                  <div class="item-title item-label ">Localidad</div>
+                  <div class="item-input-wrap">
+                    <input id="localidad" type="text" name="name" placeholder="Ingresa tu localidad" required />
+                  </div>
+                </div>
+              </div>
+            </li>
+  <!--  ------------ INPUT Descripción------------   -->
+            <li>
+            <div id="descOrgManejador" class="item-content item-input hidden">
               <div class="item-inner">
-                <div class="item-title item-label">Provincia</div>
+                <div class="item-title item-label">Contá sobre tu organización</div>
                 <div class="item-input-wrap">
-                  <select id="provincia" name="provincia">
-                    <option value="rionegro" selected="selected">Rio Negro</option>
-                    <option value="chubut">Chubut</option>
-                    <option value="neuquen">Neuquén</option>
-                  </select>
+                  <textarea id="descOrg" placeholder="Podrás modificarla mas adelante"></textarea>
                 </div>
               </div>
             </div>
-          </li>
-<!--  ------------ INPUT LOCALIDAD ------------   -->
-          <li>
-            <div class="item-content item-input">
-              <div class="item-inner ">
-                <div class="item-title item-label ">Localidad</div>
-                <div class="item-input-wrap">
-                  <input id="localidad" type="text" name="name" placeholder="Ingresa tu localidad" required />
-                </div>
-              </div>
-            </div>
-          </li>
+            </li>
 
 
-        </ul>
-    </form>
-
-
-
-          <div class="block block-strong noMargin no-hairlines">
-            <button id="btnRegistrar" class="button button-large button-fill button-preloader ${isLoading ? 'button-loading' : ''}"
-              @click=${load}>
-              <span class="preloader"></span>
-              <span>Registrar</span>
-            </button>
-          </div>
-</div>
-
-    <!-- POPUP DE AVISO DE REGISTRO COMPLETO -->
-          <div id="popupRegistrado" class="popup my-popup-registrado">
-              <div class="view">
-                  <div class="page">
-                      <div class="navbar">
-                          <div class="navbar-bg"></div>
-                          <div class="navbar-inner">
-                              <div class="title">Ya estas registrado!! </div>
-                            <!-- <div class="right">
-                                  <a class="link popup-close">Iniciar Sesion</a>
-                              </div>
-                              -->
-                          </div>
-                      </div>
-                      <div class="page-content">
-                        <h1> GRACIAS !! </h1>
-                        <a class="link popup-close">Iniciar Sesión</a>
-                      </div>
-
-
-
-
+          </ul>
+      </form>
+  <!--  ------------ BOTON REGISTRAR------------   -->
+      <div class="block block-strong noMargin no-hairlines">
+        <button id="btnRegistrar" class="button button-large button-fill button-preloader ${isLoading ? 'button-loading' : ''}"
+          @click=${load}>
+          <span class="preloader"></span>
+          <span>Registrar</span>
+        </button>
       </div>
+
+
+    </div>
+  </div>
+
 </div>

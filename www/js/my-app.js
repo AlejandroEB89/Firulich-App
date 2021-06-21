@@ -63,6 +63,7 @@ var email="";
 var password="";
 var provincia="";
 var localidad="";
+var descripcionOrg="";
 
 
 // -------------- Variables para base de datos  ------------------//
@@ -116,6 +117,13 @@ $$(document).on('page:init', '.page[data-name="registro"]', function (e) {
            footer: true,
          });
 
+   calendarModal = app.calendar.create({
+          inputEl: '#fechaCreaOrg',
+          openIn: 'customModal',
+          header: true,
+          footer: true,
+        });
+
 
 
     $$("#btnRegistrar").on("click", fnRegistrar);  // fnComprobarDatos (deberia chequear primero)
@@ -158,8 +166,17 @@ $$(document).on('page:init', '.page[data-name="listaOrg"]', function (e) {
           nombreOrganizacion=docActual.data().Nombre
           localidadOrg= docActual.data().Localidad
           provinciaOrg= docActual.data().Provincia
+          descripcionOrg=docActual.data().Descripción
           console.log(nombreOrganizacion + " de " + localidadOrg + " " + provinciaOrg );
-          //$$("#listaOrganiza").append('')
+          $$("#listaOrganiza").append('<li><a href="/VerOrgDesdeUsu/" class="item-link item-content"><div class="item-media">  <img src="https://cdn.framework7.io/placeholder/people-160x160-1.jpg" width="80" />  </div><div class="item-inner"><div class="item-title-row"><div class="item-title">'+ nombreOrganizacion+ '</div>' +
+            '<div class="item-after">'+ 'Ver'+ '</div> </div> <div class="item-subtitle">'+ localidadOrg + ', ' + provinciaOrg + '</div><div class="item-text">' +
+            descripcionOrg + '</div></div></a></li>');
+
+
+
+
+
+
         })
     })
     .catch( function(error){
@@ -477,6 +494,7 @@ function fnRegistrarOrg(){
   apellidoUsuario = $$("#apeUsu").val();
   provincia = $$("#provincia").val();
   localidad = $$("#localidad").val();
+  descripcionOrg = $$("#descOrg").val();
 
   if (email=="" || password=="" || nombreRespOrganizacion=="" || apellidoUsuario=="" || nombreOrganizacion=="" || provincia=="" || localidad=="" ) {
     app.dialog.alert("Completá todos los campos!!", "Oops");
@@ -491,6 +509,7 @@ function fnRegistrarOrg(){
                       TipoUsuario: tipodeUsuario,
                       Provincia: provincia,
                       Localidad: localidad,
+                      Descripción: descripcionOrg,
                     }
 
                     MiId=email;
@@ -505,6 +524,7 @@ function fnRegistrarOrg(){
 
                     app.dialog.confirm("Ya registraste a tu Organización!! Iniciá sesión para empezar!!", "Genial!");
                     console.log('Se registró la organizacion: ' + nombreOrganizacion + " correctamente, y su responsable es: " + nombreRespOrganizacion + " " + apellidoUsuario );
+                    console.log(descripcionOrg);
                     mainView.router.navigate('/index/');
                 })
 
@@ -546,6 +566,12 @@ function fnTipodeRegistro (){
     $$("#nomRespOrgManejador").removeClass("hidden");
     $$("#nomRespOrgManejador").addClass("activo");
 
+    $$("#descOrgManejador").removeClass("hidden");
+    $$("#descOrgManejador").addClass("activo");
+
+    $$("#fechaCreaOrgManejador").removeClass("hidden");
+    $$("#fechaCreaOrgManejador").addClass("activo");
+
     console.log("El tipo de usuario es : " + tipodeUsuario );
 
   } else {
@@ -557,6 +583,12 @@ function fnTipodeRegistro (){
 
     $$("#nomUsuManejador").removeClass("hidden");
     $$("#nomUsuManejador").addClass("activo");
+
+    $$("#descOrgManejador").removeClass("activo");
+    $$("#descOrgManejador").addClass("hidden");
+
+    $$("#fechaCreaOrgManejador").removeClass("activo");
+    $$("#fechaCreaOrgManejador").addClass("hidden");
     console.log ("El tipo de usuario es : " + tipodeUsuario) ;
   }
 
