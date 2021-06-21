@@ -72,6 +72,13 @@ colUsuarios=db.collection("usuarios");
 colOrganizaciones=db.collection("organizaciones");
 colAnimalesEnAdopcion=db.collection("animalesEnAdopcion");
 
+// -------------- Variables para Animales ------------------//
+
+var nombre_Animal="";
+var tipo_Animal="";
+var genero_Animal="";
+
+
 // Handle Cordova Device Ready Event
 $$(document).on('deviceready', function() {
     console.log("Device is ready!");
@@ -291,15 +298,15 @@ $$(document).on('page:init', '.page[data-name="misAdopcion"]', function (e) {
     refAnimalesEnAdopcion.get()
       .then(function(querySnapshot) {
           querySnapshot.forEach(function(docActual){
-            indice+=1;
+            indice+=1;   // esto es una idea para poder mostrar el animal (en verAnimal.html) que se selecciona de la lista de adopcion (aun no estoy segur a donde voy)
             nombre_Animal=docActual.data().Nombre_Animal
             genero_Animal= docActual.data().Genero_Animal
-            provinciaOrg= docActual.data().Provincia
+            tipo_Animal=docActual.data().Tipo_Animal
             descripcion_Animal=docActual.data().Descripcion_Animal
             console.log(nombre_Animal + " que es " + genero_Animal + " indice: " + indice);
-            $$("#bloqueAdopcion").append('<div class="card demo-card-header-pic"><div style="background-image:url(https://www.ecestaticos.com/image/clipping/557/418/79776773aab795837282c7d4947abaf7/por-que-nos-parece-que-los-perros-sonrien-una-historia-de-30-000-anos.jpg)" class="card-header align-items-flex-end">' + nombre_Animal +
-              '</div> <div class="card-content card-content-padding"><p class="date"> ' + genero_Animal +
-              '</p> <p>' + descripcion_Animal  + '</p> </div> <div class="card-footer"> <a id="verAnimal'+ indice + '" href="/verAnimal/" class="link">' + 'Leer Más' + '</a></div> </div>'  );
+            $$("#bloqueAdopcion").append('<div class="card demo-card-header-pic"><div id="nomA" style="background-image:url(https://www.ecestaticos.com/image/clipping/557/418/79776773aab795837282c7d4947abaf7/por-que-nos-parece-que-los-perros-sonrien-una-historia-de-30-000-anos.jpg)" class="card-header align-items-flex-end">' + nombre_Animal +
+              '</div> <div class="card-content card-content-padding"><p id="tipoA"> ' + tipo_Animal+ '</p> <p id="generoA">' + genero_Animal +
+              '</p> <p id="descA">' + descripcion_Animal  + '</p> </div> <div class="card-footer"> <a id="verA'+indice+'" href="#" class="link verAnimal">' + 'Leer Más' + '</a></div> </div>'  );
 
 
 
@@ -311,7 +318,7 @@ $$(document).on('page:init', '.page[data-name="misAdopcion"]', function (e) {
       });
 
 
-
+    $$(".verAnimal").on("click", fnTomarDatosAnimal);
 
 
 
@@ -677,26 +684,39 @@ function fnCerrarSesion(){
 
 function fnPublicarEnAdopcion(){
   app.dialog.confirm("¿Querés publicar un nuevo animal en adopción?", "Hey!", function(){
-    nombreAnimal=$$("#nombreAnimal").val();
-    generoAnimal=$$("#generoAnimal").val();
-    descripcionAnimal=$$("#descripcion_animal").text();
-    console.log("se va a publicar: "+ nombreAnimal + " que es: " + generoAnimal);
+    nombre_Animal=$$("#nombreAnimal").val();
+    genero_Animal=$$("#generoAnimal").val();
+    descripcion_Animal=$$("#descripcion_animal").text();
+    tipo_Animal=$$("#tipoAnimal").val();
+    console.log("se va a publicar: "+ nombre_Animal + " que es: " + tipo_Animal + " y es: " +  genero_Animal);
 
     var nuevoAnimalEnAdopcion={
       email:email,
-      Nombre_Animal: nombreAnimal,
-      Genero_Animal: generoAnimal,
-      Descripcion_Animal: descripcionAnimal,
+      Tipo_Animal: tipo_Animal,
+      Nombre_Animal: nombre_Animal,
+      Genero_Animal: genero_Animal,
+      Descripcion_Animal: descripcion_Animal,
     }
 
     colAnimalesEnAdopcion.add(nuevoAnimalEnAdopcion)
       .then(function (docRef){
         console.log("Se guardo en bd con el id: ", docRef.id);
-        app.dialog.confirm("¡Ya está publicado! ¡¡Ahora a encontrarle Familia!! ", "Genial!", function(){mainView.router.navigate("/orgHome/")});
+        app.dialog.confirm("¡" + nombre_Animal + " ya está publicado! ¡¡Ahora a encontrarle Familia!! ", "Genial!", function(){mainView.router.navigate("/orgHome/")});
       })
       .catch(function(error){
         console.log("Error: " + error);
       });
   });
+
+}
+
+function fnTomarDatosAnimal (){
+  console.log("hice click");
+  nombre_Animal=$$("#nomA").val();
+  tipo_Animal=$$("#tipoA").val();
+  genero_Animal=$$("#generoA").val();
+  descripcion_Animal=$$("#descA").text();
+  console.log(nombre_Animal + " " + tipo_Animal + " "+ genero_Animal + " " + ": " + descripcion_Animal);
+
 
 }
