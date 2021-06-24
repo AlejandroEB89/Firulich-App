@@ -121,6 +121,35 @@
   margin-top: 10vh;
 }
 
+.transparente{
+  background-color: transparent !important;
+}
+
+.transp{
+--f7-list-bg-color: transparent;
+}
+
+.FormatoBtnIni{
+--f7-block-strong-bg-color: transparent;
+}
+
+.btn{
+--f7-button-border-width: 3px !important;
+--f7-button-border-color:#FFFFFF !important;
+--f7-button-border-radius:20px;
+}
+
+
+.inputsindex{
+--f7-input-bg-color: transparent !important;
+--f7-input-placeholder-color: rgba(255, 255, 255, 0.45);
+--f7-label-text-color: rgba(255, 255, 255, 0.84);
+--f7-input-text-color: rgba(255, 255, 255, 0.87);
+}
+.bg-color-purple {
+  --f7-theme-color-bg-color: #9c27b0;
+}
+
 /*.alinearIses{
   align-items: center;
 }*/

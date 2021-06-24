@@ -42,7 +42,7 @@ var app = new Framework7({
       {path: '/misRescatados/',url: 'misRescatados.html',},
       {path: '/misAdopcion/',url: 'misAdopcion.html',},
       {path: '/publicarOrg/',url: 'publicarOrg.html',},
-      {path: '/verAnimal/',url: 'verAnimal.html',},
+      {path: '/verAnimal/:id/',url: 'verAnimal.html',},
 
     ]
     // ... other parameters
@@ -304,10 +304,12 @@ $$(document).on('page:init', '.page[data-name="misAdopcion"]', function (e) {
             tipo_Animal=docActual.data().Tipo_Animal
             descripcion_Animal=docActual.data().Descripcion_Animal
             console.log(nombre_Animal + " que es " + genero_Animal + " indice: " + indice);
-            $$("#bloqueAdopcion").append('<div class="card demo-card-header-pic"><div id="nomA" style="background-image:url(https://www.ecestaticos.com/image/clipping/557/418/79776773aab795837282c7d4947abaf7/por-que-nos-parece-que-los-perros-sonrien-una-historia-de-30-000-anos.jpg)" class="card-header align-items-flex-end">' + nombre_Animal +
-              '</div> <div class="card-content card-content-padding"><p id="tipoA"> ' + tipo_Animal+ '</p> <p id="generoA">' + genero_Animal +
-              '</p> <p id="descA">' + descripcion_Animal  + '</p> </div> <div class="card-footer"> <a id="verA'+indice+'" href="#" class="link verAnimal">' + 'Leer Más' + '</a></div> </div>'  );
+            $$("#bloqueAdopcion").append('<div id="tarjeta'+indice+'" class="card demo-card-header-pic"><div id="nomA" style="background-image:url(https://www.ecestaticos.com/image/clipping/557/418/79776773aab795837282c7d4947abaf7/por-que-nos-parece-que-los-perros-sonrien-una-historia-de-30-000-anos.jpg)" class="card-header align-items-flex-end">' + nombre_Animal +
+              '</div> <div id="tarjeContent'+indice+'" class="card-content card-content-padding"><p id="tipoA"> ' + tipo_Animal+ '</p> <p id="generoA">' + genero_Animal +
+              '</p> <p id="descA">' + descripcion_Animal  + '</p> </div> <div class="card-footer"> <a id="verA' +indice+ '" href="/verAnimal/verA'+indice+'" class="link verAnimal">' + 'Leer Más' + '</a></div> </div>'); /* /verAnimal/verA'+indice+'*/
 
+            id= $$(.verAnimal ).attr("id"); //solo estoy viendo el id del primero nomas
+            console.log("el id es: " + id);
 
 
 
@@ -317,8 +319,15 @@ $$(document).on('page:init', '.page[data-name="misAdopcion"]', function (e) {
         console.log("Error: "+ error);
       });
 
-
-    $$(".verAnimal").on("click", fnTomarDatosAnimal);
+  /*    $$(".verAnimal").on("click", function(){
+        id = $$(this).attr('id');
+        console.log("Se seleccionó la tarjeta con id: " + id);
+        idSoloNro = id.replace (/(j1-|j2-|j3-|j4-)/g, '');
+        idSoloNro = parseInt(idSoloNro);
+        if (idSoloNro>0 && idSoloNro<7) {
+          console.log("Es una jugada del dado: " + idSoloNro);
+          fnMuestraMultiplos();
+      });*/
 
 
 
@@ -328,11 +337,12 @@ $$(document).on('page:init', '.page[data-name="misAdopcion"]', function (e) {
 })
 
 //    -------------------------PAGE INIT verAnimal (Selecciono animal de la lista de Adopción)  -----------------------------------------------
-$$(document).on('page:init', '.page[data-name="verAnimal"]', function (e) {
+$$(document).on('page:init', '.page[data-name="verAnimal"]', function (e, page) {
     // Do something here when page with data-name="about" attribute loaded and initialized
+    console.log('Pag. VerAnimal con id: ' + page.route.params.id );
     console.log("estoy en verAnimal");
 
-    $$("#nombreAnimalEnAdopcion").html()
+
 
 
 
@@ -710,7 +720,7 @@ function fnPublicarEnAdopcion(){
 
 }
 
-function fnTomarDatosAnimal (){
+/*function fnTomarDatosAnimal (){
   console.log("hice click");
   nombre_Animal=$$("#nomA").val();
   tipo_Animal=$$("#tipoA").val();
@@ -719,4 +729,4 @@ function fnTomarDatosAnimal (){
   console.log(nombre_Animal + " " + tipo_Animal + " "+ genero_Animal + " " + ": " + descripcion_Animal);
 
 
-}
+}*/

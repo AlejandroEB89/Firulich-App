@@ -65,36 +65,39 @@
         <!-- Initial Page, "data-name" contains page name -->
             <div data-name="index" class="page">
                 <!-- Scrollable page content -->
-                <div class="page-content">
+                <div class="page-content bg-color-purple ">
 
-
+        <!--<
                   <div class="navbar">
                       <div class="navbar-bg"></div>
                       <div class="navbar-inner flexJustifyCenter">
-                            <!--<div class="left"><i class="icon icon-back"></i></div>-->
+                          div class="left"><i class="icon icon-back"></i></div>
                           <div class="title">Mascotas de la Comarca</div>
-                          <!--<div class="right"><i class="icon icon-forward"></i></div>-->
+                          <div class="right"><i class="icon icon-forward"></i></div>
                       </div>
                   </div>
-
-
+-->
       <!-- INICIO login (BLOQUE) -->
                         <!--<div class="login-screen-title">Mascotas</div>-->
                       <div class="block formatoBloques no-hairlines">
-                        <div class="block">
+                        <div class="block noMargin">
+                          <div class="item-media"><img src="img/adopta!.png"
+                              height="120" /></div>
+                        </div>
+                        <div class="block noMargin">
                             <form>
                               <div class="list">
-                                <ul>
-                                  <li class="item-content item-input">
+                                <ul class="transp" >
+                                  <li class="item-content item-input item-input-outline">
                                     <div class="item-inner">
-                                      <div class="item-title item-label">Email</div>
-                                      <div class="item-input-wrap">
-                                        <input id="emailISesion" type="email" name="username" placeholder="Ingresa tu correo electronico" required validate />
+                                      <div class="item-title item-label inputsindex">Email</div>
+                                      <div class="item-input-wrap inputsindex">
+                                        <input id="emailISesion" class="" type="email" name="username" placeholder="Ingresa tu email" required validate />
                                         <span class="input-clear-button"></span>
                                       </div>
                                     </div>
                                   </li>
-                                  <li class="item-content item-input">
+                                  <li class="item-content item-input item-input-outline inputsindex">
                                     <div class="item-inner">
                                       <div class="item-title item-label">Contraseña</div>
                                       <div class="item-input-wrap">
@@ -110,8 +113,8 @@
 
               <!--BOTON INICIAR SESION -->
 
-                              <div class="block block-strong no-hairlines">
-                                <button id="btnIniciarSesion" class="button button-large button-fill button-preloader ${isLoading ? 'button-loading' : ''} @click=${()=> showInfinite(true)}"
+                              <div class="block block-strong no-hairlines FormatoBtnIni  noMargin">
+                                <button id="btnIniciarSesion" class="button btn button-large button-fill button-preloader ${isLoading ? 'button-loading' : ''} @click=${()=> showInfinite(true)}"
                                   @click=${load}>
                                   <span class="preloader"></span>
                                   <span>Iniciar Sesión</span>
@@ -121,9 +124,9 @@
 
               <!-- registrate -->
 
-                            <div class="block-footer contenedorRegsitrarme">
-                              <p class="centrar">Si aún no tenes cuenta registrate que es rapidísimo!! </p>
-                              <p class="centrar"><a href="/registro/" class="link">Registrarme</a></p>
+                            <div class="block-footer contenedorRegsitrarme noMargin">
+                              <p class="centrar text-color-white">Si aún no tenes cuenta registrate que es rapidísimo!! </p>
+                              <p class="centrar block-title color-white"><a href="/registro/" class="link">Registrarme</a></p>
                             </div>
 
 
