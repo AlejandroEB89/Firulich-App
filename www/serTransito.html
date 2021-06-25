@@ -9,7 +9,7 @@
                 <span class="ios-only">Back</span>
             </a>
           </div>
-          <div class="title"> Quiero Ser Transito! </div>
+          <div class="title"> Quiero Ser Tránsito! </div>
 
       </div>
   </div>
@@ -17,7 +17,7 @@
   <!-- Toolbar -->
   <div class="toolbar tabbar toolbar-bottom">
       <div class="toolbar-inner">
-          <a href="/publicarOrg/" class="tab-link btnToolbar">¡POSTULARME!</a>
+          <a id="btnSerTransito" href="#" class="tab-link btnToolbar">¡POSTULARME!</a>
       </div>
   </div>
 
@@ -25,150 +25,156 @@
 
     <div class="page-content">
       <form>
-        <div class="block-title">Completá todos los campos</div>
+        <div class="block-title centrar">Completá todos los campos</div>
           <div class="list no-hairlines-md">                       <!-- Inputs formulario -->
             <ul>
               <li class="item-content item-input">
-                <div class="item-media">
-                  <i class="icon demo-list-icon"></i>
-                </div>
                 <div class="item-inner">
-                  <div class="item-title item-label">Nombre Completo</div>
+                  <div class="item-title item-label">Tiempo del tránsito</div>
                   <div class="item-input-wrap">
-                    <input type="text" placeholder="Ingresa tu Nombre y Apeliido" />
+                    <input id="tiempoTransito" type="text" placeholder="¿Cuánto tiempo lo podes tener?" />
                     <span class="input-clear-button"></span>
                   </div>
                 </div>
               </li>
 
               <li class="item-content item-input">
-                <div class="item-media">
-                  <i class="icon demo-list-icon"></i>
-                </div>
                 <div class="item-inner">
-                  <div class="item-title item-label">Nombre Completo</div>
-                  <div class="item-input-wrap">
-                    <input type="text" placeholder="Ingresa tu Nombre y Apeliido" />
-                    <span class="input-clear-button"></span>
-                  </div>
-                </div>
-              </li>
-
-              <li class="item-content item-input">
-                <div class="item-media">
-                  <i class="icon demo-list-icon"></i>
-                </div>
-                <div class="item-inner">
-                  <div class="item-title item-label">E-mail</div>
-                  <div class="item-input-wrap">
-                    <input type="email" placeholder="Tu e-mail" />
-                    <span class="input-clear-button"></span>
-                  </div>
-                </div>
-              </li>
-              <li class="item-content item-input">
-                <div class="item-media">
-                  <i class="icon demo-list-icon"></i>
-                </div>
-                <div class="item-inner">
-                  <div class="item-title item-label">URL</div>
-                  <div class="item-input-wrap">
-                    <input type="url" placeholder="URL" />
-                    <span class="input-clear-button"></span>
-                  </div>
-                </div>
-              </li>
-              <li class="item-content item-input">
-                <div class="item-media">
-                  <i class="icon demo-list-icon"></i>
-                </div>
-                <div class="item-inner">
-                  <div class="item-title item-label">Phone</div>
-                  <div class="item-input-wrap">
-                    <input type="tel" placeholder="Your phone number" />
-                    <span class="input-clear-button"></span>
-                  </div>
-                </div>
-              </li>
-              <li class="item-content item-input">
-                <div class="item-media">
-                  <i class="icon demo-list-icon"></i>
-                </div>
-                <div class="item-inner">
-                  <div class="item-title item-label">Gender</div>
+                  <div class="item-title item-label">¿Donde vivis?</div>
                   <div class="item-input-wrap input-dropdown-wrap">
-                    <select placeholder="Please choose...">
-                      <option value="Male">Male</option>
-                      <option value="Female">Female</option>
+                    <select id="vivienda" placeholder="Please choose...">
+                      <option value="Casa sin patio">Casa sin Patio</option>
+                      <option value="Casa con patio abierto"> Casa con patio abierto </option>
+                      <option value="Casa con patio cerrado"> Casa con patio abierto </option>
+                      <option value="Depto sin patio"> Depto sin patio </option>
+                      <option value="Depto con patio abierto"> Depto con patio abierto </option>
+                      <option value="Depto con patio cerrado"> Depto con patio cerrado </option>
                     </select>
                   </div>
                 </div>
               </li>
+
               <li class="item-content item-input">
-                <div class="item-media">
-                  <i class="icon demo-list-icon"></i>
-                </div>
                 <div class="item-inner">
-                  <div class="item-title item-label">Birthday</div>
+                  <div class="item-title item-label">¿Como está compuesta tu familia?</div>
                   <div class="item-input-wrap">
-                    <input type="date" value="2014-04-30" placeholder="Please choose..." />
+                    <input id="familia" type="text" placeholder="Contános con quién vivis" />
+                    <span class="input-clear-button"></span>
                   </div>
                 </div>
               </li>
+
+
+
               <li class="item-content item-input">
-                <div class="item-media">
-                  <i class="icon demo-list-icon"></i>
-                </div>
                 <div class="item-inner">
-                  <div class="item-title item-label">Date time</div>
+                  <div class="item-title item-label">¿Tenés otras mascotas?</div>
                   <div class="item-input-wrap">
-                    <input type="datetime-local" placeholder="Please choose..." />
+                    <input id="tieneMascotas" type="text" placeholder="Si tenes, contános cuantas" />
+                    <span class="input-clear-button"></span>
                   </div>
                 </div>
               </li>
+
               <li class="item-content item-input">
-                <div class="item-media">
-                  <i class="icon demo-list-icon"></i>
-                </div>
                 <div class="item-inner">
-                  <div class="item-title item-label">Range</div>
-                  <div class="item-input-wrap">
-                    <div class="range-slider range-slider-init" data-label="true">
-                      <input type="range" value="50" min="0" max="100" step="1" />
-                    </div>
+                  <div class="item-title item-label">¿Ya has dado tránsito a animales?</div>
+                  <div class="item-input-wrap input-dropdown-wrap">
+                    <select id="hizoTransito" placeholder="Please choose...">
+                      <option value="si">Si</option>
+                      <option value="no">No</option>
+                    </select>
                   </div>
                 </div>
               </li>
-              <li class="item-content item-input">
-                <div class="item-media">
-                  <i class="icon demo-list-icon"></i>
-                </div>
+
+              <li id="expTransitoManejador" class="item-content item-input activo">
                 <div class="item-inner">
-                  <div class="item-title item-label">Textarea</div>
+                  <div class="item-title item-label">Contános de esa experiencia</div>
                   <div class="item-input-wrap">
-                    <textarea placeholder="Bio"></textarea>
+                    <textarea id="expTransito"  class="resizable" placeholder="Una breve descripción de tu experiencia como tránsito"></textarea>
                   </div>
                 </div>
               </li>
+
               <li class="item-content item-input">
-                <div class="item-media">
-                  <i class="icon demo-list-icon"></i>
-                </div>
                 <div class="item-inner">
-                  <div class="item-title item-label">Resizable</div>
+                  <div class="item-title item-label">Facebook/Instagram</div>
                   <div class="item-input-wrap">
-                    <textarea class="resizable" placeholder="Bio"></textarea>
+                    <input id="linkRedes" type="url" placeholder="Si querés podes dejarnos tu perfil" />
+                    <span class="input-clear-button"></span>
                   </div>
                 </div>
               </li>
+
+              <li class="item-content item-input">
+                <div class="item-inner">
+                  <div class="item-title item-label">Telefono</div>
+                  <div class="item-input-wrap">
+                    <input id="telefono" type="tel" placeholder="Dejános un cel para contactarnos" />
+                    <span class="input-clear-button"></span>
+                  </div>
+                </div>
+              </li>
+
+
+              <li class="item-content item-input">
+                <div class="item-inner">
+                  <div class="item-title item-label">¿Querés agregar algo más?</div>
+                  <div class="item-input-wrap">
+                    <textarea id="algoMas" class="resizable" placeholder="Opcional"></textarea>
+                  </div>
+                </div>
+              </li>
+
+
             </ul>
           </div>
 
 
 
       </form>
+    <div id="popupInfo" class="popup popup-open">
+        <div class="view">
+          <div class="page">
+            <div class="navbar">
+              <div class="navbar-bg"></div>
+              <div class="navbar-inner">
+                <div class="title center">¡Importante!</div>
+                <div class="right">
+                  <!-- Link to close popup-->
+
+                </div>
+              </div>
+            </div>
+            <div class="page-content bg-color-purple">
+              <div class="block formatoBloques no-hairlines">
+              <h1 class="text-color-white centrar"> ¿Por qué te pedimos esta información? </h1>
+              <p class="text-color-white justificar"> Tené en cuenta que cada animalito en tránsito/adopción tiene una historia y
+              personalidad distinta. Contar con estos datos hace que el proceso de elección de su hogar sea mas sencillo y que se adapte a lo que
+              más le conviene al animal.
+              </p>
+              <p class="text-color-white justificar">  Por eso te pedimos que te tomes el tiempo de completar el formulario que prosigue. </p>
+              <p class="text-color-white justificar">  ¡Gracias por comprender y ayudarnos! </p>
+              <!-- <a class="link popup-close"> ¡Entiendo! </a> -->
+              <div class="block block-strong no-hairlines FormatoBtnIni  noMargin popup-close">
+                <button class="button btn button-large button-fill">
+                  <span>¡Entiendo!</span>
+                </button>
+              </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
 
 
 
     </div>
+
+
+
+
+
 </div>

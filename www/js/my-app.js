@@ -71,6 +71,7 @@ var db=firebase.firestore();
 colUsuarios=db.collection("usuarios");
 colOrganizaciones=db.collection("organizaciones");
 colAnimalesEnAdopcion=db.collection("animalesEnAdopcion");
+colFamiliasTransito= db.collection("familiasTransito");
 
 // -------------- Variables para Animales ------------------//
 
@@ -227,6 +228,33 @@ $$(document).on('page:init', '.page[data-name="serTransito"]', function (e) {
     // Do something here when page with data-name="about" attribute loaded and initialized
       console.log("estoy en serTransito");
 
+      var popup = app.popup.create({
+        //content: '<div class="popup"><div class="view">  <div class="page"><div class="navbar"><div class="navbar-bg"></div><div class="navbar-inner"><div class="title"> Importante</div><div class="right"><a class="link popup-close">Cerrar</a></div></div></div><div class="page-content"><p> Antes que nada queremos </p>  </div></div> </div>',
+        el: '#popupInfo',
+        on: {
+          opened: function () {
+            console.log('Popup opened')
+          }
+        }
+      });
+      app.popup.open("#popupInfo");
+
+
+
+
+      $$("#btnSerTransito").on("click", fnQuieroSerTransito);
+      $$("#hizoTransito").on("click", function(){
+          hizoTransito=$$("#hizoTransito").val();
+          if(hizoTransito=="no"){
+            console.log("no hizo transito")
+            $$("#expTransitoManejador").removeClass("activo");
+            $$("#expTransitoManejador").addClass("hidden");
+          } else {
+            console.log("si hizo transito")
+            $$("#expTransitoManejador").removeClass("hidden");
+            $$("#expTransitoManejador").addClass("activo");
+          }
+      })
 
 
 
@@ -292,10 +320,10 @@ $$(document).on('page:init', '.page[data-name="orgHome"]', function (e) {
 $$(document).on('page:init', '.page[data-name="misAdopcion"]', function (e) {
     // Do something here when page with data-name="about" attribute loaded and initialized
     console.log("estoy en misAdopcion");
-
-    var refAnimalesEnAdopcion= colAnimalesEnAdopcion;
+    console.log(email);
+    var refMisAnimalesEnAdopcion= colAnimalesEnAdopcion.where("email", "==" , email);
     var indice=0;
-    refAnimalesEnAdopcion.get()
+    refMisAnimalesEnAdopcion.get()
       .then(function(querySnapshot) {
           querySnapshot.forEach(function(docActual){
             indice+=1;   // esto es una idea para poder mostrar el animal (en verAnimal.html) que se selecciona de la lista de adopcion (aun no estoy segur a donde voy)
@@ -308,9 +336,9 @@ $$(document).on('page:init', '.page[data-name="misAdopcion"]', function (e) {
               '</div> <div id="tarjeContent'+indice+'" class="card-content card-content-padding"><p id="tipoA"> ' + tipo_Animal+ '</p> <p id="generoA">' + genero_Animal +
               '</p> <p id="descA">' + descripcion_Animal  + '</p> </div> <div class="card-footer"> <a id="verA' +indice+ '" href="/verAnimal/verA'+indice+'" class="link verAnimal">' + 'Leer Más' + '</a></div> </div>'); /* /verAnimal/verA'+indice+'*/
 
-            id= $$(.verAnimal ).attr("id"); //solo estoy viendo el id del primero nomas
+            /*id= $$(.verAnimal ).attr("id"); //solo estoy viendo el id del primero nomas
             console.log("el id es: " + id);
-
+*/
 
 
           })
@@ -730,3 +758,87 @@ function fnPublicarEnAdopcion(){
 
 
 }*/
+
+
+function fnQuieroSerTransito(){
+  console.log(nombreUsuario, email);
+  vivienda= $$("#vivienda").val();
+  familia= $$("#familia").val();
+  tiempoTransito=$$("#tiempoTransito").val();
+  tieneMascotas=$$("#tieneMascotas").val();
+  hizoTransito=$$("#hizoTransito").val();
+  expTransito=$$("#expTransito").val();
+  if(expTransito==""){
+    expTransito="No tuvo";
+  }
+  linkRedes=$$("#linkRedes").val();
+  if(linkRedes==""){
+    linkRedes="No adjunta redes";
+  }
+  telefono=$$("#telefono").val();
+  algoMas=$$("#algoMas").val();
+  if(algoMas==""){
+    algoMas="No agrega nada";
+  }
+
+  if (tiempoTransito=="" || tieneMascotas=="" || hizoTransito=="" ||  telefono=="" ||  vivienda=="" ||  familia=="" ) {
+    app.dialog.alert("Completá todos los campos!!", "Oops");
+  } else {
+    app.dialog.confirm("¡" + nombreUsuario + ", vas a pasar nuestra lista de Familias Transitorias" + "</br>"+ "Cuando necesitemos un transito te vamos a contactar!"  , "Confirmá tu postulación!");
+
+
+
+
+    var postulacionTransito={
+      email:email, //email del usuario
+      // emailorg:aa,   //falta la vinculacion en VerOrgDesdeUsu - animales (despues de la lista)
+      Nombre: nombreUsuario,
+      Apellido: apellidoUsuario,
+      Vivienda: vivienda,
+      Familia: familia,
+      Localidad: localidad,
+      Provincia: provincia,
+      Telefono: telefono,
+      Redes: linkRedes,
+      Tiempo_Transito: tiempoTransito,
+      Tiene_Mascotas: tieneMascotas,
+      Hizo_Transito: hizoTransito,
+      Exp_Transito: expTransito,
+      Agrega: algoMas,
+    }
+
+
+    colFamiliasTransito.add(postulacionTransito)
+      .then(function (docRef){
+        console.log("Se guardo en bd con el id: ", docRef.id);
+        app.dialog.confirm ("¡" +nombreUsuario+", ya estás en nuestra lista de Familias Transitorias! ¡Tu ayuda es importantísima", "¡¡Graciass!!", function() {mainView.router.navigate("/usuarioHome/")} );
+      })
+      .catch(function(error){
+        console.log("Error: " + error);
+      });
+
+
+
+  }
+
+
+/*
+  refMisAnimalesEnAdopcion.get()
+    .then(function(querySnapshot) {
+        querySnapshot.forEach(function(docActual){
+          indice+=1;   // esto es una idea para poder mostrar el animal (en verAnimal.html) que se selecciona de la lista de adopcion (aun no estoy segur a donde voy)
+          nombre_Animal=docActual.data().Nombre_Animal
+          genero_Animal= docActual.data().Genero_Animal
+          tipo_Animal=docActual.data().Tipo_Animal
+          descripcion_Animal=docActual.data().Descripcion_Animal
+          console.log(nombre_Animal + " que es " + genero_Animal + " indice: " + indice);
+
+
+
+
+
+
+    app.dialog.confirm("¡" + nombre_Animal + " ya está publicado! ¡¡Ahora a encontrarle Familia!! ", "Genial!", function(){mainView.router.navigate("/orgHome/")});
+
+  */
+}
