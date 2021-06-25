@@ -24,7 +24,7 @@ var app = new Framework7({
       // Rutas de usuario
       {path: '/usuarioHome/',url: 'usuarioHome.html', options : { transition: "f7-fade"}},
       {path: '/listaOrg/',url: 'listaOrg.html',},
-      {path: '/VerOrgDesdeUsu/',url: 'VerOrgDesdeUsu.html',},
+      {path: '/VerOrgDesdeUsu/:id/',url: 'VerOrgDesdeUsu.html',},
       {path: '/enAdopcionOrg/',url: 'enAdopcionOrg.html',},
       {path: '/rescatadosOrg/',url: 'rescatadosOrg.html',},
       {path: '/recomendacionesOrg/',url: 'recomendacionesOrg.html',},
@@ -167,23 +167,20 @@ $$(document).on('page:init', '.page[data-name="listaOrg"]', function (e) {
   console.log("estoy en listaOrg");
 
   var refOrganizaciones= colOrganizaciones;
+  var indice=0;
 
   refOrganizaciones.get()
     .then(function(querySnapshot) {
         querySnapshot.forEach(function(docActual){
+          indice+=1
           nombreOrganizacion=docActual.data().Nombre
           localidadOrg= docActual.data().Localidad
           provinciaOrg= docActual.data().Provincia
           descripcionOrg=docActual.data().Descripción
-          console.log(nombreOrganizacion + " de " + localidadOrg + " " + provinciaOrg );
-          $$("#listaOrganiza").append('<li><a href="/VerOrgDesdeUsu/" class="item-link item-content"><div class="item-media">  <img src="https://cdn.framework7.io/placeholder/people-160x160-1.jpg" width="80" />  </div><div class="item-inner"><div class="item-title-row"><div class="item-title">'+ nombreOrganizacion+ '</div>' +
-            '<div class="item-after">'+ 'Ver'+ '</div> </div> <div class="item-subtitle">'+ localidadOrg + ', ' + provinciaOrg + '</div><div class="item-text">' +
-            descripcionOrg + '</div></div></a></li>');
-
-
-
-
-
+          console.log(nombreOrganizacion+ " de " + localidadOrg + " " + provinciaOrg );
+          $$("#bloqueOrganizaciones").append('<div id="org" class="card demo-card-header-pic"><div id="nomOrg'+indice+'" style="background-image:url(https://www.ecestaticos.com/image/clipping/557/418/79776773aab795837282c7d4947abaf7/por-que-nos-parece-que-los-perros-sonrien-una-historia-de-30-000-anos.jpg)" class="card-header align-items-flex-end nomOr">' + nombreOrganizacion +
+            '</div> <div class="card-content card-content-padding"><p id="locOr'+indice+'"> ' + localidadOrg+'</p> <p id="pciaOr'+indice+'">' + provinciaOrg +
+            '</p> <p id="descOr'+indice+'">' + descripcionOrg+'</p> </div> <div class="card-footer"> <a id="verOr'+indice+'" href="#" class="link verOrg">' + 'Leer Más' + '</a></div> </div>'); //    /VerOrgDesdeUsu/verOr'+indice+'/
 
         })
     })
@@ -191,18 +188,20 @@ $$(document).on('page:init', '.page[data-name="listaOrg"]', function (e) {
       console.log("Error: "+ error);
     });
 
-
-
-
+$$(".verOrg").on("click", function(){
+  console.log("clckie ver mas")
+})
 
 })
 
 //    -------------------------PAGE INIT VerOrgDesdeUsu (desde el perfil de usuario) -----------------------------------------------
-$$(document).on('page:init', '.page[data-name="VerOrgDesdeUsu"]', function (e) {
+$$(document).on('page:init', '.page[data-name="VerOrgDesdeUsu"]', function (e, page) {
     // Do something here when page with data-name="about" attribute loaded and initialized
 
     console.log("estoy en VerOrgDesdeUsu");
+    console.log('Pagina con id: ' + page.route.params.id );
 
+    $$("#VerNomORG").val(nombreOrganizacion);
 
 
 
@@ -334,7 +333,7 @@ $$(document).on('page:init', '.page[data-name="misAdopcion"]', function (e) {
             console.log(nombre_Animal + " que es " + genero_Animal + " indice: " + indice);
             $$("#bloqueAdopcion").append('<div id="tarjeta'+indice+'" class="card demo-card-header-pic"><div id="nomA" style="background-image:url(https://www.ecestaticos.com/image/clipping/557/418/79776773aab795837282c7d4947abaf7/por-que-nos-parece-que-los-perros-sonrien-una-historia-de-30-000-anos.jpg)" class="card-header align-items-flex-end">' + nombre_Animal +
               '</div> <div id="tarjeContent'+indice+'" class="card-content card-content-padding"><p id="tipoA"> ' + tipo_Animal+ '</p> <p id="generoA">' + genero_Animal +
-              '</p> <p id="descA">' + descripcion_Animal  + '</p> </div> <div class="card-footer"> <a id="verA' +indice+ '" href="/verAnimal/verA'+indice+'" class="link verAnimal">' + 'Leer Más' + '</a></div> </div>'); /* /verAnimal/verA'+indice+'*/
+              '</p> <p id="descA">' + descripcion_Animal  + '</p> </div> <div class="card-footer"> <a id="verA' +indice+ '" href="/verAnimal/verA'+indice+'/" class="link verAnimal">' + 'Leer Más' + '</a></div> </div>'); /* /verAnimal/verA'+indice+'*/
 
             /*id= $$(.verAnimal ).attr("id"); //solo estoy viendo el id del primero nomas
             console.log("el id es: " + id);
