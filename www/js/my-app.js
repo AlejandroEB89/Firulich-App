@@ -234,7 +234,7 @@ $$(document).on('page:init', '.page[data-name="enAdopcionOrg"]', function (e) {
     console.log("estoy en enAdopcionOrg");
     console.log("traer animales de: "+ emailOrg);
 
-    var refEnAdopDeOrg=colAnimalesEnAdopcion.where("email", "==", emailOrg);
+    var refEnAdopDeOrg=colAnimalesEnAdopcion.where('email','==', emailOrg);
     refEnAdopDeOrg.get()
 
     .then((querySnapshot) => {
@@ -277,9 +277,9 @@ $$(document).on('page:init', '.page[data-name="enAdopcionOrg"]', function (e) {
 $$(document).on('page:init', '.page[data-name="serTransito"]', function (e) {
     // Do something here when page with data-name="about" attribute loaded and initialized
       console.log("estoy en serTransito");
-
+      console.log(emailOrg);
       var popup = app.popup.create({
-        //content: '<div class="popup"><div class="view">  <div class="page"><div class="navbar"><div class="navbar-bg"></div><div class="navbar-inner"><div class="title"> Importante</div><div class="right"><a class="link popup-close">Cerrar</a></div></div></div><div class="page-content"><p> Antes que nada queremos </p>  </div></div> </div>',
+
         el: '#popupInfo',
         on: {
           opened: function () {
@@ -477,6 +477,19 @@ $$(document).on('page:init', '.page[data-name="nuevaRecomenda"]', function (e) {
 $$(document).on('page:init', '.page[data-name="misFliasTransito"]', function (e) {
     // Do something here when page with data-name="about" attribute loaded and initialized
     console.log("estoy en misFliasTransito");
+    console.log(email);
+    var refMisTransitos=colFamiliasTransito.where("emailorg", "==", "z@org.com");
+    refMisTransitos.get()
+    .then(function(querySnapshot){
+      querySnapshot.forEach(function(doc){
+        console.log("nombre del transito: "+ doc.data().Nombre);
+      })
+    })
+    .catch( function(error){
+      console.log("Error: "+ error);
+    });
+
+
 
 
 
@@ -818,19 +831,10 @@ function fnPublicarEnAdopcion(){
 
 }
 
-/*function fnTomarDatosAnimal (){
-  console.log("hice click");
-  nombre_Animal=$$("#nomA").val();
-  tipo_Animal=$$("#tipoA").val();
-  genero_Animal=$$("#generoA").val();
-  descripcion_Animal=$$("#descA").text();
-  console.log(nombre_Animal + " " + tipo_Animal + " "+ genero_Animal + " " + ": " + descripcion_Animal);
-
-
-}*/
 
 
 function fnQuieroSerTransito(){
+
   console.log(nombreUsuario, email);
   vivienda= $$("#vivienda").val();
   familia= $$("#familia").val();
@@ -854,40 +858,37 @@ function fnQuieroSerTransito(){
   if (tiempoTransito=="" || tieneMascotas=="" || hizoTransito=="" ||  telefono=="" ||  vivienda=="" ||  familia=="" ) {
     app.dialog.alert("Completá todos los campos!!", "Oops");
   } else {
-    app.dialog.confirm("¡" + nombreUsuario + ", vas a pasar nuestra lista de Familias Transitorias" + "</br>"+ "Cuando necesitemos un transito te vamos a contactar!"  , "Confirmá tu postulación!");
+    app.dialog.confirm("¡" + nombreUsuario + ", vas a pasar nuestra lista de Familias Transitorias"
+    + "</br>"+ "Cuando necesitemos un transito te vamos a contactar!"  , "Confirmá tu postulación!", function(){
+
+      var postulacionTransito={
+        email:email,
+        emailorg:emailOrg,
+        Nombre: nombreUsuario,
+        Apellido: apellidoUsuario,
+        Vivienda: vivienda,
+        Familia: familia,
+        Localidad: localidad,
+        Provincia: provincia,
+        Telefono: telefono,
+        Redes: linkRedes,
+        Tiempo_Transito: tiempoTransito,
+        Tiene_Mascotas: tieneMascotas,
+        Hizo_Transito: hizoTransito,
+        Exp_Transito: expTransito,
+        Agrega: algoMas,
+      }
 
 
-
-
-    var postulacionTransito={
-      email:email, //email del usuario
-      // emailorg:aa,   //falta la vinculacion en VerOrgDesdeUsu - animales (despues de la lista)
-      Nombre: nombreUsuario,
-      Apellido: apellidoUsuario,
-      Vivienda: vivienda,
-      Familia: familia,
-      Localidad: localidad,
-      Provincia: provincia,
-      Telefono: telefono,
-      Redes: linkRedes,
-      Tiempo_Transito: tiempoTransito,
-      Tiene_Mascotas: tieneMascotas,
-      Hizo_Transito: hizoTransito,
-      Exp_Transito: expTransito,
-      Agrega: algoMas,
-    }
-
-
-    colFamiliasTransito.add(postulacionTransito)
-      .then(function (docRef){
-        console.log("Se guardo en bd con el id: ", docRef.id);
-        app.dialog.confirm ("¡" +nombreUsuario+", ya estás en nuestra lista de Familias Transitorias! ¡Tu ayuda es importantísima", "¡¡Graciass!!", function() {mainView.router.navigate("/usuarioHome/")} );
-      })
-      .catch(function(error){
-        console.log("Error: " + error);
-      });
-
-
+      colFamiliasTransito.add(postulacionTransito)
+        .then(function (docRef){
+          console.log("Se guardo en bd con el id: ", docRef.id);
+          app.dialog.alert ("¡" +nombreUsuario+", ya estás en nuestra lista de Familias Transitorias! ¡Tu ayuda es importantísima", "¡¡Graciass!!", function() {mainView.router.navigate("/usuarioHome/")} );
+        })
+        .catch(function(error){
+          console.log("Error: " + error);
+        });
+    });
 
   }
 
