@@ -39,6 +39,7 @@ var app = new Framework7({
       {path: '/miPerfilOrg/',url: 'miPerfilOrg.html',},
       {path: '/misFliasTransito/',url: 'misFliasTransito.html',},
       {path: '/misRecomendaciones/',url: 'misRecomendaciones.html',},
+      {path: '/nuevaRecomenda/',url: 'nuevaRecomenda.html',},
       {path: '/misRescatados/',url: 'misRescatados.html',},
       {path: '/misAdopcion/',url: 'misAdopcion.html',},
       {path: '/publicarOrg/',url: 'publicarOrg.html',},
@@ -60,12 +61,13 @@ var apellidoUsuario="";
 var nombreOrganizacion="";
 var nombreRespOrganizacion="";
 var email="";
+var emailOrg="";
 var password="";
 var provincia="";
+var provinciaOrg="";
 var localidad="";
+var localidadOrg="";
 var descripcionOrg="";
-
-
 // -------------- Variables para base de datos  ------------------//
 var db=firebase.firestore();
 colUsuarios=db.collection("usuarios");
@@ -78,6 +80,7 @@ colFamiliasTransito= db.collection("familiasTransito");
 var nombre_Animal="";
 var tipo_Animal="";
 var genero_Animal="";
+var descripción_Animal="";
 
 
 // Handle Cordova Device Ready Event
@@ -172,15 +175,16 @@ $$(document).on('page:init', '.page[data-name="listaOrg"]', function (e) {
   refOrganizaciones.get()
     .then(function(querySnapshot) {
         querySnapshot.forEach(function(docActual){
-          indice+=1
+          indice++;
           nombreOrganizacion=docActual.data().Nombre
           localidadOrg= docActual.data().Localidad
           provinciaOrg= docActual.data().Provincia
           descripcionOrg=docActual.data().Descripción
-          console.log(nombreOrganizacion+ " de " + localidadOrg + " " + provinciaOrg );
-          $$("#bloqueOrganizaciones").append('<div id="org" class="card demo-card-header-pic"><div id="nomOrg'+indice+'" style="background-image:url(https://www.ecestaticos.com/image/clipping/557/418/79776773aab795837282c7d4947abaf7/por-que-nos-parece-que-los-perros-sonrien-una-historia-de-30-000-anos.jpg)" class="card-header align-items-flex-end nomOr">' + nombreOrganizacion +
-            '</div> <div class="card-content card-content-padding"><p id="locOr'+indice+'"> ' + localidadOrg+'</p> <p id="pciaOr'+indice+'">' + provinciaOrg +
-            '</p> <p id="descOr'+indice+'">' + descripcionOrg+'</p> </div> <div class="card-footer"> <a id="verOr'+indice+'" href="#" class="link verOrg">' + 'Leer Más' + '</a></div> </div>'); //    /VerOrgDesdeUsu/verOr'+indice+'/
+          emailRefOrg=docActual.id
+          console.log(nombreOrganizacion+ " de " + localidadOrg + " " + provinciaOrg + " " + emailRefOrg);
+          $$("#bloqueOrganizaciones").append('<div id="em-Org'+indice+'" class="hidden">'+emailRefOrg+' </div> <div id="org" class="card demo-card-header-pic"><div id="imgOrg'+indice+'" style="background-image:url(https://www.ecestaticos.com/image/clipping/557/418/79776773aab795837282c7d4947abaf7/por-que-nos-parece-que-los-perros-sonrien-una-historia-de-30-000-anos.jpg)" class="card-header align-items-flex-end row"> <p id="nomOrg'+indice+
+            '" class="txtCards align-items-flex-end noMargin"> ' + nombreOrganizacion +'</p> <p id="locOr'+indice+'"> ' + localidadOrg+'</p> <p id="pciaOr'+indice+'">' + provinciaOrg +
+            '</p> </div> <div class="card-content card-content-padding"> <p id="descOr'+indice+'">' + descripcionOrg+'</p> </div> <div class="card-footer"> <a id="verOr'+indice+'" href="/VerOrgDesdeUsu/verOr'+indice+'/" class="link verOrg">' + 'Leer Más' + '</a></div> </div>'); //    /VerOrgDesdeUsu/verOr'+indice+'/
 
         })
     })
@@ -188,9 +192,6 @@ $$(document).on('page:init', '.page[data-name="listaOrg"]', function (e) {
       console.log("Error: "+ error);
     });
 
-$$(".verOrg").on("click", function(){
-  console.log("clckie ver mas")
-})
 
 })
 
@@ -199,9 +200,27 @@ $$(document).on('page:init', '.page[data-name="VerOrgDesdeUsu"]', function (e, p
     // Do something here when page with data-name="about" attribute loaded and initialized
 
     console.log("estoy en VerOrgDesdeUsu");
-    console.log('Pagina con id: ' + page.route.params.id );
+    console.log('La org es id: ' + page.route.params.id );
+    idOr=page.route.params.id;
+    nroIor=idOr.replace ("verOr", "");
+    console.log("se seleccionó la tarjeta: " + nroIor);
+    idMailOr="#em-Org" + nroIor;
+    idnomOr= "#nomOrg" + nroIor;
+    idLoc="#locOr" + nroIor;
+    idPcia="#pciaOr" + nroIor;
+    idDescOr="#descOr" + nroIor;
+    console.log("div de la Org: "+ idOr )
+    nombreOrganizacion=$$(idnomOr).html();
+    localidadOrg=$$(idLoc).html();
+    provinciaOrg=$$(idPcia).html();
+    descripcionOrg=$$(idDescOr).html();
+    emailOrg=$$(idMailOr).html();
+    console.log(nombreOrganizacion+ " " + localidadOrg + " " + provinciaOrg);
+    console.log(descripcionOrg);
+    console.log(emailOrg);
 
-    $$("#VerNomORG").val(nombreOrganizacion);
+
+    $$("#VerNomORG").html(nombreOrganizacion);
 
 
 
@@ -213,11 +232,43 @@ $$(document).on('page:init', '.page[data-name="VerOrgDesdeUsu"]', function (e, p
 $$(document).on('page:init', '.page[data-name="enAdopcionOrg"]', function (e) {
     // Do something here when page with data-name="about" attribute loaded and initialized
     console.log("estoy en enAdopcionOrg");
+    console.log("traer animales de: "+ emailOrg);
 
+    var refEnAdopDeOrg=colAnimalesEnAdopcion.where("email", "==", emailOrg);
+    refEnAdopDeOrg.get()
 
+    .then((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+        // doc.data() is never undefined for query doc snapshots
+        console.log("data:" + doc.data().Nombre_Animal );
+        });
+    })
+    .catch((error) => {
+        console.log("Error getting documents: ", error);
+    });
 
+    /*
+    var refEnAdopDeOrg= colAnimalesEnAdopcion.where("email", "==" , emailOrg);
+    var indice=0;
+    refEnAdopDeOrg.get()
+      .then(function(querySnapshot) {
+          querySnapshot.forEach(function(doc){
+            indice++;
+            nombre_Animal=doc.data().Nombre_Animal
+            genero_Animal= doc.data().Genero_Animal
+            tipo_Animal=doc.data().Tipo_Animal
+            descripcion_Animal=doc.data().Descripcion_Animal
+            console.log(nombre_Animal + " que es " + genero_Animal + " indice: " + indice);
+              $$("#bloqueAdopcionDeOrg").append('<div id="tarjetaOr'+indice+'" class="card demo-card-header-pic"><div id="imgAOrg'+indice+'" style="background-image:url(https://www.ecestaticos.com/image/clipping/557/418/79776773aab795837282c7d4947abaf7/por-que-nos-parece-que-los-perros-sonrien-una-historia-de-30-000-anos.jpg)" class="card-header align-items-flex-end row"> <p id="nomAOrg'+indice+'" class="txtCards align-items-flex-end noMargin"> ' + nombre_Animal +
+               '</p> </div> <div class="card-content card-content-padding"> <div class="row justify-content-space-around noMargin"> <p id="tipoAOrg'+indice+'" class=" align-items-flex-end noMargin"> ' + tipo_Animal+ '</p> <p class=" align-items-flex-end noMargin"> - </p> <p id="generoAOrg'+indice+'" class="align-items-flex-end noMargin">' + genero_Animal + '</p> </div><p id="descAOrg'+indice+'" class="text-align-justify">' + descripcion_Animal  + '</p> </div> <div class="card-footer"> <a id="verAOr' +indice+ '" href="/verAnimal/verAOr'+indice+'/" class="link">' + 'Leer Más' + '</a></div> </div>');
 
+          })
+      })
+      .catch( function(error){
+        console.log("Error: "+ error);
+      });
 
+*/
 
 })
 
@@ -325,40 +376,20 @@ $$(document).on('page:init', '.page[data-name="misAdopcion"]', function (e) {
     refMisAnimalesEnAdopcion.get()
       .then(function(querySnapshot) {
           querySnapshot.forEach(function(docActual){
-            indice+=1;   // esto es una idea para poder mostrar el animal (en verAnimal.html) que se selecciona de la lista de adopcion (aun no estoy segur a donde voy)
+            indice++;
             nombre_Animal=docActual.data().Nombre_Animal
             genero_Animal= docActual.data().Genero_Animal
             tipo_Animal=docActual.data().Tipo_Animal
             descripcion_Animal=docActual.data().Descripcion_Animal
             console.log(nombre_Animal + " que es " + genero_Animal + " indice: " + indice);
-            $$("#bloqueAdopcion").append('<div id="tarjeta'+indice+'" class="card demo-card-header-pic"><div id="nomA" style="background-image:url(https://www.ecestaticos.com/image/clipping/557/418/79776773aab795837282c7d4947abaf7/por-que-nos-parece-que-los-perros-sonrien-una-historia-de-30-000-anos.jpg)" class="card-header align-items-flex-end">' + nombre_Animal +
-              '</div> <div id="tarjeContent'+indice+'" class="card-content card-content-padding"><p id="tipoA"> ' + tipo_Animal+ '</p> <p id="generoA">' + genero_Animal +
-              '</p> <p id="descA">' + descripcion_Animal  + '</p> </div> <div class="card-footer"> <a id="verA' +indice+ '" href="/verAnimal/verA'+indice+'/" class="link verAnimal">' + 'Leer Más' + '</a></div> </div>'); /* /verAnimal/verA'+indice+'*/
-
-            /*id= $$(.verAnimal ).attr("id"); //solo estoy viendo el id del primero nomas
-            console.log("el id es: " + id);
-*/
-
+            $$("#bloqueAdopcion").append('<div id="tarjeta'+indice+'" class="card demo-card-header-pic"><div id="imgA'+indice+'" style="background-image:url(https://www.ecestaticos.com/image/clipping/557/418/79776773aab795837282c7d4947abaf7/por-que-nos-parece-que-los-perros-sonrien-una-historia-de-30-000-anos.jpg)" class="card-header align-items-flex-end row"> <p id="nomA'+indice+'" class="txtCards align-items-flex-end noMargin"> ' + nombre_Animal +
+               '</p> </div> <div class="card-content card-content-padding"> <div class="row justify-content-space-around noMargin"> <p id="tipoA'+indice+'" class=" align-items-flex-end noMargin"> ' + tipo_Animal+ '</p> <p class=" align-items-flex-end noMargin"> - </p> <p id="generoA'+indice+'" class="align-items-flex-end noMargin">' + genero_Animal + '</p> </div><p id="descA'+indice+'" class="text-align-justify">' + descripcion_Animal  + '</p> </div> <div class="card-footer"> <a id="verA' +indice+ '" href="/verAnimal/verA'+indice+'/" class="link verAnimal">' + 'Leer Más' + '</a></div> </div>');
 
           })
       })
       .catch( function(error){
         console.log("Error: "+ error);
       });
-
-  /*    $$(".verAnimal").on("click", function(){
-        id = $$(this).attr('id');
-        console.log("Se seleccionó la tarjeta con id: " + id);
-        idSoloNro = id.replace (/(j1-|j2-|j3-|j4-)/g, '');
-        idSoloNro = parseInt(idSoloNro);
-        if (idSoloNro>0 && idSoloNro<7) {
-          console.log("Es una jugada del dado: " + idSoloNro);
-          fnMuestraMultiplos();
-      });*/
-
-
-
-
 
 
 })
@@ -369,8 +400,27 @@ $$(document).on('page:init', '.page[data-name="verAnimal"]', function (e, page) 
     console.log('Pag. VerAnimal con id: ' + page.route.params.id );
     console.log("estoy en verAnimal");
 
+idPag=page.route.params.id;
+nroI=idPag.replace ("verA", "");
+console.log("el nro de tarjeta es:" + nroI);
+idNom= "#nomA" + nroI;
+idDesc="#descA" + nroI;
+idTipo="#tipoA" + nroI;
+idGenero="#generoA" + nroI;
+console.log("div del nombre: "+ idNom )
+nombre_Animal=$$(idNom).html();
+genero_Animal=$$(idGenero).html();
+tipo_Animal=$$(idTipo).html();
+descripcion_Animal=$$(idDesc).html();
 
 
+console.log("animal es: " + nombre_Animal);
+console.log("es: " + tipo_Animal);
+console.log("es: " + genero_Animal);
+console.log(descripcion_Animal);
+
+
+$$("#nomAnimalElegido").html(nombre_Animal);
 
 
 
@@ -395,12 +445,33 @@ $$(document).on('page:init', '.page[data-name="misRecomendaciones"]', function (
     // Do something here when page with data-name="about" attribute loaded and initialized
     console.log("estoy en misRecomendaciones");
 
+    var popup = app.popup.create({
+      //content: '<div class="popup"><div class="view">  <div class="page"><div class="navbar"><div class="navbar-bg"></div><div class="navbar-inner"><div class="title"> Importante</div><div class="right"><a class="link popup-close">Cerrar</a></div></div></div><div class="page-content"><p> Antes que nada queremos </p>  </div></div> </div>',
+      el: '#popupNuevaRecomenda',
+      on: {
+        opened: function () {
+          console.log('Popup opened')
+        }
+      }
+    });
+
+
+
+
+})
+
+//    -------------------------PAGE INIT NuevaRecomenda(crear recomendación de org que inicio sesion)  -----------------------------------------------
+$$(document).on('page:init', '.page[data-name="nuevaRecomenda"]', function (e) {
+    // Do something here when page with data-name="about" attribute loaded and initialized
+    console.log("estoy en nuevaRecomenda");
+
 
 
 
 
 
 })
+
 
 //    -------------------------PAGE INIT fliasTransito (familias transito de org que inicio sesion)  -----------------------------------------------
 $$(document).on('page:init', '.page[data-name="misFliasTransito"]', function (e) {

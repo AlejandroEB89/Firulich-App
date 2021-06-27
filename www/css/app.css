@@ -225,17 +225,12 @@ display: none !important;
 
 
 .demo-card-header-pic .card-header {         /*formato cards Animales en Adopcion*/
-    height: 40vw;
+    height: 50vw;
     background-size: cover;
     background-position: center;
     color: #fff;
   }
 
-
-  .verAnimal{
-
-  }
-
-  .verOrg{
-    
+  .txtCards{
+    font-size: 3.5vh;
   }

@@ -13,7 +13,85 @@
 
       </div>
   </div>
-    <div class="page-content">
+
+  <!-- Toolbar -->
+  <div class="toolbar tabbar toolbar-bottom">
+      <div class="toolbar-inner">
+          <a id="btnNuevaRecomenda" href="#" class="tab-link btnToolbar button popup-open" data-popup=".popupNuevaRecomenda">NUEVA RECOMENDACIÓN</a>
+      </div>
+  </div>
+
+
+  <div class="page-content">
+    <div class="block-title centrar">
+      <p class="noMargin">Recomendaciones para una</p>
+      <p class="noMargin">Tenencia Responsable</p>
+    </div>
+    <div id="bloqueRecomenda" class="block formatoBloques">
+
+
 
     </div>
+
+    <div id="popupNuevaRecomenda" class="popup popupNuevaRecomenda">
+        <div class="view">
+          <div class="page">
+            <div class="navbar">
+              <div class="navbar-bg"></div>
+              <div class="navbar-inner">
+                <div class="left">
+                  <a href="#" class="link popup-close">
+                      <i class="icon icon-back"></i>
+                      <span class="ios-only">Back</span>
+                  </a>
+                </div>
+                <div class="title center">¡Nueva Recomendación!</div>
+              </div>
+            </div>
+            <div class="page-content bg-color-purple">
+              <div class="block formatoBloques no-hairlines">
+              <h2 class="text-color-white centrar noMargin"> ¿Que vas a Recomendar? </h2>
+              <p class="text-color-white centrar noMargin"> Acá vas a poder crear recomendaciones sobre tenencia responsable de mascotas.</p>
+
+              <div class="list">
+                <ul class="transp" >
+                  <li class="item-content item-input item-input-outline">
+                    <div class="item-inner">
+                      <div class="item-title item-label inputsindex">Título</div>
+                      <div class="item-input-wrap inputsindex">
+                        <input id="tituloRecomenda" class="" type="text" placeholder="Ingresa el titulo.." required validate />
+                        <span class="input-clear-button"></span>
+                      </div>
+                    </div>
+                  </li>
+
+                  <li class="item-content item-input item-input-outline">
+                    <div class="text-editor text-editor-init item-input-outline" data-placeholder="Ingresa el texto acá..."
+                        data-buttons='[["bold", "italic", "underline", "strikeThrough"], ["orderedList", "unorderedList"]]'>
+                      <div id="nueva_recomendacion" class="text-editor-content inputsindex" contenteditable></div>
+                    </div>
+                  </li>
+
+
+
+
+                </ul>
+                <!-- <a class="link popup-close"> ¡Entiendo! </a> -->
+                <div class="block block-strong no-hairlines FormatoBtnIni  noMargin popup-close">
+                  <button id="btnPublicarRecomenda" class="button btn button-large button-fill">
+                    <span>¡PUBLICAR!</span>
+                  </button>
+                </div>
+
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+
+
+  </div>
 </div>

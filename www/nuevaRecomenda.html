@@ -1,0 +1,43 @@
+<!-- We don't need a full layout in this file because this page will be parsed with Ajax.  -->
+<div class="page" data-name="nuevaRecomenda">
+  <div class="navbar">
+      <div class="navbar-bg"></div>
+      <div class="navbar-inner">
+          <div class="left">
+            <a href="/VerOrgDesdeUsu/" class="link">
+                <i class="icon icon-back"></i>
+                <span class="ios-only">Back</span>
+            </a>
+          </div>
+          <div class="title"> Nueva Recomendación </div>
+
+      </div>
+  </div>
+    <div class="page-content">
+      <h3 class="centrar">¿Que vas a Recomendar?</h3>
+      <form>
+        <div class="block-title centrar noMargin">
+          <p>Acá vas a poder crear</p>
+          <p>recomendaciones sobre tenencia</p>
+          <p>responsable de mascotas.</p>
+        </div>
+          <div class="list no-hairlines-md">                       <!-- Inputs formulario -->
+            <ul>
+              <li class="item-content item-input">
+                <div class="item-inner">
+                  <div class="item-title item-label">Título de la Recomendación</div>
+                  <div class="item-input-wrap">
+                    <input id="tituloRecomenda" type="text" placeholder="Ingresa el título" />
+                    <span class="input-clear-button"></span>
+                  </div>
+                </div>
+              </li>
+              <li class="item-content item-input">
+                <div class="text-editor text-editor-init" data-placeholder="Ingresa el texto acá..."
+                    data-buttons='[["bold", "italic", "underline", "strikeThrough"], ["orderedList", "unorderedList"]]'>
+                  <div id="nueva_recomendacion" class="text-editor-content" contenteditable></div>
+                </div>
+              </li>
+          </div>
+
+        </div>
