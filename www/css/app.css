@@ -103,7 +103,19 @@
     --f7-toolbar-text-color: #FFFFFF;
     --f7-tabbar-link-active-color: var(--f7-theme-color);
 
-
+    --f7-dialog-button-text-color: #FFFFFF ;
+    --f7-dialog-button-pressed-bg-color:#FFFFFF ;       /*var(--f7-theme-color-shade)*/
+    --f7-dialog-button-border-width:3px!important;
+    --f7-dialog-button-border-color:#FFFFFF !important;
+    --f7-dialog-button-height: 44px;
+    --f7-dialog-border-radius: 40px !important;
+    --f7-dialog-border-width:5px !important;
+    --f7-dialog-border-color: #FFFFFF !important ;
+    --f7-dialog-title-font-size: 25px;
+    --f7-dialog-text-align: center;
+    --f7-dialog-bg-color:#9c27b0;
+    --f7-dialog-text-color:#FFFFFF;
+    --f7-dialog-title-text-color: #FFFFFF;
 
 }
 
@@ -186,10 +198,6 @@ display: none !important;
   justify-content:center;
 }
 
-.esconder{
-  display:none;
-  visibility: hidden;
-}
 
 .flexJustifyCenter{
   display: flex;
@@ -233,4 +241,8 @@ display: none !important;
 
   .txtCards{
     font-size: 3.5vh;
+  }
+
+  .estiloDialog{
+
   }

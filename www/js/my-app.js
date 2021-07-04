@@ -74,6 +74,7 @@ colUsuarios=db.collection("usuarios");
 colOrganizaciones=db.collection("organizaciones");
 colAnimalesEnAdopcion=db.collection("animalesEnAdopcion");
 colFamiliasTransito= db.collection("familiasTransito");
+colRecomendaciones=db.collection("recomendaciones");
 
 // -------------- Variables para Animales ------------------//
 
@@ -182,9 +183,9 @@ $$(document).on('page:init', '.page[data-name="listaOrg"]', function (e) {
           descripcionOrg=docActual.data().Descripción
           emailRefOrg=docActual.id
           console.log(nombreOrganizacion+ " de " + localidadOrg + " " + provinciaOrg + " " + emailRefOrg);
-          $$("#bloqueOrganizaciones").append('<div id="em-Org'+indice+'" class="hidden">'+emailRefOrg+' </div> <div id="org" class="card demo-card-header-pic"><div id="imgOrg'+indice+'" style="background-image:url(https://www.ecestaticos.com/image/clipping/557/418/79776773aab795837282c7d4947abaf7/por-que-nos-parece-que-los-perros-sonrien-una-historia-de-30-000-anos.jpg)" class="card-header align-items-flex-end row"> <p id="nomOrg'+indice+
-            '" class="txtCards align-items-flex-end noMargin"> ' + nombreOrganizacion +'</p> <p id="locOr'+indice+'"> ' + localidadOrg+'</p> <p id="pciaOr'+indice+'">' + provinciaOrg +
-            '</p> </div> <div class="card-content card-content-padding"> <p id="descOr'+indice+'">' + descripcionOrg+'</p> </div> <div class="card-footer"> <a id="verOr'+indice+'" href="/VerOrgDesdeUsu/verOr'+indice+'/" class="link verOrg">' + 'Leer Más' + '</a></div> </div>'); //    /VerOrgDesdeUsu/verOr'+indice+'/
+          $$("#bloqueOrganizaciones").append('<div id="em-Org'+indice+'"class="hidden">'+emailRefOrg+'</div> <div id="org" class="card demo-card-header-pic"><div id="imgOrg'+indice+'" style="background-image:url(https://www.ecestaticos.com/image/clipping/557/418/79776773aab795837282c7d4947abaf7/por-que-nos-parece-que-los-perros-sonrien-una-historia-de-30-000-anos.jpg)" class="card-header align-items-flex-end"> <p id="nomOrg'+indice+
+            '" class="txtCards align-items-flex-end noMargin"> ' + nombreOrganizacion +'</p> <p id="locOr'+indice+'" class="align-items-flex-end noMargin"> ' + localidadOrg+'</p>  </div> <div class="card-content card-content-padding"> <p id="pciaOr'+indice+'">' + provinciaOrg +
+            '</p> <p id="descOr'+indice+'">' + descripcionOrg+'</p> </div> <div class="card-footer"> <a id="verOr'+indice+'" href="/VerOrgDesdeUsu/verOr'+indice+'/" class="link verOrg">' + 'Leer Más' + '</a></div> </div>'); //    /VerOrgDesdeUsu/verOr'+indice+'/
 
         })
     })
@@ -234,13 +235,18 @@ $$(document).on('page:init', '.page[data-name="enAdopcionOrg"]', function (e) {
     console.log("estoy en enAdopcionOrg");
     console.log("traer animales de: "+ emailOrg);
 
-    var refEnAdopDeOrg=colAnimalesEnAdopcion.where('email','==', emailOrg);
+    //userEmail.toString()
+    var refEnAdopDeOrg=colAnimalesEnAdopcion.where("email", "==", emailOrg)
+
     refEnAdopDeOrg.get()
+
 
     .then((querySnapshot) => {
         querySnapshot.forEach((doc) => {
         // doc.data() is never undefined for query doc snapshots
-        console.log("data:" + doc.data().Nombre_Animal );
+      //  if(doc.data().email == emailOrg){
+          console.log("data:" + doc.data().Nombre_Animal );
+        //}
         });
     })
     .catch((error) => {
@@ -445,6 +451,21 @@ $$(document).on('page:init', '.page[data-name="misRecomendaciones"]', function (
     // Do something here when page with data-name="about" attribute loaded and initialized
     console.log("estoy en misRecomendaciones");
 
+    var refMisRecomendaciones= colRecomendaciones.where("email", "==" , email);
+    refMisRecomendaciones.get()
+      .then(function(querySnapshot) {
+          querySnapshot.forEach(function(docReco){
+            tituloRec=docReco.data().titulo
+            txtRec=docReco.data().texto
+            console.log("Recomendación:" + tituloRec + " " +txtRec);
+
+          })
+      })
+      .catch( function(error){
+        console.log("Error: "+ error);
+      });
+
+
     var popup = app.popup.create({
       //content: '<div class="popup"><div class="view">  <div class="page"><div class="navbar"><div class="navbar-bg"></div><div class="navbar-inner"><div class="title"> Importante</div><div class="right"><a class="link popup-close">Cerrar</a></div></div></div><div class="page-content"><p> Antes que nada queremos </p>  </div></div> </div>',
       el: '#popupNuevaRecomenda',
@@ -456,29 +477,18 @@ $$(document).on('page:init', '.page[data-name="misRecomendaciones"]', function (
     });
 
 
-
-
-})
-
-//    -------------------------PAGE INIT NuevaRecomenda(crear recomendación de org que inicio sesion)  -----------------------------------------------
-$$(document).on('page:init', '.page[data-name="nuevaRecomenda"]', function (e) {
-    // Do something here when page with data-name="about" attribute loaded and initialized
-    console.log("estoy en nuevaRecomenda");
-
-
-
-
+    $$("#botonPublicarRecomenda").on("click", fnNuevaRecomenda);
 
 
 })
 
 
-//    -------------------------PAGE INIT fliasTransito (familias transito de org que inicio sesion)  -----------------------------------------------
+//    -------------------------PAGE INIT misFliasTransito (familias transito de org que inicio sesion)  -----------------------------------------------
 $$(document).on('page:init', '.page[data-name="misFliasTransito"]', function (e) {
     // Do something here when page with data-name="about" attribute loaded and initialized
     console.log("estoy en misFliasTransito");
     console.log(email);
-    var refMisTransitos=colFamiliasTransito.where("emailorg", "==", "z@org.com");
+    var refMisTransitos=colFamiliasTransito.where("emailorg", "==", email);
     refMisTransitos.get()
     .then(function(querySnapshot){
       querySnapshot.forEach(function(doc){
@@ -584,7 +594,7 @@ function fnRegistrarUsuario(){
                         console.log("Error: " + error);
                       });
 
-                      app.dialog.confirm("Ya te registraste!! Iniciá sesión para ingresar!", "Genial!");
+                      app.dialog.confirm("¡¡Ya te registraste!! Iniciá sesión para ingresar!", "¡Genial!");
                       mainView.router.navigate('/index/');
                       console.log('Se registró el Usuario ' + nombreUsuario + " " + apellidoUsuario +  " correctamente");
 
@@ -595,17 +605,17 @@ function fnRegistrarUsuario(){
                   switch (error.code){
                     case "auth/email-already-in-use" :
                         console.error("el mail ya existe...");
-                        app.dialog.alert("Ya existe una cuenta con este correo!", "Oops");
+                        app.dialog.alert("¡Ya existe una cuenta con este correo!", "Oops...");
                         break;
 
                     case "auth/invalid-email":
                         console.error("El mail es inválido");
-                        app.dialog.alert("Esa no es una dirección de correo valida!", "Oops");
+                        app.dialog.alert("¡Esa no es una dirección de correo valida!", "Oops...");
                         break;
                         default:
                     case "auth/weak-password":
                         console.error("contraseña debil");
-                        app.dialog.alert("La contraseña debe contener al menos 8 caracteres", "Oops");
+                        app.dialog.alert("¡La contraseña debe contener al menos 8 caracteres!", "Oops...");
                         break;
                   }
               });
@@ -661,17 +671,17 @@ function fnRegistrarOrg(){
                   switch (error.code){
                     case "auth/email-already-in-use" :
                         console.error("el mail ya existe...");
-                        app.dialog.alert("Ya existe una cuenta con este correo!", "Oops");
+                        app.dialog.alert("¡Ya existe una cuenta con este correo!", "Oops...");
                         break;
 
                     case "auth/invalid-email":
                         console.error("El mail es inválido");
-                        app.dialog.alert("Esa no es una dirección de correo valida!", "Oops");
+                        app.dialog.alert("¡Esa no es una dirección de correo valida!", "Oops...");
                         break;
                         default:
                     case "auth/weak-password":
                         console.error("contraseña debil");
-                        app.dialog.alert("La contraseña debe contener al menos 8 caracteres", "Oops");
+                        app.dialog.alert("¡La contraseña debe contener al menos 8 caracteres!", "Oops...");
                         break;
                   }
               });
@@ -784,12 +794,17 @@ function fnIniciarSesion (){
     console.error(error.message);
     if (error.code == "auth/user-not-found"){
       console.log('el usuario no existe');
-      app.dialog.alert("El usuario no existe!", "Oops");
+      app.dialog.alert("El usuario no existe!", "Oops...");
     }
 
     if (error.code == "auth/wrong-password"){
       console.log('La contraseña es incorrecta');
-      app.dialog.alert("La constraseña es incorrecta", "Oops");
+      app.dialog.alert("La constraseña es incorrecta", "Oops...");
+    }
+
+    if (error.code == "auth/invalid-email"){
+      console.log('mail invalido');
+      app.dialog.alert("¡Ingresa un correo eléctronico válido! ", "Oops...");
     }
 
   });
@@ -799,7 +814,7 @@ function fnIniciarSesion (){
 
 
 function fnCerrarSesion(){
-  app.dialog.confirm("¿Querés cerrar la sesión actual?", "Hey!", function(){mainView.router.navigate("/index/")});
+  app.dialog.confirm("¿Querés cerrar la sesión actual?", "¡Hey!", function(){mainView.router.navigate("/index/")});
 }
 
 
@@ -822,7 +837,7 @@ function fnPublicarEnAdopcion(){
     colAnimalesEnAdopcion.add(nuevoAnimalEnAdopcion)
       .then(function (docRef){
         console.log("Se guardo en bd con el id: ", docRef.id);
-        app.dialog.confirm("¡" + nombre_Animal + " ya está publicado! ¡¡Ahora a encontrarle Familia!! ", "Genial!", function(){mainView.router.navigate("/orgHome/")});
+        app.dialog.confirm("¡Ya se publicó a " + nombre_Animal + "! ¡¡Ahora a encontrarle Familia!! ", "¡Genial!", function(){mainView.router.navigate("/misAdopcion/")});
       })
       .catch(function(error){
         console.log("Error: " + error);
@@ -912,4 +927,38 @@ function fnQuieroSerTransito(){
     app.dialog.confirm("¡" + nombre_Animal + " ya está publicado! ¡¡Ahora a encontrarle Familia!! ", "Genial!", function(){mainView.router.navigate("/orgHome/")});
 
   */
+}
+
+
+function fnNuevaRecomenda(){
+
+  titRecomenda=$$("#tituloRecomenda").val();
+  textRecomenda=$$("#textoRecomenda").text();
+
+  console.log(titRecomenda + " " + textRecomenda);
+
+
+  if (titRecomenda=="" || textRecomenda=="" ) {
+    app.dialog.alert("Completá todos los campos!!", "Oops");
+  } else {
+    app.dialog.confirm("¡"+nombreOrganizacion+"! vas a crear la recomendación: "+titRecomenda , "¡Aviso!", function(){
+
+      var nuevaRecomedacion={
+        email:email,
+        titulo: titRecomenda,
+        texto: textRecomenda,
+      }
+
+
+      colRecomendaciones.add(nuevaRecomedacion)
+        .then(function (docRef){
+          console.log("Se guardo en bd con el id: ", docRef.id);
+          app.dialog.alert ("¡Creaste una nueva recomendación!", "¡¡Listo!!", function() {app.popup.close("#popupNuevaRecomenda")} );
+        })
+        .catch(function(error){
+          console.log("Error: " + error);
+        });
+    });
+
+  }
 }
