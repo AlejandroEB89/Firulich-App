@@ -84,6 +84,7 @@ var genero_Animal="";
 var descripción_Animal="";
 
 
+
 // Handle Cordova Device Ready Event
 $$(document).on('deviceready', function() {
     console.log("Device is ready!");
@@ -489,10 +490,108 @@ $$(document).on('page:init', '.page[data-name="misFliasTransito"]', function (e)
     console.log("estoy en misFliasTransito");
     console.log(email);
     var refMisTransitos=colFamiliasTransito.where("emailorg", "==", email);
+    var indice=1;
     refMisTransitos.get()
     .then(function(querySnapshot){
       querySnapshot.forEach(function(doc){
-        console.log("nombre del transito: "+ doc.data().Nombre);
+        indice++;
+        nombre_Transito=doc.data().Nombre
+        apellido_Transito=doc.data().Apellido
+        email_Transito=doc.data().email
+        telefono_Transito=doc.data().Telefono
+        localidad_Transito=doc.data().Localidad
+        provincia_Transito=doc.data().Provincia
+        redes_Transito=doc.data().Redes
+        tiempo_Transito=doc.data().Tiempo_Transito
+        hizo_Transito=doc.data().Hizo_Transito
+        exp_Transito=doc.data().Exp_Transito
+        vivienda_Transito=doc.data().Vivienda
+        familia_Transito=doc.data().Familia
+        mascotas_Transito=doc.data().Tiene_Mascotas
+        agrega_Transito=doc.data().Agrega
+
+        tabTransito=`<div id="tab-`+indice+`" class= "tab bg-color-purple">
+        <div class="block">
+          <h1 class="centrar text-color-white">`+nombre_Transito+` `+apellido_Transito+ `</h1>
+          <h3 class="block centrar noMargin">Datos del Hogar</h3>
+          <div class="list">
+            <ul>
+            <li>
+              <div class="item-content">
+                <div class="item-inner">
+                  <div class="item-title">Vivienda: `+ vivienda_Transito +`</div>
+                </div>
+              </div>
+            </li>
+            <li>
+              <div class="item-content">
+                <div class="item-inner">
+                  <div class="item-title">Grupo Familiar: `+familia_Transito+`</div>
+                </div>
+              </div>
+            </li>
+            <li>
+              <div class="item-content">
+                <div class="item-inner">
+                  <div class="item-title">Otras Macotas: `+mascotas_Transito +`</div>
+                </div>
+              </div>
+            </li>
+            <li>
+              <div class="item-content">
+                <div class="item-inner">
+                  <div class="item-title">Experiencia de Tránsito: `+exp_Transito +`</div>
+                </div>
+              </div>
+            </li>
+            <li>
+              <div class="item-content">
+                <div class="item-inner">
+                  <div class="item-title">Puede dar transito: `+tiempo_Transito +`</div>
+                </div>
+              </div>
+            </li>
+            </ul>
+          </div>
+
+          <h3 class="block centrar noMargin">Datos de Contacto</h3>
+          <div class="list">
+            <ul>
+            <li>
+              <div class="item-content">
+                <div class="item-inner">
+                  <div class="item-title">Vive en: `+localidad_Transito+`, `+provincia_Transito+`</div>
+                </div>
+              </div>
+            </li>
+            <li>
+              <div class="item-content">
+                <div class="item-inner">
+                  <div class="item-title">Teléfono: `+telefono_Transito+`</div>
+                </div>
+              </div>
+            </li>
+            <li>
+              <div class="item-content">
+                <div class="item-inner">
+                  <div class="item-title">Email: `+email_Transito+`</div>
+                </div>
+              </div>
+            </li>
+            <li>
+              <div class="item-content">
+                <div class="item-inner">
+                  <div class="item-title">Redes: `+redes_Transito+`</div>
+                </div>
+              </div>
+            </li>
+            </ul>
+          </div>
+      </div>`;
+    /*  var cantPostulaciones=0;
+      cantPostulaciones=indice-1; */
+      console.log("nombre del transito: "+ doc.data().Nombre + "Transito nro: "+ indice);
+      $$("#bloqueTransitos").append(tabTransito);
       })
     })
     .catch( function(error){
@@ -500,6 +599,9 @@ $$(document).on('page:init', '.page[data-name="misFliasTransito"]', function (e)
     });
 
 
+    /*console.log(cantPostulaciones);
+    cantFliasTransito=`<h1 class="centrar">Tenés: `+cantPostulaciones+` postulaciones.</h1>`
+    $$("#cantFliasTransito").append(cantFliasTransito);*/
 
 
 
@@ -554,13 +656,6 @@ function fnRegistrar(){
 
 
 
-/*
-function fnComprobarDatos(){  //aprieto registrar y viene aca, comprueba si esta todo ok y llama a registrar en firebase
-  //enviar email y clave (quizas tmb nombres segun tipo de usuario para saber si se puede registrar)
-  fnRegistrarUsuario(email, clave);
-
-}
-*/
 
 function fnRegistrarUsuario(){
   email = $$("#emailRegistro").val();
