@@ -26,6 +26,7 @@ var app = new Framework7({
       {path: '/listaOrg/',url: 'listaOrg.html',},
       {path: '/VerOrgDesdeUsu/:id/',url: 'VerOrgDesdeUsu.html',},
       {path: '/enAdopcionOrg/',url: 'enAdopcionOrg.html',},
+      {path: '/verAnimalDesdeUsu/:id',url: 'verAnimalDesdeUsu.html',},
       {path: '/rescatadosOrg/',url: 'rescatadosOrg.html',},
       {path: '/recomendacionesOrg/',url: 'recomendacionesOrg.html',},
       {path: '/serTransito/',url: 'serTransito.html',},
@@ -236,7 +237,7 @@ $$(document).on('page:init', '.page[data-name="enAdopcionOrg"]', function (e) {
     console.log("estoy en enAdopcionOrg");
     console.log("traer animales de: "+ emailOrg);
 
-    //userEmail.toString()
+  /*
     var refEnAdopDeOrg=colAnimalesEnAdopcion.where("email", "==", emailOrg)
 
     refEnAdopDeOrg.get()
@@ -253,8 +254,8 @@ $$(document).on('page:init', '.page[data-name="enAdopcionOrg"]', function (e) {
     .catch((error) => {
         console.log("Error getting documents: ", error);
     });
+*/
 
-    /*
     var refEnAdopDeOrg= colAnimalesEnAdopcion.where("email", "==" , emailOrg);
     var indice=0;
     refEnAdopDeOrg.get()
@@ -266,8 +267,10 @@ $$(document).on('page:init', '.page[data-name="enAdopcionOrg"]', function (e) {
             tipo_Animal=doc.data().Tipo_Animal
             descripcion_Animal=doc.data().Descripcion_Animal
             console.log(nombre_Animal + " que es " + genero_Animal + " indice: " + indice);
-              $$("#bloqueAdopcionDeOrg").append('<div id="tarjetaOr'+indice+'" class="card demo-card-header-pic"><div id="imgAOrg'+indice+'" style="background-image:url(https://www.ecestaticos.com/image/clipping/557/418/79776773aab795837282c7d4947abaf7/por-que-nos-parece-que-los-perros-sonrien-una-historia-de-30-000-anos.jpg)" class="card-header align-items-flex-end row"> <p id="nomAOrg'+indice+'" class="txtCards align-items-flex-end noMargin"> ' + nombre_Animal +
-               '</p> </div> <div class="card-content card-content-padding"> <div class="row justify-content-space-around noMargin"> <p id="tipoAOrg'+indice+'" class=" align-items-flex-end noMargin"> ' + tipo_Animal+ '</p> <p class=" align-items-flex-end noMargin"> - </p> <p id="generoAOrg'+indice+'" class="align-items-flex-end noMargin">' + genero_Animal + '</p> </div><p id="descAOrg'+indice+'" class="text-align-justify">' + descripcion_Animal  + '</p> </div> <div class="card-footer"> <a id="verAOr' +indice+ '" href="/verAnimal/verAOr'+indice+'/" class="link">' + 'Leer Más' + '</a></div> </div>');
+            var tarjetaAni='<div id="tarjeta'+indice+'" class="card demo-card-header-pic"><div id="imgAUsu'+indice+'" style="background-image:url(img/perro.jpg)" class="card-header align-items-flex-end row"> <p id="nomAUsu'+indice+'" class="txtCards align-items-flex-end noMargin"> ' + nombre_Animal +
+             '</p> </div> <div class="card-content card-content-padding"> <div class="row justify-content-space-around noMargin"> <p id="tipoAUsu'+indice+'" class=" align-items-flex-end noMargin"> ' + tipo_Animal+ '</p> <p class=" align-items-flex-end noMargin"> - </p> <p id="generoAUsu'+indice+'" class="align-items-flex-end noMargin">' + genero_Animal + '</p> </div><p id="descAUsu'+indice+'" class="text-align-justify">' + descripcion_Animal  + '</p> </div> <div class="card-footer"> <a id="verAUsu'+indice+'" href="/verAnimalDesdeUsu/verAUsu'+indice+'/" class="link verAnimal">' + 'Leer Más' + '</a></div> </div>';
+
+            $$("#bloqueAdopcionDeOrg").append(tarjetaAni);
 
           })
       })
@@ -275,7 +278,48 @@ $$(document).on('page:init', '.page[data-name="enAdopcionOrg"]', function (e) {
         console.log("Error: "+ error);
       });
 
-*/
+
+
+})
+//    -------------------------PAGE INIT verAnimalDesdeUsu (lista de adopcion de x org (desde usuario)) -----------------------------------------------
+$$(document).on('page:init', '.page[data-name="verAnimalDesdeUsu"]', function (e, page) {
+    // Do something here when page with data-name="about" attribute loaded and initialized
+    console.log("estoy en verAnimalDesdeUsu");
+    console.log('el id es: ' + page.route.params.id );
+    console.log("animal es: "+ nombre_Animal);
+
+
+idTarjeta=page.route.params.id;
+nroT=idTarjeta.replace ("verAUsu", "");
+console.log("el nro de tarjeta es:" + nroT);
+idNomUsu= "#nomAUsu" + nroT;
+idDescUsu="#descAUsu" + nroT;
+idTipoUsu="#tipoAUsu" + nroT;
+idGeneroUsu="#generoAUsu" + nroT;
+idImgnUsu="#imgAUsu" + nroT;
+console.log("div del nombre: "+ idNomUsu )
+nombre_Animal=$$(idNomUsu).html();
+genero_Animal=$$(idGeneroUsu).html();
+tipo_Animal=$$(idTipoUsu).html();
+descripcion_Animal=$$(idDescUsu).html();
+urlIm_Animalusu=$$(idImgnUsu).css("background-image");
+imgn_Animal= urlIm_Animalusu.replace('url("http://localhost:3000/browser/www/', "");
+imgAUsu=imgn_Animal.replace('")', "")
+console.log("animal es: " + nombre_Animal);
+console.log("es: " + tipo_Animal);
+console.log("es: " + genero_Animal);
+console.log(descripcion_Animal);
+console.log(imgAUsu);
+
+$$("#nomAniUsu").html(nombre_Animal);
+$$("#fotoAUsu").attr("src", imgAUsu);
+$$("#tipoYGeneroUsu").html(tipo_Animal+", "+genero_Animal)
+$$("#descripAUsu").html(descripcion_Animal);
+
+$$("#adoptar").on("click", fnAdoptar);
+
+
+
 
 })
 
@@ -389,13 +433,15 @@ $$(document).on('page:init', '.page[data-name="misAdopcion"]', function (e) {
             tipo_Animal=docActual.data().Tipo_Animal
             descripcion_Animal=docActual.data().Descripcion_Animal
             console.log(nombre_Animal + " que es " + genero_Animal + " indice: " + indice);
-            $$("#bloqueAdopcion").append('<div id="tarjeta'+indice+'" class="card demo-card-header-pic"><div id="imgA'+indice+'" style="background-image:url(https://www.ecestaticos.com/image/clipping/557/418/79776773aab795837282c7d4947abaf7/por-que-nos-parece-que-los-perros-sonrien-una-historia-de-30-000-anos.jpg)" class="card-header align-items-flex-end row"> <p id="nomA'+indice+'" class="txtCards align-items-flex-end noMargin"> ' + nombre_Animal +
-               '</p> </div> <div class="card-content card-content-padding"> <div class="row justify-content-space-around noMargin"> <p id="tipoA'+indice+'" class=" align-items-flex-end noMargin"> ' + tipo_Animal+ '</p> <p class=" align-items-flex-end noMargin"> - </p> <p id="generoA'+indice+'" class="align-items-flex-end noMargin">' + genero_Animal + '</p> </div><p id="descA'+indice+'" class="text-align-justify">' + descripcion_Animal  + '</p> </div> <div class="card-footer"> <a id="verA' +indice+ '" href="/verAnimal/verA'+indice+'/" class="link verAnimal">' + 'Leer Más' + '</a></div> </div>');
+            var tarjeAnimal='<div id="tarjeta'+indice+'" class="card demo-card-header-pic"><div id="imgA'+indice+'" style="background-image:url(img/perro.jpg)" class="card-header align-items-flex-end row"> <p id="nomA'+indice+'" class="txtCards align-items-flex-end noMargin"> ' + nombre_Animal +
+             '</p> </div> <div class="card-content card-content-padding"> <div class="row justify-content-space-around noMargin"> <p id="tipoA'+indice+'" class=" align-items-flex-end noMargin"> ' + tipo_Animal+ '</p> <p class=" align-items-flex-end noMargin"> - </p> <p id="generoA'+indice+'" class="align-items-flex-end noMargin">' + genero_Animal + '</p> </div><p id="descA'+indice+'" class="text-align-justify">' + descripcion_Animal  + '</p> </div> <div class="card-footer"> <a id="verA' +indice+ '" href="/verAnimal/verA'+indice+'/" class="link verAnimal">' + 'Leer Más' + '</a></div> </div>';
+
+            $$("#bloqueAdopcion").append(tarjeAnimal);
 
           })
       })
       .catch( function(error){
-        console.log("Error: "+ error);
+        console.log("Error : "+ error);
       });
 
 
@@ -414,22 +460,27 @@ idNom= "#nomA" + nroI;
 idDesc="#descA" + nroI;
 idTipo="#tipoA" + nroI;
 idGenero="#generoA" + nroI;
+idImgn="#imgA" + nroI;
 console.log("div del nombre: "+ idNom )
 nombre_Animal=$$(idNom).html();
 genero_Animal=$$(idGenero).html();
 tipo_Animal=$$(idTipo).html();
 descripcion_Animal=$$(idDesc).html();
-
-
+urlIm_Animal=$$(idImgn).css("background-image");
+imgn_Animal= urlIm_Animal.replace('url("http://localhost:3000/browser/www/', "");
+imgA=imgn_Animal.replace('")', "")
 console.log("animal es: " + nombre_Animal);
 console.log("es: " + tipo_Animal);
 console.log("es: " + genero_Animal);
 console.log(descripcion_Animal);
-
+console.log(imgA);
 
 $$("#nomAnimalElegido").html(nombre_Animal);
+$$("#fotoA").attr("src", imgA);
+$$("#tipoYGenero").html(tipo_Animal+", "+genero_Animal)
+$$("#descripA").html(descripcion_Animal);
 
-
+$$("#adoptado").on("click", fnMarcarComoAdoptado);
 
 
 })
@@ -460,6 +511,24 @@ $$(document).on('page:init', '.page[data-name="misRecomendaciones"]', function (
             txtRec=docReco.data().texto
             console.log("Recomendación:" + tituloRec + " " +txtRec);
 
+            var nuevaRecomenda=`  <li class="accordion-item"><a class="item-content item-link" href="#">
+                  <div class="item-inner">
+                    <div class="item-title text-color-white"><b>`+tituloRec+`</b></div>
+                  </div>
+                </a>
+                <div class="accordion-item-content">
+                  <div class="block">
+                    <p class="text-align-center text-color-white">`+txtRec+`</p>
+
+                  </div>
+                </div>
+              </li>`
+
+            $$("#acordionRecomenda").append(nuevaRecomenda)
+
+
+
+
           })
       })
       .catch( function(error){
@@ -489,8 +558,13 @@ $$(document).on('page:init', '.page[data-name="misFliasTransito"]', function (e)
     // Do something here when page with data-name="about" attribute loaded and initialized
     console.log("estoy en misFliasTransito");
     console.log(email);
+    var swiper = app.swiper.create('#contenedorSwiper', {
+    speed: 400,
+    spaceBetween: 100
+    });
     var refMisTransitos=colFamiliasTransito.where("emailorg", "==", email);
-    var indice=1;
+    var indice=0;
+
     refMisTransitos.get()
     .then(function(querySnapshot){
       querySnapshot.forEach(function(doc){
@@ -510,7 +584,7 @@ $$(document).on('page:init', '.page[data-name="misFliasTransito"]', function (e)
         mascotas_Transito=doc.data().Tiene_Mascotas
         agrega_Transito=doc.data().Agrega
 
-        tabTransito=`<div id="tab-`+indice+`" class= "tab bg-color-purple">
+  /*      tabTransito=`<div id="tab-`+indice+`" class= "block tab bg-color-purple">
         <div class="block">
           <h1 class="centrar text-color-white">`+nombre_Transito+` `+apellido_Transito+ `</h1>
           <h3 class="block centrar noMargin">Datos del Hogar</h3>
@@ -588,10 +662,121 @@ $$(document).on('page:init', '.page[data-name="misFliasTransito"]', function (e)
             </ul>
           </div>
       </div>`;
-    /*  var cantPostulaciones=0;
-      cantPostulaciones=indice-1; */
-      console.log("nombre del transito: "+ doc.data().Nombre + "Transito nro: "+ indice);
-      $$("#bloqueTransitos").append(tabTransito);
+      var cantPostulaciones=0;
+      cantPostulaciones=indice-1;
+      /*$$("#bloqueTransitos").append(tabTransito);*/
+
+/*      var nuevaSwipe=`<div class="swiper-slide">
+                        <div class="block">
+                          <h1 class="centrar">`+nombre_Transito+` `+apellido_Transito+ `</h1>
+                          <h3 class="block centrar noMargin">Datos del Hogar</h3>
+                          <div class="list">
+                            <ul>
+                            <li>
+                              <div class="item-content">
+                                <div class="item-inner">
+                                  <div class="item-title">Vivienda: `+ vivienda_Transito +`</div>
+                                </div>
+                              </div>
+                            </li>
+                            <li>
+                              <div class="item-content">
+                                <div class="item-inner">
+                                  <div class="item-title">Grupo Familiar: `+familia_Transito+`</div>
+                                </div>
+                              </div>
+                            </li>
+                            <li>
+                              <div class="item-content">
+                                <div class="item-inner">
+                                  <div class="item-title">Otras Macotas: `+mascotas_Transito +`</div>
+                                </div>
+                              </div>
+                            </li>
+                            <li>
+                              <div class="item-content">
+                                <div class="item-inner">
+                                  <p>Experiencia de Tránsito: `+exp_Transito +`</p>
+                                </div>
+                              </div>
+                            </li>
+                            <li>
+                              <div class="item-content">
+                                <div class="item-inner">
+                                  <div class="item-title">Puede dar transito: `+tiempo_Transito +`</div>
+                                </div>
+                              </div>
+                            </li>
+                            </ul>
+                          </div>
+
+                          <h3 class="block centrar noMargin">Datos de Contacto</h3>
+                          <div class="list">
+                            <ul>
+                            <li>
+                              <div class="item-content">
+                                <div class="item-inner">
+                                  <div class="item-title">Vive en: `+localidad_Transito+`, `+provincia_Transito+`</div>
+                                </div>
+                              </div>
+                            </li>
+                            <li>
+                              <div class="item-content">
+                                <div class="item-inner">
+                                  <div class="item-title">Teléfono: `+telefono_Transito+`</div>
+                                </div>
+                              </div>
+                            </li>
+                            <li>
+                              <div class="item-content">
+                                <div class="item-inner">
+                                  <div class="item-title">Email: `+email_Transito+`</div>
+                                </div>
+                              </div>
+                            </li>
+                            <li>
+                              <div class="item-content">
+                                <div class="item-inner">
+                                  <div class="item-title">Redes: `+redes_Transito+`</div>
+                                </div>
+                              </div>
+                            </li>
+                            </ul>
+                          </div>
+                        </div>
+                      </div>`;
+
+
+
+    $$("#swipes").append(nuevaSwipe);
+    var swiper = app.swiper.get('#contenedorSwiper');
+    swiper.slideNext();
+    console.log("nombre del transito: "+ doc.data().Nombre + "Transito nro: "+ indice);
+*/
+    var acordionT=`  <li class="accordion-item"><a class="item-content item-link" href="#">
+          <div class="item-inner">
+            <div class="item-title text-color-white"><b>`+nombre_Transito+` `+apellido_Transito+`</b></div>
+          </div>
+        </a>
+        <div class="accordion-item-content">
+          <div class="block">
+            <h4 class="item-title centrar text-color-white"><b>DATOS DEL HOGAR</b></h4>
+            <p class="text-align-center text-color-white"><b> Vivienda:</b> `+vivienda_Transito+`</p>
+            <p class="text-align-center text-color-white"><b> Grupo Familiar:</b> `+familia_Transito+`</p>
+            <p class="text-align-center text-color-white"><b> Otras Mascotas:</b> `+mascotas_Transito+`</p>
+            <p class="text-align-center text-color-white"> <b>Experiencias Tránsito:</b> `+exp_Transito+`</p>
+            <p class="text-align-center text-color-white"> <b> Puede dar transito:</b> `+tiempo_Transito +`</p>
+            <h4 class="item-title centrar text-color-white"> <b>DATOS DE CONTACTO</b></h4>
+            <p class="text-align-center text-color-white"> <b> Vive en:</b> `+localidad_Transito+`, `+provincia_Transito+`  </p>
+            <p class="text-align-center text-color-white"> <b> Teléfono:</b> `+telefono_Transito+`</p>
+            <p class="text-align-center text-color-white"> <b> E-mail:</b> `+email_Transito+`</p>
+            <p class="text-align-center text-color-white"> <b> Redes:</b> `+redes_Transito+`</p>
+          </div>
+        </div>
+      </li>`;
+
+      $$("#acordionTransitos").append(acordionT);
+
       })
     })
     .catch( function(error){
@@ -1056,4 +1241,13 @@ function fnNuevaRecomenda(){
     });
 
   }
+}
+
+
+function fnMarcarComoAdoptado(){
+  app.dialog.prompt("Ingresa el e-mail del adoptante", "¿Una nueva familia?") //tengo que hacer la conexion entre usuario-org-y peticion de adopcion
+}
+
+function fnAdoptar(){
+  app.dialog.prompt("vai adoptar culia", "¿Una nueva familia?") //tengo que hacer la conexion entre usuario-org-y peticion de adopcion
 }

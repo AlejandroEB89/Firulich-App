@@ -243,6 +243,7 @@ display: none !important;
     font-size: 3.5vh;
   }
 
-  .estiloDialog{
-
-  }
+.foto{
+  max-width:100%;
+  display:inline;
+}

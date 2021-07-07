@@ -1,30 +1,30 @@
 <!-- We don't need a full layout in this file because this page will be parsed with Ajax.  -->
-<div class="page" data-name="verAnimal">
+<div class="page" data-name="verAnimalDesdeUsu">
   <div class="navbar">
       <div class="navbar-bg"></div>
       <div class="navbar-inner">
           <div class="left">
-            <a href="/misAdopcion/" class="link">
+            <a href="/enAdopcionOrg/" class="link">
                 <i class="icon icon-back"></i>
                 <span class="ios-only">Back</span>
             </a>
           </div>
-          <div id="nomAnimalElegido" class="title mrgTitNav">  </div>
+          <div id="nomAniUsu" class="title mrgTitNav">  </div>
 
       </div>
   </div>
     <div class="page-content bg-color-purple">
-      <img id="fotoA" src="" class="foto">
+      <img id="fotoAUsu" src="" class="foto">
       <div class="block noMargin">
-        <h3 id="tipoYGenero" class="text-color-white centrar"> </h3>
+        <h3 id="tipoYGeneroUsu" class="text-color-white centrar"> </h3>
         <div class="block block-strong bg-color-purple">
-          <p id="descripA" class="text-color-white text-align-justify"></p>
+          <p id="descripAUsu" class="text-color-white text-align-justify"></p>
         </div>
         <div class="block block-strong no-hairlines FormatoBtnIni  noMargin">
-          <button id="adoptado" class="button btn button-large button-fill button-preloader ${isLoading ? 'button-loading' : ''} @click=${()=> showInfinite(true)}"
+          <button id="adoptar" class="button btn button-large button-fill button-preloader ${isLoading ? 'button-loading' : ''} @click=${()=> showInfinite(true)}"
             @click=${load}>
             <span class="preloader"></span>
-            <span>Marcar Como Adoptado</span>
+            <span>Petición de Adopción</span>
           </button>
         </div>
       </div>
