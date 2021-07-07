@@ -1,0 +1,279 @@
+<!-- We don't need a full layout in this file because this page will be parsed with Ajax.  -->
+<div class="page infinite-scroll-content" data-name="peticionAdopcion">
+  <div class="navbar">
+      <div class="navbar-bg"></div>
+      <div class="navbar-inner">
+          <div class="left">
+            <a href="#" class="link back">
+                <i class="icon icon-back"></i>
+                <span class="ios-only">Back</span>
+            </a>
+          </div>
+          <div id="quieroAdoptarA" class="title"> Adoptar a: </div>
+
+      </div>
+  </div>
+
+  <!-- Toolbar -->
+  <div class="toolbar tabbar toolbar-bottom">
+      <div class="toolbar-inner">
+          <a id="btnSerTransito" href="#" class="tab-link btnToolbar">¡ENVIAR!</a>
+      </div>
+  </div>
+
+
+
+    <div class="page-content">
+      <form>
+        <div class="block-title centrar">Completá todos los campos</div>
+          <div class="list no-hairlines-md">                       <!-- Inputs formulario -->
+            <ul>
+              <li class="item-content item-input">
+                <div class="item-inner">
+                  <div class="item-title item-label">¿Porqué queres adoptar?</div>
+                  <div class="item-input-wrap">
+                    <textarea id="porqueAdop" placeholder="¿Que te hizo interesarte en este animal en particular? ¿Que rol va a tener en tu familia? "></textarea>
+                    <span class="input-clear-button"></span>
+                  </div>
+                </div>
+              </li>
+
+              <li class="item-content item-input">
+                <div class="item-inner">
+                  <div class="item-title item-label">Compañeros de vida</div>
+                  <div class="item-input-wrap">
+                    <textarea id="cicloVidaAdop" placeholder="¿Sos conciente del ciclo de vida de un animal? ¿Sabés que si lo cuidas te puede acompañar por 15/20 años? ¿Asumís la responsabilidad de cuidarlo por ese tiempo?"></textarea>
+                    <span class="input-clear-button"></span>
+                  </div>
+                </div>
+              </li>
+
+
+              <li class="item-content item-input">
+                <div class="item-inner">
+                  <div class="item-title item-label">Compromiso de Adopción</div>
+                  <div class="item-input-wrap">
+                    <textarea id="compromisoAdop" placeholder="¿Sos conciente de los cuidados y gastos que implica tener un animal en casa? ¿Estás dispuesto/a a asumirlos?"></textarea>
+                    <span class="input-clear-button"></span>
+                  </div>
+                </div>
+              </li>
+
+              <li class="item-content item-input">
+                <div class="item-inner">
+                  <div class="item-title item-label">Necesidades Básicas</div>
+                  <div class="item-input-wrap">
+                    <textarea id="necesidadesAdop" placeholder="¿Podés cubrir económicamente sus necesidades: alimento, veterinario, vacunas, correas, juguetes, medicinas, elementos de higiene?"></textarea>
+                    <span class="input-clear-button"></span>
+                  </div>
+                </div>
+              </li>
+
+              <li class="item-content item-input">
+                <div class="item-inner">
+                  <div class="item-title item-label">¿Tenés otras mascotas?</div>
+                  <div class="item-input-wrap">
+                    <textarea id="tieneMascotasAdop" placeholder="¡Contános sobre ellos! ¿Cuánto llevan con vos? ¿Cómo llegaron a tu vida? "></textarea>
+                    <span class="input-clear-button"></span>
+                  </div>
+                </div>
+              </li>
+
+              <li class="item-content item-input">
+                <div class="item-inner">
+                  <div class="item-title item-label">¿Cuidás de tus mascotas?</div>
+                  <div class="item-input-wrap">
+                    <textarea id="cuidaMascotasAdop" placeholder="¿Están castrados?  ¿Vacunados? ¿Desparasitados? ¿Los sacas a pasear?  "></textarea>
+                    <span class="input-clear-button"></span>
+                  </div>
+                </div>
+              </li>
+
+              <li class="item-content item-input">
+                <div class="item-inner">
+                  <div class="item-title item-label">¿Como está compuesta tu familia?</div>
+                  <div class="item-input-wrap">
+                    <textarea id="faimiliaAdop" placeholder="¿Cuantos son en la casa? ¿Edades? ¿Están todos de acuerdo en adoptar?"></textarea>
+                    <span class="input-clear-button"></span>
+                  </div>
+                </div>
+              </li>
+
+              <li class="item-content item-input">
+                <div class="item-inner">
+                  <div class="item-title item-label">Alergias</div>
+                  <div class="item-input-wrap">
+                    <textarea id="alergiasAdop" placeholder="¿Hay alguien en tu familia con problemas o antecedentes de alergias?"></textarea>
+                    <span class="input-clear-button"></span>
+                  </div>
+                </div>
+              </li>
+
+
+              <li class="item-content item-input">
+                <div class="item-inner">
+                  <div class="item-title item-label">¿Donde vivis?</div>
+                  <div class="item-input-wrap input-dropdown-wrap">
+                    <select id="viviendaAdop" placeholder="Seleccioná">
+                      <option value="Casa sin patio">Casa sin Patio</option>
+                      <option value="Casa con patio abierto"> Casa con patio abierto </option>
+                      <option value="Casa con patio cerrado"> Casa con patio cerrado </option>
+                      <option value="Depto sin patio"> Depto sin patio </option>
+                      <option value="Depto con patio abierto"> Depto con patio abierto </option>
+                      <option value="Depto con patio cerrado"> Depto con patio cerrado </option>
+                    </select>
+                  </div>
+                </div>
+              </li>
+
+              <li class="item-content item-input">
+                <div class="item-inner">
+                  <div class="item-title item-label">¿Vivienda Propia? </div>
+                  <div class="item-input-wrap input-dropdown-wrap">
+                    <select id="propietarioAdop" placeholder="Seleccioná">
+                      <option value="Vivienda Propia">Vivienda Propia</option>
+                      <option value="Alquiler"> Alquiler </option>
+                    </select>
+                  </div>
+                </div>
+              </li>
+
+              <li id="permisoPropManejador" class="item-content item-input activo">
+                <div class="item-inner">
+                  <div class="item-title item-label">¿Contás con permiso del propietario para tener un animal?</div>
+                  <div class="item-input-wrap input-dropdown-wrap">
+                    <select id="perimisoPropAdop" placeholder="Seleccioná">
+                      <option value="Si">Si</option>
+                      <option value="No"> No</option>
+                    </select>
+                  </div>
+                </div>
+              </li>
+
+              <li id="alquilerMudanzaManejador" class="item-content item-input activo">
+                <div class="item-inner">
+                  <div class="item-title item-label">En caso de Mudanza:</div>
+                  <div class="item-input-wrap">
+                    <textarea id="mudanzaAdop" placeholder="¿Que pasaría con el animal?"></textarea>
+                    <span class="input-clear-button"></span>
+                  </div>
+                </div>
+              </li>
+
+              <li class="item-content item-input">
+                <div class="item-inner">
+                  <div class="item-title item-label">Tu opinión</div>
+                  <div class="item-input-wrap">
+                    <textarea id="castracionAdop" placeholder="¿Qué opinás acerca de la castración?"></textarea>
+                    <span class="input-clear-button"></span>
+                  </div>
+                </div>
+              </li>
+
+
+
+
+
+
+
+
+              <li class="item-content item-input">
+                <div class="item-inner">
+                  <div class="item-title item-label">¿Ya has dado tránsito a animales?</div>
+                  <div class="item-input-wrap input-dropdown-wrap">
+                    <select id="hizoTransito" placeholder="Please choose...">
+                      <option value="si">Si</option>
+                      <option value="no">No</option>
+                    </select>
+                  </div>
+                </div>
+              </li>
+
+              <li id="expTransitoManejador" class="item-content item-input activo">
+                <div class="item-inner">
+                  <div class="item-title item-label">Contános de esa experiencia</div>
+                  <div class="item-input-wrap">
+                    <textarea id="expTransito"  class="resizable" placeholder="Una breve descripción de tu experiencia como tránsito"></textarea>
+                  </div>
+                </div>
+              </li>
+
+              <li class="item-content item-input">
+                <div class="item-inner">
+                  <div class="item-title item-label">Facebook/Instagram</div>
+                  <div class="item-input-wrap">
+                    <input id="linkRedes" type="url" placeholder="Si querés podes dejarnos tu perfil" />
+                    <span class="input-clear-button"></span>
+                  </div>
+                </div>
+              </li>
+
+              <li class="item-content item-input">
+                <div class="item-inner">
+                  <div class="item-title item-label">Telefono</div>
+                  <div class="item-input-wrap">
+                    <input id="telefono" type="tel" placeholder="Dejános un cel para contactarnos" />
+                    <span class="input-clear-button"></span>
+                  </div>
+                </div>
+              </li>
+
+
+              <li class="item-content item-input">
+                <div class="item-inner">
+                  <div class="item-title item-label">¿Querés agregar algo más?</div>
+                  <div class="item-input-wrap">
+                    <textarea id="algoMas" class="resizable" placeholder="Opcional"></textarea>
+                  </div>
+                </div>
+              </li>
+
+
+            </ul>
+          </div>
+
+
+
+      </form>
+      <div id="popupInfoAdopcion" class="popup popup-open">
+          <div class="view">
+            <div class="page">
+              <div class="navbar">
+                <div class="navbar-bg"></div>
+                <div class="navbar-inner">
+                  <div class="title center">¡Importante!</div>
+                  <div class="right">
+                    <!-- Link to close popup-->
+
+                  </div>
+                </div>
+              </div>
+              <div class="page-content bg-color-purple">
+                <div class="block formatoBloques no-hairlines">
+                <h1 class="text-color-white centrar"> ¿Por qué te pedimos esta información? </h1>
+                <p class="text-color-white justificar"> Adoptar a un animal no debe ser nunca una decisión tomada a la ligera, debe ser algo muy meditado, dado que el animal que vaya a formar parte de su familia vivirá con usted muchos años.</p>
+                <p class="text-color-white justificar">NOTA IMPORTANTE: TANTO EL FORMULARIO COMO EL PROCESO DE ADOPCION DEBEN SER REALIZADOS POR LA PERSONA CON LA CUAL VIVIRÁ POR SIEMPRE EL ANIMAL, Y ESTA DEBE SER SIN EXCEPCION, MAYOR DE EDAD.</p>
+                <p class="text-color-white justificar">Tené en cuenta que cada animalito en tránsito/adopción tiene una historia y
+                personalidad distinta. Contar con estos datos hace que el proceso de elección de su hogar sea mas sencillo y que se adapte a lo que
+                más le conviene al animal.
+                </p>
+                <p class="text-color-white justificar">  Por eso te pedimos que te tomes el tiempo de completar el formulario que prosigue. </p>
+                <p class="text-color-white justificar">  ¡Gracias por comprender y ayudarnos! </p>
+                <!-- <a class="link popup-close"> ¡Entiendo! </a> -->
+                <div class="block block-strong no-hairlines FormatoBtnIni  noMargin popup-close">
+                  <button id="entiendoAdop" class="button btn button-large button-fill">
+                    <span>¡Entiendo!</span>
+                  </button>
+                </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+
+
+
+    </div>
+</div>

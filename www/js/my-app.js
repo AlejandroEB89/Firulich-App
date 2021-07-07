@@ -27,6 +27,8 @@ var app = new Framework7({
       {path: '/VerOrgDesdeUsu/:id/',url: 'VerOrgDesdeUsu.html',},
       {path: '/enAdopcionOrg/',url: 'enAdopcionOrg.html',},
       {path: '/verAnimalDesdeUsu/:id',url: 'verAnimalDesdeUsu.html',},
+      {path: '/peticionAdopcion/',url: 'peticionAdopcion.html',},
+
       {path: '/rescatadosOrg/',url: 'rescatadosOrg.html',},
       {path: '/recomendacionesOrg/',url: 'recomendacionesOrg.html',},
       {path: '/serTransito/',url: 'serTransito.html',},
@@ -69,6 +71,22 @@ var provinciaOrg="";
 var localidad="";
 var localidadOrg="";
 var descripcionOrg="";
+var orgElegida="";
+var nroIor="";
+var idOr="";
+var idMailOr="";
+var idnomOr="";
+var idLoc="";
+var idPcia="";
+var idDescOr="";
+
+var nombreOrganizacionElegida="";
+var localidadOrgElegida="";
+var provinciaOrgElegida="";
+var descripcionOrgElegida="";
+var emailOrgElegida="";
+
+
 // -------------- Variables para base de datos  ------------------//
 var db=firebase.firestore();
 colUsuarios=db.collection("usuarios");
@@ -204,14 +222,19 @@ $$(document).on('page:init', '.page[data-name="VerOrgDesdeUsu"]', function (e, p
 
     console.log("estoy en VerOrgDesdeUsu");
     console.log('La org es id: ' + page.route.params.id );
+    orgElegida=page.route.params.id;
     idOr=page.route.params.id;
     nroIor=idOr.replace ("verOr", "");
-    console.log("se seleccionó la tarjeta: " + nroIor);
     idMailOr="#em-Org" + nroIor;
     idnomOr= "#nomOrg" + nroIor;
     idLoc="#locOr" + nroIor;
     idPcia="#pciaOr" + nroIor;
     idDescOr="#descOr" + nroIor;
+    console.log("idMailOr: " + idMailOr)
+    console.log("idnomOr: " + idnomOr)
+    console.log("idLoc: " + idLoc)
+    console.log("idPcia: " + idPcia)
+    console.log("idDescOr: " + idDescOr)
     console.log("div de la Org: "+ idOr )
     nombreOrganizacion=$$(idnomOr).html();
     localidadOrg=$$(idLoc).html();
@@ -237,24 +260,7 @@ $$(document).on('page:init', '.page[data-name="enAdopcionOrg"]', function (e) {
     console.log("estoy en enAdopcionOrg");
     console.log("traer animales de: "+ emailOrg);
 
-  /*
-    var refEnAdopDeOrg=colAnimalesEnAdopcion.where("email", "==", emailOrg)
 
-    refEnAdopDeOrg.get()
-
-
-    .then((querySnapshot) => {
-        querySnapshot.forEach((doc) => {
-        // doc.data() is never undefined for query doc snapshots
-      //  if(doc.data().email == emailOrg){
-          console.log("data:" + doc.data().Nombre_Animal );
-        //}
-        });
-    })
-    .catch((error) => {
-        console.log("Error getting documents: ", error);
-    });
-*/
 
     var refEnAdopDeOrg= colAnimalesEnAdopcion.where("email", "==" , emailOrg);
     var indice=0;
@@ -278,7 +284,9 @@ $$(document).on('page:init', '.page[data-name="enAdopcionOrg"]', function (e) {
         console.log("Error: "+ error);
       });
 
-
+      linkAOrg="/VerOrgDesdeUsu/"+orgElegida+"/";
+      console.log(linkAOrg)
+      $$("#irAOrgConId").on("click", function(){mainView.router.navigate(linkAOrg)})
 
 })
 //    -------------------------PAGE INIT verAnimalDesdeUsu (lista de adopcion de x org (desde usuario)) -----------------------------------------------
@@ -287,6 +295,7 @@ $$(document).on('page:init', '.page[data-name="verAnimalDesdeUsu"]', function (e
     console.log("estoy en verAnimalDesdeUsu");
     console.log('el id es: ' + page.route.params.id );
     console.log("animal es: "+ nombre_Animal);
+
 
 
 idTarjeta=page.route.params.id;
@@ -316,7 +325,46 @@ $$("#fotoAUsu").attr("src", imgAUsu);
 $$("#tipoYGeneroUsu").html(tipo_Animal+", "+genero_Animal)
 $$("#descripAUsu").html(descripcion_Animal);
 
-$$("#adoptar").on("click", fnAdoptar);
+$$("#adoptar").on("click", function(){mainView.router.navigate("/peticionAdopcion/")});
+
+
+
+
+})
+
+//    -------------------------PAGE INIT peticionAdopcion (usuario quiere Adoptar Animal) -----------------------------------------------
+$$(document).on('page:init', '.page[data-name="peticionAdopcion"]', function (e) {
+    // Do something here when page with data-name="about" attribute loaded and initialized
+      console.log("estoy en peticionAdopcion");
+      console.log(emailOrg);
+      var popup = app.popup.create({
+
+        el: '#popupInfoAdopcion',
+        on: {
+          opened: function () {
+            console.log('Popup opened')
+          }
+        }
+      });
+      app.popup.open("#popupInfoAdopcion");
+
+
+
+
+      $$("#btnSerTransito").on("click", fnQuieroSerTransito);
+      $$("#hizoTransito").on("click", function(){
+          hizoTransito=$$("#hizoTransito").val();
+          if(hizoTransito=="no"){
+            console.log("no hizo transito")
+            $$("#expTransitoManejador").removeClass("activo");
+            $$("#expTransitoManejador").addClass("hidden");
+          } else {
+            console.log("si hizo transito")
+            $$("#expTransitoManejador").removeClass("hidden");
+            $$("#expTransitoManejador").addClass("activo");
+          }
+      })
+
 
 
 
@@ -1249,5 +1297,5 @@ function fnMarcarComoAdoptado(){
 }
 
 function fnAdoptar(){
-  app.dialog.prompt("vai adoptar culia", "¿Una nueva familia?") //tengo que hacer la conexion entre usuario-org-y peticion de adopcion
+
 }
