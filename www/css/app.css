@@ -247,3 +247,7 @@ display: none !important;
   max-width:100%;
   display:inline;
 }
+
+.margenTop{
+  margin-top: 4vh;
+}

@@ -24,7 +24,7 @@ var app = new Framework7({
       // Rutas de usuario
       {path: '/usuarioHome/',url: 'usuarioHome.html', options : { transition: "f7-fade"}},
       {path: '/listaOrg/',url: 'listaOrg.html',},
-      {path: '/VerOrgDesdeUsu/:id/',url: 'VerOrgDesdeUsu.html',},
+      {name:'VerOrgDesdeUsu', path: '/VerOrgDesdeUsu/:id/',url: 'VerOrgDesdeUsu.html',},  //
       {path: '/enAdopcionOrg/',url: 'enAdopcionOrg.html',},
       {path: '/verAnimalDesdeUsu/:id',url: 'verAnimalDesdeUsu.html',},
       {path: '/peticionAdopcion/',url: 'peticionAdopcion.html',},
@@ -45,6 +45,8 @@ var app = new Framework7({
       {path: '/nuevaRecomenda/',url: 'nuevaRecomenda.html',},
       {path: '/misRescatados/',url: 'misRescatados.html',},
       {path: '/misAdopcion/',url: 'misAdopcion.html',},
+      {path: '/misPeticionesAdop/',url: 'misPeticionesAdop.html',},
+
       {path: '/publicarOrg/',url: 'publicarOrg.html',},
       {path: '/verAnimal/:id/',url: 'verAnimal.html',},
 
@@ -80,12 +82,6 @@ var idLoc="";
 var idPcia="";
 var idDescOr="";
 
-var nombreOrganizacionElegida="";
-var localidadOrgElegida="";
-var provinciaOrgElegida="";
-var descripcionOrgElegida="";
-var emailOrgElegida="";
-
 
 // -------------- Variables para base de datos  ------------------//
 var db=firebase.firestore();
@@ -94,6 +90,7 @@ colOrganizaciones=db.collection("organizaciones");
 colAnimalesEnAdopcion=db.collection("animalesEnAdopcion");
 colFamiliasTransito= db.collection("familiasTransito");
 colRecomendaciones=db.collection("recomendaciones");
+colPeticionAdopcion=db.collection("peticionesAdop");
 
 // -------------- Variables para Animales ------------------//
 
@@ -122,7 +119,7 @@ $$(document).on('page:init', '.page[data-name="index"]', function (e) {
     var tipodeUsuario="";
     var nombreUsuario="";
     var apellidoUsuario="";
-    var nombreOrganizacion="";
+    //var nombreOrganizacion="";
     var nombreRespOrganizacion="";
     var email="";
     var password="";
@@ -203,9 +200,11 @@ $$(document).on('page:init', '.page[data-name="listaOrg"]', function (e) {
           descripcionOrg=docActual.data().Descripción
           emailRefOrg=docActual.id
           console.log(nombreOrganizacion+ " de " + localidadOrg + " " + provinciaOrg + " " + emailRefOrg);
-          $$("#bloqueOrganizaciones").append('<div id="em-Org'+indice+'"class="hidden">'+emailRefOrg+'</div> <div id="org" class="card demo-card-header-pic"><div id="imgOrg'+indice+'" style="background-image:url(https://www.ecestaticos.com/image/clipping/557/418/79776773aab795837282c7d4947abaf7/por-que-nos-parece-que-los-perros-sonrien-una-historia-de-30-000-anos.jpg)" class="card-header align-items-flex-end"> <p id="nomOrg'+indice+
+          tarjetasOrganizaciones='<div id="em-Org'+indice+'"class="hidden">'+emailRefOrg+'</div> <div id="org" class="card demo-card-header-pic"><div id="imgOrg'+indice+'" style="background-image:url(https://www.ecestaticos.com/image/clipping/557/418/79776773aab795837282c7d4947abaf7/por-que-nos-parece-que-los-perros-sonrien-una-historia-de-30-000-anos.jpg)" class="card-header align-items-flex-end"> <p id="nomOrg'+indice+
             '" class="txtCards align-items-flex-end noMargin"> ' + nombreOrganizacion +'</p> <p id="locOr'+indice+'" class="align-items-flex-end noMargin"> ' + localidadOrg+'</p>  </div> <div class="card-content card-content-padding"> <p id="pciaOr'+indice+'">' + provinciaOrg +
-            '</p> <p id="descOr'+indice+'">' + descripcionOrg+'</p> </div> <div class="card-footer"> <a id="verOr'+indice+'" href="/VerOrgDesdeUsu/verOr'+indice+'/" class="link verOrg">' + 'Leer Más' + '</a></div> </div>'); //    /VerOrgDesdeUsu/verOr'+indice+'/
+            '</p> <p id="descOr'+indice+'">' + descripcionOrg+'</p> </div> <div class="card-footer"> <a id="verOr'+indice+'" href="#" onclick="setOrganizacion(\''+nombreOrganizacion+'\')" class="link verOrg">' + 'Leer Más' + '</a></div> </div>'    //,+localidadOrg+,+provinciaOrg+,+descripcionOrg+        //\''+nombreOrganizacion+'\'
+
+          $$("#bloqueOrganizaciones").append(tarjetasOrganizaciones); //    /VerOrgDesdeUsu/verOr'+indice+'/
 
         })
     })
@@ -221,9 +220,9 @@ $$(document).on('page:init', '.page[data-name="VerOrgDesdeUsu"]', function (e, p
     // Do something here when page with data-name="about" attribute loaded and initialized
 
     console.log("estoy en VerOrgDesdeUsu");
-    console.log('La org es id: ' + page.route.params.id );
+    //console.log('La org es id: ' + page.route.params.id );
     orgElegida=page.route.params.id;
-    idOr=page.route.params.id;
+  /*  idOr=page.route.params.id;
     nroIor=idOr.replace ("verOr", "");
     idMailOr="#em-Org" + nroIor;
     idnomOr= "#nomOrg" + nroIor;
@@ -236,20 +235,17 @@ $$(document).on('page:init', '.page[data-name="VerOrgDesdeUsu"]', function (e, p
     console.log("idPcia: " + idPcia)
     console.log("idDescOr: " + idDescOr)
     console.log("div de la Org: "+ idOr )
-    nombreOrganizacion=$$(idnomOr).html();
+    //nombreOrganizacion=$$(idnomOr).html();
     localidadOrg=$$(idLoc).html();
     provinciaOrg=$$(idPcia).html();
     descripcionOrg=$$(idDescOr).html();
-    emailOrg=$$(idMailOr).html();
+    emailOrg=$$(idMailOr).html();*/
     console.log(nombreOrganizacion+ " " + localidadOrg + " " + provinciaOrg);
     console.log(descripcionOrg);
     console.log(emailOrg);
 
 
     $$("#VerNomORG").html(nombreOrganizacion);
-
-
-
 
 })
 
@@ -285,7 +281,7 @@ $$(document).on('page:init', '.page[data-name="enAdopcionOrg"]', function (e) {
       });
 
       linkAOrg="/VerOrgDesdeUsu/"+orgElegida+"/";
-      console.log(linkAOrg)
+      console.log("El link a org es: " +linkAOrg)
       $$("#irAOrgConId").on("click", function(){mainView.router.navigate(linkAOrg)})
 
 })
@@ -337,6 +333,8 @@ $$(document).on('page:init', '.page[data-name="peticionAdopcion"]', function (e)
     // Do something here when page with data-name="about" attribute loaded and initialized
       console.log("estoy en peticionAdopcion");
       console.log(emailOrg);
+      console.log(nombre_Animal);
+      $$("#quieroAdoptarA").append(nombre_Animal);
       var popup = app.popup.create({
 
         el: '#popupInfoAdopcion',
@@ -350,20 +348,28 @@ $$(document).on('page:init', '.page[data-name="peticionAdopcion"]', function (e)
 
 
 
+      $$("#propietarioAdop").on("click", function(){
+          tipoVivienda=$$("#viviendaPropiaAdop").val();
+          if(tipoVivienda=="Alquiler"){
+            console.log("alquila casa")
+            $$("#permisoPropManejador").removeClass("hidden");
+            $$("#permisoPropManejador").addClass("activo");
+            $$("#alquilerMudanzaManejador").removeClass("hidden");
+            $$("#alquilerMudanzaManejador").addClass("activo");
 
-      $$("#btnSerTransito").on("click", fnQuieroSerTransito);
-      $$("#hizoTransito").on("click", function(){
-          hizoTransito=$$("#hizoTransito").val();
-          if(hizoTransito=="no"){
-            console.log("no hizo transito")
-            $$("#expTransitoManejador").removeClass("activo");
-            $$("#expTransitoManejador").addClass("hidden");
           } else {
-            console.log("si hizo transito")
-            $$("#expTransitoManejador").removeClass("hidden");
-            $$("#expTransitoManejador").addClass("activo");
+            console.log("tiene vivienda propia")
+            $$("#permisoPropManejador").removeClass("activo");
+            $$("#permisoPropManejador").addClass("hidden");
+            $$("#alquilerMudanzaManejador").removeClass("activo");
+            $$("#alquilerMudanzaManejador").addClass("hidden");
           }
       })
+
+
+      $$("#btnAdoptar").on("click", fnAdoptar);
+
+
 
 
 
@@ -611,7 +617,7 @@ $$(document).on('page:init', '.page[data-name="misFliasTransito"]', function (e)
     spaceBetween: 100
     });
     var refMisTransitos=colFamiliasTransito.where("emailorg", "==", email);
-    var indice=0;
+    var indice=1;
 
     refMisTransitos.get()
     .then(function(querySnapshot){
@@ -632,7 +638,7 @@ $$(document).on('page:init', '.page[data-name="misFliasTransito"]', function (e)
         mascotas_Transito=doc.data().Tiene_Mascotas
         agrega_Transito=doc.data().Agrega
 
-  /*      tabTransito=`<div id="tab-`+indice+`" class= "block tab bg-color-purple">
+    /*    tabTransito=`<div id="tab-`+indice+`" class= "block tab bg-color-purple">
         <div class="block">
           <h1 class="centrar text-color-white">`+nombre_Transito+` `+apellido_Transito+ `</h1>
           <h3 class="block centrar noMargin">Datos del Hogar</h3>
@@ -712,7 +718,7 @@ $$(document).on('page:init', '.page[data-name="misFliasTransito"]', function (e)
       </div>`;
       var cantPostulaciones=0;
       cantPostulaciones=indice-1;
-      /*$$("#bloqueTransitos").append(tabTransito);*/
+      $$("#bloqueTransitos").append(tabTransito);*/
 
 /*      var nuevaSwipe=`<div class="swiper-slide">
                         <div class="block">
@@ -801,27 +807,28 @@ $$(document).on('page:init', '.page[data-name="misFliasTransito"]', function (e)
     swiper.slideNext();
     console.log("nombre del transito: "+ doc.data().Nombre + "Transito nro: "+ indice);
 */
-    var acordionT=`  <li class="accordion-item"><a class="item-content item-link" href="#">
-          <div class="item-inner">
-            <div class="item-title text-color-white"><b>`+nombre_Transito+` `+apellido_Transito+`</b></div>
-          </div>
-        </a>
-        <div class="accordion-item-content">
-          <div class="block">
-            <h4 class="item-title centrar text-color-white"><b>DATOS DEL HOGAR</b></h4>
-            <p class="text-align-center text-color-white"><b> Vivienda:</b> `+vivienda_Transito+`</p>
-            <p class="text-align-center text-color-white"><b> Grupo Familiar:</b> `+familia_Transito+`</p>
-            <p class="text-align-center text-color-white"><b> Otras Mascotas:</b> `+mascotas_Transito+`</p>
-            <p class="text-align-center text-color-white"> <b>Experiencias Tránsito:</b> `+exp_Transito+`</p>
-            <p class="text-align-center text-color-white"> <b> Puede dar transito:</b> `+tiempo_Transito +`</p>
-            <h4 class="item-title centrar text-color-white"> <b>DATOS DE CONTACTO</b></h4>
-            <p class="text-align-center text-color-white"> <b> Vive en:</b> `+localidad_Transito+`, `+provincia_Transito+`  </p>
-            <p class="text-align-center text-color-white"> <b> Teléfono:</b> `+telefono_Transito+`</p>
-            <p class="text-align-center text-color-white"> <b> E-mail:</b> `+email_Transito+`</p>
-            <p class="text-align-center text-color-white"> <b> Redes:</b> `+redes_Transito+`</p>
-          </div>
-        </div>
-      </li>`;
+   var acordionT=`  <li class="accordion-item">
+                      <a class="item-content item-link" href="#">
+                        <div class="item-inner">
+                          <div class="item-title text-color-white"><b>`+nombre_Transito+` `+apellido_Transito+`</b></div>
+                          </div>
+                      </a>
+                      <div class="accordion-item-content">
+                        <div class="block">
+                          <h4 class="item-title centrar text-color-white"><b>DATOS DEL HOGAR</b></h4>
+                            <p class="text-align-center text-color-white"><b> Vivienda:</b> `+vivienda_Transito+`</p>
+                            <p class="text-align-center text-color-white"><b> Grupo Familiar:</b> `+familia_Transito+`</p>
+                            <p class="text-align-center text-color-white"><b> Otras Mascotas:</b> `+mascotas_Transito+`</p>
+                            <p class="text-align-center text-color-white"> <b>Experiencias Tránsito:</b> `+exp_Transito+`</p>
+                            <p class="text-align-center text-color-white"> <b> Puede dar transito:</b> `+tiempo_Transito +`</p>
+                            <h4 class="item-title centrar text-color-white"> <b>DATOS DE CONTACTO</b></h4>
+                            <p class="text-align-center text-color-white"> <b> Vive en:</b> `+localidad_Transito+`, `+provincia_Transito+`  </p>
+                            <p class="text-align-center text-color-white"> <b> Teléfono:</b> `+telefono_Transito+`</p>
+                            <p class="text-align-center text-color-white"> <b> E-mail:</b> `+email_Transito+`</p>
+                            <p class="text-align-center text-color-white"> <b> Redes:</b> `+redes_Transito+`</p>
+                          </div>
+                        </div>
+                    </li>`;
 
       $$("#acordionTransitos").append(acordionT);
 
@@ -1297,5 +1304,108 @@ function fnMarcarComoAdoptado(){
 }
 
 function fnAdoptar(){
+  console.log(nombreUsuario, email, emailOrg);
+
+  porqueAdop=$$("#porqueAdop").val();
+  cicloVidaAdop=$$("#cicloVidaAdop").val();
+  compromisoAdop=$$("#compromisoAdop").val();
+  necesidadesAdop=$$("#necesidadesAdop").val();
+  tieneMascotasAdop=$$("#tieneMascotasAdop").val();
+  cuidaMascotasAdop=$$("#cuidaMascotasAdop").val();
+  familiaAdop= $$("#familiaAdop").val();
+  alergiasAdop=$$("#alergiasAdop").val();
+  viviendaAdop= $$("#viviendaAdop").val();
+  viviendaPropiaAdop=$$("#viviendaPropiaAdop").val();
+  perimisoPropAdop=$$("#perimisoPropAdop").val();
+  mudanzaAdop=$$("#mudanzaAdop").val();
+  castracionAdop=$$("#castracionAdop").val();
+  profesionAdop=$$("#profesionAdop").val();
+  telefonoAdop=$$("#telefonoAdop").val();
+  linkRedesAdop=$$("#linkRedesAdop").val();
+  direccionAdop=$$("#direccionAdop").val();
+  algoMasAdop=$$("#algoMasAdop").val();
+
+
+  if(viviendaPropiaAdop=="Vivienda Propia"){
+    perimisoPropAdop="--";
+    mudanzaAdop="--";
+  }
+
+  if(algoMasAdop==""){
+    algoMasAdop="No agrega nada";
+  }
+  console.log("familia: " + familiaAdop)
+  if (porqueAdop=="" || cicloVidaAdop=="" || compromisoAdop=="" ||  necesidadesAdop=="" ||  tieneMascotasAdop=="" ||  familiaAdop=="" || cuidaMascotasAdop=="" || alergiasAdop=="" || viviendaAdop=="" ||  necesidadesAdop=="" ||  viviendaPropiaAdop=="" ||  perimisoPropAdop=="" || mudanzaAdop=="" || castracionAdop=="" || telefonoAdop=="" || profesionAdop=="" ||  linkRedesAdop=="" ||  direccionAdop=="") {
+    app.dialog.alert("¡¡Completá todos los campos!!", "Oops");
+  } else {
+    app.dialog.confirm("¡" + nombreUsuario + ", la Adopción es un compromiso de por Vida!"
+    + "</br>"+ "¡Nos vamos a estar comunicando con vos!" + "</br>"+ "¡Gracias!" , "Confirmá tu petición!", function(){
+
+      var peticionDeAdopcion={
+        //Nombre Animal: deberian estar los datos del animal tmb
+        email:email,
+        emailorg:emailOrg,
+        Nombre: nombreUsuario,
+        Apellido: apellidoUsuario,
+        Vivienda: viviendaAdop,
+        Familia: familiaAdop,
+        Localidad: localidad,
+        Provincia: provincia,
+        Telefono: telefonoAdop,
+        Redes: linkRedesAdop,
+        Porque_Adop: porqueAdop,
+        Ciclo_Adop: cicloVidaAdop,
+        Compromiso_Adop: compromisoAdop,
+        Necesidades_Adop: necesidadesAdop,
+        Alergias_Adop: alergiasAdop,
+        Vivienda_Prop_Adop: viviendaPropiaAdop,
+        Permiso_Prop_Adop: perimisoPropAdop,
+        Mudanza_Adop: mudanzaAdop,
+        Castracion_Adop: castracionAdop,
+        Profesion_Adop: profesionAdop,
+        Tiene_Mascotas: tieneMascotasAdop,
+        Cuida_Mascotas: cuidaMascotasAdop,
+        Direccion: direccionAdop,
+        Agrega: algoMasAdop,
+      }
+
+
+      colPeticionAdopcion.add(peticionDeAdopcion)
+        .then(function (docRefo){
+          console.log("Se guardo en bd con el id: ", docRefo.id);
+          app.dialog.alert ("¡" +nombreUsuario+", ya recibimos tu petición de Adopción! ¡Nos vamos a comunicar con vos!", "¡¡Graciass!!", function() {mainView.router.navigate("/usuarioHome/")} );
+        })
+        .catch(function(error){
+          console.log("Error: " + error);
+        });
+    });
+
+  }
+
+}
+
+function setOrganizacion(nombre){
+
+  var reforgan= colOrganizaciones
+  var indiceA=0;
+  reforgan.get()
+    .then(function(querySnapshot) {
+        querySnapshot.forEach(function(docActual){
+          indiceA++;
+          if(nombre==docActual.data().Nombre){
+             nombreOrganizacion=docActual.data().Nombre
+             localidadOrg= docActual.data().Localidad
+             provinciaOrg= docActual.data().Provincia
+             descripcionOrg=docActual.data().Descripción
+             emailOrg=docActual.id
+          }
+
+
+        })
+        mainView.router.navigate('/VerOrgDesdeUsu/verOr'+indiceA+'/')
+    })
+    .catch( function(error){
+      console.log("Error : "+ error);
+    });
 
 }

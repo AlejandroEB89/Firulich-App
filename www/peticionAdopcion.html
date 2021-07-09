@@ -1,5 +1,5 @@
 <!-- We don't need a full layout in this file because this page will be parsed with Ajax.  -->
-<div class="page infinite-scroll-content" data-name="peticionAdopcion">
+<div class="page" data-name="peticionAdopcion">
   <div class="navbar">
       <div class="navbar-bg"></div>
       <div class="navbar-inner">
@@ -17,7 +17,7 @@
   <!-- Toolbar -->
   <div class="toolbar tabbar toolbar-bottom">
       <div class="toolbar-inner">
-          <a id="btnSerTransito" href="#" class="tab-link btnToolbar">¡ENVIAR!</a>
+          <a id="btnAdoptar" href="#" class="tab-link btnToolbar">¡ENVIAR!</a>
       </div>
   </div>
 
@@ -93,7 +93,7 @@
                 <div class="item-inner">
                   <div class="item-title item-label">¿Como está compuesta tu familia?</div>
                   <div class="item-input-wrap">
-                    <textarea id="faimiliaAdop" placeholder="¿Cuantos son en la casa? ¿Edades? ¿Están todos de acuerdo en adoptar?"></textarea>
+                    <textarea id="familiaAdop" placeholder="¿Cuantos son en la casa? ¿Edades? ¿Están todos de acuerdo en adoptar?"></textarea>
                     <span class="input-clear-button"></span>
                   </div>
                 </div>
@@ -130,7 +130,7 @@
                 <div class="item-inner">
                   <div class="item-title item-label">¿Vivienda Propia? </div>
                   <div class="item-input-wrap input-dropdown-wrap">
-                    <select id="propietarioAdop" placeholder="Seleccioná">
+                    <select id="viviendaPropiaAdop" placeholder="Seleccioná">
                       <option value="Vivienda Propia">Vivienda Propia</option>
                       <option value="Alquiler"> Alquiler </option>
                     </select>
@@ -138,7 +138,7 @@
                 </div>
               </li>
 
-              <li id="permisoPropManejador" class="item-content item-input activo">
+              <li id="permisoPropManejador" class="item-content item-input hidden">
                 <div class="item-inner">
                   <div class="item-title item-label">¿Contás con permiso del propietario para tener un animal?</div>
                   <div class="item-input-wrap input-dropdown-wrap">
@@ -150,7 +150,7 @@
                 </div>
               </li>
 
-              <li id="alquilerMudanzaManejador" class="item-content item-input activo">
+              <li id="alquilerMudanzaManejador" class="item-content item-input hidden">
                 <div class="item-inner">
                   <div class="item-title item-label">En caso de Mudanza:</div>
                   <div class="item-input-wrap">
@@ -173,57 +173,55 @@
 
 
 
+            <h4 class="block">Datos Personales</h4>
 
 
-
-
-              <li class="item-content item-input">
-                <div class="item-inner">
-                  <div class="item-title item-label">¿Ya has dado tránsito a animales?</div>
-                  <div class="item-input-wrap input-dropdown-wrap">
-                    <select id="hizoTransito" placeholder="Please choose...">
-                      <option value="si">Si</option>
-                      <option value="no">No</option>
-                    </select>
-                  </div>
+            <li class="item-content item-input">
+              <div class="item-inner">
+                <div class="item-title item-label">Profesión</div>
+                <div class="item-input-wrap">
+                  <input id="profesionAdop" type="text" placeholder="Ingresá tu ocupación/trabajo" />
+                  <span class="input-clear-button"></span>
                 </div>
-              </li>
+              </div>
+            </li>
 
-              <li id="expTransitoManejador" class="item-content item-input activo">
-                <div class="item-inner">
-                  <div class="item-title item-label">Contános de esa experiencia</div>
-                  <div class="item-input-wrap">
-                    <textarea id="expTransito"  class="resizable" placeholder="Una breve descripción de tu experiencia como tránsito"></textarea>
-                  </div>
+            <li class="item-content item-input">
+              <div class="item-inner">
+                <div class="item-title item-label">Teléfono</div>
+                <div class="item-input-wrap">
+                  <input id="telefonoAdop" type="tel" placeholder="Dejános un cel para contactarnos" />
+                  <span class="input-clear-button"></span>
                 </div>
-              </li>
+              </div>
+            </li>
 
-              <li class="item-content item-input">
-                <div class="item-inner">
-                  <div class="item-title item-label">Facebook/Instagram</div>
-                  <div class="item-input-wrap">
-                    <input id="linkRedes" type="url" placeholder="Si querés podes dejarnos tu perfil" />
-                    <span class="input-clear-button"></span>
-                  </div>
+            <li class="item-content item-input">
+              <div class="item-inner">
+                <div class="item-title item-label">Facebook/Instagram</div>
+                <div class="item-input-wrap">
+                  <input id="linkRedesAdop" type="text" placeholder="Dejános tu perfil" />
+                  <span class="input-clear-button"></span>
                 </div>
-              </li>
+              </div>
+            </li>
 
-              <li class="item-content item-input">
-                <div class="item-inner">
-                  <div class="item-title item-label">Telefono</div>
-                  <div class="item-input-wrap">
-                    <input id="telefono" type="tel" placeholder="Dejános un cel para contactarnos" />
-                    <span class="input-clear-button"></span>
-                  </div>
+            <li class="item-content item-input activo">
+              <div class="item-inner">
+                <div class="item-title item-label">Dirección</div>
+                <div class="item-input-wrap">
+                  <input id="direccionAdop" type="text" placeholder="Ingresa tu dirección y barrio"/>
                 </div>
-              </li>
+              </div>
+            </li>
+
 
 
               <li class="item-content item-input">
                 <div class="item-inner">
                   <div class="item-title item-label">¿Querés agregar algo más?</div>
                   <div class="item-input-wrap">
-                    <textarea id="algoMas" class="resizable" placeholder="Opcional"></textarea>
+                    <textarea id="algoMasAdop" placeholder="Si querés podés agregar algo más"></textarea>
                   </div>
                 </div>
               </li>
