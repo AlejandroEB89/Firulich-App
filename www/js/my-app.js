@@ -82,6 +82,13 @@ var idLoc="";
 var idPcia="";
 var idDescOr="";
 
+var bancoOrg="";
+var titularCtaOrg="";
+var cbuOrg="";
+var nroCtaOrg="";
+var cuilOrg="";
+var cuentaMpOrg="";
+
 
 // -------------- Variables para base de datos  ------------------//
 var db=firebase.firestore();
@@ -115,17 +122,17 @@ $$(document).on('page:init', function (e) {
 //  -------------------------- PAGE INIT INDEX ----------------------------------------------------
 $$(document).on('page:init', '.page[data-name="index"]', function (e) {
     console.log("estoy en index");
-
+/*
     var tipodeUsuario="";
     var nombreUsuario="";
     var apellidoUsuario="";
-    //var nombreOrganizacion="";
+    var nombreOrganizacion="";
     var nombreRespOrganizacion="";
     var email="";
     var password="";
     var provincia="";
     var localidad="";
-
+*/
     console.log("ahora tipo de usuario es : " + tipodeUsuario);
 
     $$("#btnIniciarSesion").on("click", fnIniciarSesion);
@@ -591,7 +598,7 @@ $$(document).on('page:init', '.page[data-name="misRecomendaciones"]', function (
 
 
     var popup = app.popup.create({
-      //content: '<div class="popup"><div class="view">  <div class="page"><div class="navbar"><div class="navbar-bg"></div><div class="navbar-inner"><div class="title"> Importante</div><div class="right"><a class="link popup-close">Cerrar</a></div></div></div><div class="page-content"><p> Antes que nada queremos </p>  </div></div> </div>',
+
       el: '#popupNuevaRecomenda',
       on: {
         opened: function () {
@@ -851,14 +858,84 @@ $$(document).on('page:init', '.page[data-name="misFliasTransito"]', function (e)
 })
 
 //    -------------------------PAGE INIT miPerfil (perfil de org que inicio sesion)  -----------------------------------------------
-$$(document).on('page:init', '.page[data-name="miPerfilOrg"]', function (e) {
+$$(document).on('page:init', '.page[data-name="miPerfilOrg"]', function (e){
     // Do something here when page with data-name="about" attribute loaded and initialized
+
+    /*  VER COMO RESOLVER QUE MUESTRE LOS DATOS BANCARIOS PORQUE NO LOS ESTA MOSTRANDO....
+    SI ESTAN EN LA BASE DE DATOS PERO EN ALGO DE LA LOGICA LA PIFIE */
+
+
     console.log("estoy en miPerfilOrg");
+    console.log("email:" + email+"-")
+    console.log("nom: "+ nombreRespOrganizacion)
+    console.log("desc: "+ descripcionOrg)
+    console.log("banco: "+ bancoOrg)
+    if(bancoOrg==""){
+      $$("#bancoOrg").append("--")
+    } else {
+      fnConsultarDatos;
+      //$$("#bancoOrg").append(bancoOrg)
+    }
+
+    if(titularCtaOrg==""){
+      $$("#titularCtaOrg").append("--")
+    } else {
+      fnConsultarDatos;
+    }
+    if(cbuOrg==""){
+      $$("#cbuOrg").append("--")
+    } else {
+      $$("#cbuOrg").append(cbuOrg)
+    }
+
+    if(nroCtaOrg==""){
+      $$("#nroCtaOrg").append("--")
+    } else {
+      $$("#nroCtaOrg").append(nroCtaOrg)
+    }
+
+    if(cuilOrg==""){
+      $$("#cuilOrg").append("--")
+    } else {
+      $$("#cuilOrg").append(cuilOrg)
+    }
+
+    if(cuentaMpOrg==""){
+      $$("#mPagoOrg").append("--")
+    } else {
+      $$("#mPagoOrg").append(cuentaMpOrg)
+    }
 
 
+      $$("#nOrg").append(nombreOrganizacion);
+      $$("#nResOrg").append(nombreRespOrganizacion+" "+apellidoUsuario);
+      $$("#dOrg").html(descripcionOrg);
+      $$("#lOrg").append(localidad);
+      $$("#pOrg").append(provincia);
 
 
+      $$("#editarNomOrg").on("click", fnEditarNomOrg);
+      $$("#editarNomRespOrg").on("click", fnEditarNomRespOrg);
+      $$("#editarLocOrg").on("click", fnEditarLocOrg);
+      $$("#editarPciaOrg").on("click", fnEditarPciaOrg);
+      $$("#editarDescOrg").on("click", fnEditarDescOrg);
+      $$("#editarMPagoOrg").on("click", fnEditarMPagoOrg);
+      $$("#editarBancoOrg").on("click", fnEditarBancoOrg);
+      $$("#editartitularCtaOrg").on("click", fnEditarTitularCtaOrg);
+      $$("#editarcbuOrg").on("click", fnEditarCbuOrg);
+      $$("#editarNroCtaOrg").on("click", fnEditarNroCtaOrg);
+      $$("#editarCuilOrg").on("click", fnEditarCuilOrg);
 
+
+      var popup = app.popup.create({
+
+        el: '#popupEditarDescOrg',
+        on: {
+          opened: function () {
+            console.log('Popup opened')
+          }
+        }
+      });
 
 })
 
@@ -1108,6 +1185,7 @@ function fnIniciarSesion (){
               tipodeUsuario=doc.data().TipoUsuario
               localidad=doc.data().Localidad
               provincia=doc.data().Provincia
+              descripcionOrg=doc.data().Descripción
               console.log( "Accedió: " +  nombreOrganizacion+ " que es una " + tipodeUsuario + " de " + localidad  + " " + provincia + " y su responsable es: " + nombreRespOrganizacion + " " + apellidoUsuario);
               mainView.router.navigate("/orgHome/");
           }
@@ -1409,3 +1487,188 @@ function setOrganizacion(nombre){
     });
 
 }
+
+
+
+function fnEditarNomOrg(){
+  console.log("editar nombre")
+  app.dialog.prompt("Ingresa el nuevo nombre", "Editar Nombre de Organización", function(newNombreOrg){
+    colOrganizaciones.doc(email).update({ Nombre: newNombreOrg })
+    .then(function() {
+    console.log("actualizado ok: "+newNombreOrg );
+    })
+    .catch(function(error) {
+    console.log("Error: " + error);
+    });
+    mainView.router.navigate("/miPerfilOrg/");
+
+  });
+}
+
+function fnEditarNomRespOrg(){
+  console.log("editar nombre responsable")
+  app.dialog.prompt("Ingresa el nuevo nombre", "Editar Nombre del Responsable", function(nuevoNombre){
+    colOrganizaciones.doc(email).update({ nomResponsable: nuevoNombre })
+    .then(function() {
+    console.log("actualizado ok: "+nuevoNombre );
+    })
+    .catch(function(error) {
+    console.log("Error: " + error);
+    });
+  app.dialog.prompt("Ingresa el nuevo apellido", "Editar Apellido del Responsable", function(nuevoApe){
+    colOrganizaciones.doc(email).update({ apellidoResponsable: nuevoApe })
+    .then(function() {
+    console.log("actualizado ok: "+nuevoApe );
+    })
+    .catch(function(error) {
+    console.log("Error: " + error);
+    });
+  });
+  mainView.router.navigate("/miPerfilOrg/");
+
+  });
+}
+
+
+function fnEditarLocOrg(){
+  console.log("editar localidad")
+  app.dialog.prompt("Ingresa el nuevo nombre", "Editar Nombre de Organización")
+}
+
+
+function fnEditarPciaOrg(){
+  console.log("editar provincia")
+  app.dialog.prompt("Ingresa el nuevo nombre", "Editar Nombre de Organización")
+}
+
+function fnEditarDescOrg(){
+  console.log("editar descripcion")
+    nuevaDescripcion=$$("#nuevaDescripcion").text();
+    console.log("newDesc: "+nuevaDescripcion);
+    colOrganizaciones.doc(email).update({ Descripción: nuevaDescripcion })
+    .then(function() {
+    console.log("actualizado ok: "+nuevaDescripcion );
+    })
+    .catch(function(error) {
+    console.log("Error: " + error);
+    });
+    app.popup.close("#popupEditarDescOrg");
+    mainView.router.navigate("/miPerfilOrg/");
+
+}
+
+function fnEditarMPagoOrg(){
+  console.log("editar mercadoPAgo")
+  app.dialog.prompt("Ingresa el email de la cuenta", "Cuenta de Mercado Pago", function(cuentaMp){
+    colOrganizaciones.doc(email).update({ MercadoPago: cuentaMp })
+    .then(function() {
+    console.log("actualizado ok: "+cuentaMp );
+    cuentaMpOrg=cuentaMp;
+    })
+    .catch(function(error) {
+    console.log("Error: " + error);
+    });
+    mainView.router.navigate("/miPerfilOrg/");
+
+  });
+}
+
+function fnEditarBancoOrg(){
+  console.log("editar bancoOrg")
+  app.dialog.prompt("Ingresa el Banco", "Editar Banco", function(banco){
+    colOrganizaciones.doc(email).update({ Banco: banco })
+    .then(function() {
+    console.log("actualizado ok: "+banco );
+    bancoOrg=banco;
+    })
+    .catch(function(error) {
+    console.log("Error: " + error);
+    });
+    mainView.router.navigate("/miPerfilOrg/");
+  });
+}
+
+function fnEditarTitularCtaOrg(){
+  console.log("editar titular cta")
+  app.dialog.prompt("Ingresa nombre y apellido", "Titular de la Cuenta", function(titular){
+    colOrganizaciones.doc(email).update({ Titular_Cta: titular })
+    .then(function() {
+    console.log("actualizado ok: "+titular );
+    titularCtaOrg=titular;
+    })
+    .catch(function(error) {
+    console.log("Error: " + error);
+    });
+    mainView.router.navigate("/miPerfilOrg/");
+
+  });
+}
+
+
+function fnEditarCbuOrg(){
+  console.log("editar Cbu ")
+  app.dialog.prompt("Ingresa el nro de CBU", "Editar CBU", function(cbu){
+    colOrganizaciones.doc(email).update({ Cbu_Cta: cbu })
+    .then(function() {
+    console.log("actualizado ok: "+cbu );
+    cbuOrg=cbu;
+    })
+    .catch(function(error) {
+    console.log("Error: " + error);
+    });
+    mainView.router.navigate("/miPerfilOrg/");
+
+  });
+}
+
+function fnEditarNroCtaOrg(){
+  console.log("editar nro cta ")
+  app.dialog.prompt("Ingresa el nro de cuenta", "Editar N° Cuenta", function(nroCta){
+    colOrganizaciones.doc(email).update({ Nro_Cta: nroCta })
+    .then(function() {
+    console.log("actualizado ok: "+nroCta );
+    nroCtaOrg=nroCta;
+    })
+    .catch(function(error) {
+    console.log("Error: " + error);
+    });
+    mainView.router.navigate("/miPerfilOrg/");
+
+  });
+}
+
+function fnEditarCuilOrg(){
+  console.log("editar CUIL ")
+  app.dialog.prompt("Ingresa el nro de CUIL", "Editar N° CUIL", function(cuil){
+    colOrganizaciones.doc(email).update({ Nro_Cuil: cuil})
+    .then(function() {
+    console.log("actualizado ok: "+cuil );
+    cuilOrg=cuil;
+    })
+    .catch(function(error) {
+    console.log("Error: " + error);
+    });
+    mainView.router.navigate("/miPerfilOrg/");
+
+  });
+}
+/*
+function fnConsultarDatos(){
+
+
+var consultaUpdate= colOrganizaciones.doc(email);
+consultaUpdate.get()
+  .then(function(querySnapshot) {
+      querySnapshot.forEach(function(docOrg){
+        console.log("banco: "+ docOrg.data().Banco)
+        bancoOrg=docOrg.data().Banco;
+
+      })
+  $$("#bancoOrg").append(bancoOrg) ;
+  })
+  .catch( function(error){
+    console.log("Error : "+ error);
+  });
+
+}
+*/

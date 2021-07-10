@@ -115,6 +115,7 @@
     --f7-dialog-text-align: center;
     --f7-dialog-bg-color:#9c27b0;
     --f7-dialog-text-color:#FFFFFF;
+    --f7-dialog-input-bg-color: rgba(0, 0, 0, 0.25);
     --f7-dialog-title-text-color: #FFFFFF;
 
 }
@@ -250,4 +251,23 @@ display: none !important;
 
 .margenTop{
   margin-top: 4vh;
+}
+
+.bordes{
+  min-height:30vh;
+  border:solid;
+  border-width: 2px;
+  border-color: white;
+  border-radius: 20px;
+}
+
+.bordesChico{
+  border:solid;
+  border-width: 2px;
+  border-color: white;
+  border-radius: 20px;
+}
+
+.margenPerfil{
+  padding:15px;
 }

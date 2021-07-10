@@ -17,12 +17,12 @@
       <div class="block margenTop">
         <h3 class="block-title centrar text-color-white">¡Actualizá tus datos!</h3>
         <div class="list">
-          <ul class="transp">
+          <ul class="transp bordes">
             <li>
-              <a href="#" class="item-link item-content">
+              <a id="editarNomOrg" href="#" class="item-link item-content">
                 <div class="item-inner">
-                  <div class="item-title text-color-white">
-                    <div class="item-header text-color-white">Nombre de la Organización</div>Bigotes
+                  <div id="nOrg" class="item-title text-color-white">
+                    <div class="item-header text-color-white">Nombre de Organización</div>
                   </div>
                   <div class="item-after text-color-white">Editar</div>
                 </div>
@@ -30,10 +30,114 @@
             </li>
 
             <li>
-              <a href="#" class="item-link item-content">
+              <a id="editarNomRespOrg" href="#" class="item-link item-content">
+                <div class="item-inner">
+                  <div id="nResOrg" class="item-title text-color-white">
+                    <div class="item-header text-color-white">Responsable</div>
+                  </div>
+                  <div class="item-after text-color-white">Editar</div>
+                </div>
+              </a>
+            </li>
+
+            <li>
+              <a id="editarLocOrg" href="#" class="item-link item-content">
+                <div class="item-inner">
+                  <div id="lOrg" class="item-title text-color-white">
+                    <div class="item-header text-color-white">Localidad</div>
+                  </div>
+                  <div class="item-after text-color-white">Editar</div>
+                </div>
+              </a>
+            </li>
+
+            <li>
+              <a id="editarPciaOrg" href="#" class="item-link item-content">
+                <div class="item-inner">
+                  <div id="pOrg" class="item-title text-color-white">
+                    <div class="item-header text-color-white">Provincia</div>
+                  </div>
+                  <div class="item-after text-color-white">Editar</div>
+                </div>
+              </a>
+            </li>
+
+            <li>
+              <a  href="#" class="item-link item-content popup-open" data-popup=".popupEditarDescOrg">
                 <div class="item-inner">
                   <div class="item-title text-color-white">
-                    <div class="item-header text-color-white">Responsable</div>Serene Salok
+                    <div class="item-header text-color-white">Actualizar Descripción</div>
+                  </div>
+                  <div class="item-after text-color-white">Editar</div>
+                </div>
+              </a>
+            </li>
+
+          </ul>
+        </div>
+
+        <h3 class="block-title centrar text-color-white">Descripción</h3>
+
+        <div class="block  bordes">
+          <p id="dOrg" class="margenPerfil text-color-white text-align-justify">
+          </p>
+        </div>
+
+
+        <h3 class="block-title centrar text-color-white">Datos para Donaciones</h3>
+        <div class="block-title text-color-white">Cuenta Bancaria para Transferencias</div>
+        <div class="list">
+          <ul class="transp bordes">
+
+            <li>
+              <a id="editarBancoOrg" href="#" class="item-link item-content">
+                <div class="item-inner">
+                  <div id="bancoOrg" class="item-title text-color-white">
+                    <div class="item-header text-color-white">Banco</div>
+                  </div>
+                  <div class="item-after text-color-white">Editar</div>
+                </div>
+              </a>
+            </li>
+
+            <li>
+              <a id="editartitularCtaOrg" href="#" class="item-link item-content">
+                <div class="item-inner">
+                  <div id="titularCtaOrg" class="item-title text-color-white">
+                    <div class="item-header text-color-white">Titular Cuenta</div>
+                  </div>
+                  <div class="item-after text-color-white">Editar</div>
+                </div>
+              </a>
+            </li>
+
+            <li>
+              <a id="editarcbuOrg" href="#" class="item-link item-content">
+                <div class="item-inner">
+                  <div id="cbuOrg" class="item-title text-color-white">
+                    <div class="item-header text-color-white">CBU</div>
+                  </div>
+                  <div class="item-after text-color-white">Editar</div>
+                </div>
+              </a>
+            </li>
+
+            <li>
+              <a id="editarNroCtaOrg" href="#" class="item-link item-content">
+                <div class="item-inner">
+                  <div id="nroCtaOrg" class="item-title text-color-white">
+                    <div class="item-header text-color-white">N° de Cuenta</div>
+                  </div>
+                  <div class="item-after text-color-white">Editar</div>
+                </div>
+              </a>
+            </li>
+
+            <li>
+              <a id="editarCuilOrg" href="#" class="item-link item-content">
+                <div class="item-inner">
+                  <div id="cuilOrg" class="item-title text-color-white">
+                    <div class="item-header text-color-white">CUIL</div>
                   </div>
                   <div class="item-after text-color-white">Editar</div>
                 </div>
@@ -41,11 +145,85 @@
             </li>
           </ul>
         </div>
-        <div class="block block-strong bordes">
 
+
+        <div class="block-title text-color-white">Cuenta de MercadoPago</div>
+        <div class="list">
+          <ul class="transp bordesChico">
+            <li>
+              <a id="editarMPagoOrg" href="#" class="item-link item-content">
+                <div class="item-inner">
+                  <div id="mPagoOrg" class="item-title text-color-white">
+                    <div class="item-header text-color-white">Email de la cuenta</div>
+                  </div>
+                  <div class="item-after text-color-white">Editar</div>
+                </div>
+              </a>
+            </li>
+          </ul>
         </div>
 
+        <div class="block centrar">
+          <div class="item-media"><img src="img/firu!.png"
+              height="90" /></div>
+        </div>
 
+    </div>
+
+<!----------------- POPUP PARA ACTUALIZAR DESCRIPCION ----------------->
+
+      <div id="popupEditarDescOrg" class="popup popupEditarDescOrg">
+          <div class="view">
+            <div class="page">
+              <div class="navbar">
+                <div class="navbar-bg"></div>
+                <div class="navbar-inner">
+                  <div class="left">
+                    <a href="#" class="link popup-close">
+                        <i class="icon icon-back"></i>
+                        <span class="ios-only">Back</span>
+                    </a>
+                  </div>
+                  <div class="title center">Editar</div>
+                </div>
+              </div>
+              <div class="page-content bg-color-purple">
+                <div class="block formatoBloques no-hairlines">
+                <h2 class="text-color-white centrar noMargin"> Actualizá tu Descripción</h2>
+                <p class="text-color-white centrar noMargin"> Contá todo sobre el trabajo que hace tu organización y sus motivaciones</p>
+
+                <div class="list">
+                  <ul class="transp" >
+
+                    <li class="item-content item-input item-input-outline">
+                      <div class="text-editor text-editor-init item-input-outline" data-placeholder="Ingresa la descripción..."
+                          data-buttons='[["bold", "italic", "underline", "strikeThrough"], ["orderedList", "unorderedList"]]'>
+                        <div id="nuevaDescripcion" class="text-editor-content inputsindex" contenteditable></div>
+                      </div>
+                    </li>
+
+
+
+
+                  </ul>
+                  <!-- <a class="link popup-close"> ¡Entiendo!  popup-close </a> -->
+                  <div class="block block-strong no-hairlines FormatoBtnIni  noMargin ">
+                    <button id="editarDescOrg" class="button btn button-large button-fill">
+                      <span>¡Actualizar!</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
+
+
+
+
+
+
+
     </div>
 </div>
