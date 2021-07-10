@@ -74,6 +74,7 @@ var localidad="";
 var localidadOrg="";
 var descripcionOrg="";
 var orgElegida="";
+var linkAOrg="";
 var nroIor="";
 var idOr="";
 var idMailOr="";
@@ -106,7 +107,7 @@ var tipo_Animal="";
 var genero_Animal="";
 var descripción_Animal="";
 
-
+// -------------- ------------------------------------------ ------------------//
 
 // Handle Cordova Device Ready Event
 $$(document).on('deviceready', function() {
@@ -229,6 +230,7 @@ $$(document).on('page:init', '.page[data-name="VerOrgDesdeUsu"]', function (e, p
     console.log("estoy en VerOrgDesdeUsu");
     //console.log('La org es id: ' + page.route.params.id );
     orgElegida=page.route.params.id;
+    linkAOrg="/VerOrgDesdeUsu/"+orgElegida+"/";
   /*  idOr=page.route.params.id;
     nroIor=idOr.replace ("verOr", "");
     idMailOr="#em-Org" + nroIor;
@@ -277,7 +279,7 @@ $$(document).on('page:init', '.page[data-name="enAdopcionOrg"]', function (e) {
             descripcion_Animal=doc.data().Descripcion_Animal
             console.log(nombre_Animal + " que es " + genero_Animal + " indice: " + indice);
             var tarjetaAni='<div id="tarjeta'+indice+'" class="card demo-card-header-pic"><div id="imgAUsu'+indice+'" style="background-image:url(img/perro.jpg)" class="card-header align-items-flex-end row"> <p id="nomAUsu'+indice+'" class="txtCards align-items-flex-end noMargin"> ' + nombre_Animal +
-             '</p> </div> <div class="card-content card-content-padding"> <div class="row justify-content-space-around noMargin"> <p id="tipoAUsu'+indice+'" class=" align-items-flex-end noMargin"> ' + tipo_Animal+ '</p> <p class=" align-items-flex-end noMargin"> - </p> <p id="generoAUsu'+indice+'" class="align-items-flex-end noMargin">' + genero_Animal + '</p> </div><p id="descAUsu'+indice+'" class="text-align-justify">' + descripcion_Animal  + '</p> </div> <div class="card-footer"> <a id="verAUsu'+indice+'" href="/verAnimalDesdeUsu/verAUsu'+indice+'/" class="link verAnimal">' + 'Leer Más' + '</a></div> </div>';
+             '</p> </div> <div class="card-content card-content-padding"> <div class="row justify-content-space-around noMargin"> <p id="tipoAUsu'+indice+'" class=" align-items-flex-end noMargin"> ' + tipo_Animal+ '</p> <p class=" align-items-flex-end noMargin"> - </p> <p id="generoAUsu'+indice+'" class="align-items-flex-end noMargin">' + genero_Animal + '</p> </div><p id="descAUsu'+indice+'" class="text-align-justify">' + descripcion_Animal  + '</p> </div> <div class="card-footer"> <a id="verAUsu'+indice+'" href="/verAnimalDesdeUsu/verAUsu'+indice+'/" class="link verAnimal">' + 'Leer Más' + '</a></div> </div>';     //onclick="setAnimal(\''+nombre_Animal+'\')"
 
             $$("#bloqueAdopcionDeOrg").append(tarjetaAni);
 
@@ -287,9 +289,9 @@ $$(document).on('page:init', '.page[data-name="enAdopcionOrg"]', function (e) {
         console.log("Error: "+ error);
       });
 
-      linkAOrg="/VerOrgDesdeUsu/"+orgElegida+"/";
+
       console.log("El link a org es: " +linkAOrg)
-      $$("#irAOrgConId").on("click", function(){mainView.router.navigate(linkAOrg)})
+      $$("#irAOrgConId").on("click", function(){mainView.router.navigate(linkAOrg)})     //ir hacia atrás
 
 })
 //    -------------------------PAGE INIT verAnimalDesdeUsu (lista de adopcion de x org (desde usuario)) -----------------------------------------------
@@ -302,19 +304,23 @@ $$(document).on('page:init', '.page[data-name="verAnimalDesdeUsu"]', function (e
 
 
 idTarjeta=page.route.params.id;
-nroT=idTarjeta.replace ("verAUsu", "");
+nroT=idTarjeta.replace("verAUsu", "");
 console.log("el nro de tarjeta es:" + nroT);
 idNomUsu= "#nomAUsu" + nroT;
 idDescUsu="#descAUsu" + nroT;
 idTipoUsu="#tipoAUsu" + nroT;
 idGeneroUsu="#generoAUsu" + nroT;
+
 idImgnUsu="#imgAUsu" + nroT;
+console.log("idimgnusu: "+idImgnUsu)
 console.log("div del nombre: "+ idNomUsu )
 nombre_Animal=$$(idNomUsu).html();
 genero_Animal=$$(idGeneroUsu).html();
 tipo_Animal=$$(idTipoUsu).html();
 descripcion_Animal=$$(idDescUsu).html();
+
 urlIm_Animalusu=$$(idImgnUsu).css("background-image");
+console.log("url: "+urlIm_Animalusu)
 imgn_Animal= urlIm_Animalusu.replace('url("http://localhost:3000/browser/www/', "");
 imgAUsu=imgn_Animal.replace('")', "")
 console.log("animal es: " + nombre_Animal);
@@ -325,7 +331,7 @@ console.log(imgAUsu);
 
 $$("#nomAniUsu").html(nombre_Animal);
 $$("#fotoAUsu").attr("src", imgAUsu);
-$$("#tipoYGeneroUsu").html(tipo_Animal+", "+genero_Animal)
+$$("#tipoYGeneroUsu").html(tipo_Animal+", "+genero_Animal);
 $$("#descripAUsu").html(descripcion_Animal);
 
 $$("#adoptar").on("click", function(){mainView.router.navigate("/peticionAdopcion/")});
@@ -418,8 +424,8 @@ $$(document).on('page:init', '.page[data-name="serTransito"]', function (e) {
           }
       })
 
-
-
+      console.log(linkAOrg)
+      $$("#irAVerOrgConId").on("click",function(){mainView.router.navigate(linkAOrg)});
 
 
 })
@@ -449,14 +455,67 @@ $$(document).on('page:init', '.page[data-name="recomendacionesOrg"]', function (
 
 })
 
+//    -------------------------PAGE INIT Donar (datos para donar de X org (desde usuario)) -----------------------------------------------
+$$(document).on('page:init', '.page[data-name="donar"]', function (e) {
+    // Do something here when page with data-name="about" attribute loaded and initialized
+    console.log("estoy en donar");
+    console.log("-"+emailOrg+"-");
+    var popup = app.popup.create({
+
+      el: '#popupDonar',
+      on: {
+        opened: function () {
+          console.log('Popup opened')
+        }
+      }
+    });
+    app.popup.open("#popupDonar");
+
+    var refDeOrg= colOrganizaciones
+    refDeOrg.get()
+      .then(function(querySnapshot) {
+          querySnapshot.forEach(function(doc){
+            if(nombreOrganizacion==doc.data().Nombre){
+            console.log("banco: "+ doc.data().Banco);
+               bancoOrg=doc.data().Banco
+               titularCtaOrg= doc.data().Titular_Cta
+               cbuOrg= doc.data().Cbu_Cta
+               nroCtaOrg=doc.data().Nro_Cta
+               cuilOrg=doc.data().Nro_Cuil
+               cuentaMpOrg=doc.data().MercadoPago
+
+               $$("#bancoOrgdesdeUsu").append(bancoOrg);
+               $$("#titularCtaOrgdesdeUsu").append(titularCtaOrg);
+               $$("#cbuOrgdesdeUsu").append(cbuOrg);
+               $$("#nroCtaOrgdesdeUsu").append(nroCtaOrg);
+               $$("#cuilOrgdesdeUsu").append(cuilOrg);
+               $$("#mPagoOrgdesdeUsu").append(cuentaMpOrg);
+            }
+
+          })
+      })
+      .catch( function(error){
+        console.log("Error : "+ error);
+      });
+
+
+    console.log(linkAOrg)
+    $$("#volverVerOrg").on("click",function(){mainView.router.navigate(linkAOrg)});
+
+
+
+})
 
 //    -------------------------PAGE INIT infoOrg (info de X org (desde usuario)) -----------------------------------------------
 $$(document).on('page:init', '.page[data-name="infoOrg"]', function (e) {
     // Do something here when page with data-name="about" attribute loaded and initialized
     console.log("estoy en infoOrg");
+    console.log(linkAOrg)
+    console.log(nombreOrganizacion)
+    $$("#vuelvoAVerOrg").on("click",function(){mainView.router.navigate(linkAOrg)});
 
 
-
+    $$("#perfildeOrg").append(nombreOrganizacion);
 
 
 
@@ -468,13 +527,8 @@ $$(document).on('page:init', '.page[data-name="orgHome"]', function (e) {
     // Do something here when page with data-name="about" attribute loaded and initialized
     console.log("estoy en orgHome" );
 
-
     $$("#orgNombrePerfil").html(nombreOrganizacion);
     $$("#cerrarSOrg").on("click", fnCerrarSesion);
-
-
-
-
 })
 
 
@@ -857,54 +911,136 @@ $$(document).on('page:init', '.page[data-name="misFliasTransito"]', function (e)
 
 })
 
+
+//    -------------------------PAGE INIT misPeticionesAdop (lista de peticiones de Adopción)  -----------------------------------------------
+$$(document).on('page:init', '.page[data-name="misPeticionesAdop"]', function (e) {
+    // Do something here when page with data-name="about" attribute loaded and initialized
+    console.log("estoy en misPeticionesAdop");
+
+    var refMisPeticiones=colPeticionAdopcion.where("emailorg", "==", email);
+    var indice=0;
+
+    refMisTransitos.get()
+    .then(function(querySnapshot){
+      querySnapshot.forEach(function(doc){
+        indice++;
+        nombre_Transito=doc.data().Nombre
+        apellido_Transito=doc.data().Apellido
+        email_Transito=doc.data().email
+        telefono_Transito=doc.data().Telefono
+        localidad_Transito=doc.data().Localidad
+        provincia_Transito=doc.data().Provincia
+        redes_Transito=doc.data().Redes
+        tiempo_Transito=doc.data().Tiempo_Transito
+        hizo_Transito=doc.data().Hizo_Transito
+        exp_Transito=doc.data().Exp_Transito
+        vivienda_Transito=doc.data().Vivienda
+        familia_Transito=doc.data().Familia
+        mascotas_Transito=doc.data().Tiene_Mascotas
+        agrega_Transito=doc.data().Agrega
+
+
+   var acordionT=`  <li class="accordion-item">
+                      <a class="item-content item-link" href="#">
+                        <div class="item-inner">
+                          <div class="item-title text-color-white"><b>`+nombre_Transito+` `+apellido_Transito+`</b></div>
+                          </div>
+                      </a>
+                      <div class="accordion-item-content">
+                        <div class="block">
+                          <h4 class="item-title centrar text-color-white"><b>DATOS DEL HOGAR</b></h4>
+                            <p class="text-align-center text-color-white"><b> Vivienda:</b> `+vivienda_Transito+`</p>
+                            <p class="text-align-center text-color-white"><b> Grupo Familiar:</b> `+familia_Transito+`</p>
+                            <p class="text-align-center text-color-white"><b> Otras Mascotas:</b> `+mascotas_Transito+`</p>
+                            <p class="text-align-center text-color-white"> <b>Experiencias Tránsito:</b> `+exp_Transito+`</p>
+                            <p class="text-align-center text-color-white"> <b> Puede dar transito:</b> `+tiempo_Transito +`</p>
+                            <h4 class="item-title centrar text-color-white"> <b>DATOS DE CONTACTO</b></h4>
+                            <p class="text-align-center text-color-white"> <b> Vive en:</b> `+localidad_Transito+`, `+provincia_Transito+`  </p>
+                            <p class="text-align-center text-color-white"> <b> Teléfono:</b> `+telefono_Transito+`</p>
+                            <p class="text-align-center text-color-white"> <b> E-mail:</b> `+email_Transito+`</p>
+                            <p class="text-align-center text-color-white"> <b> Redes:</b> `+redes_Transito+`</p>
+                          </div>
+                        </div>
+                    </li>`;
+
+      $$("#acordionTransitos").append(acordionT);
+
+      })
+    })
+    .catch( function(error){
+      console.log("Error: "+ error);
+    });
+
+acordionPeticionesAdop
+
+})
+
 //    -------------------------PAGE INIT miPerfil (perfil de org que inicio sesion)  -----------------------------------------------
 $$(document).on('page:init', '.page[data-name="miPerfilOrg"]', function (e){
     // Do something here when page with data-name="about" attribute loaded and initialized
-
-    /*  VER COMO RESOLVER QUE MUESTRE LOS DATOS BANCARIOS PORQUE NO LOS ESTA MOSTRANDO....
-    SI ESTAN EN LA BASE DE DATOS PERO EN ALGO DE LA LOGICA LA PIFIE */
-
 
     console.log("estoy en miPerfilOrg");
     console.log("email:" + email+"-")
     console.log("nom: "+ nombreRespOrganizacion)
     console.log("desc: "+ descripcionOrg)
     console.log("banco: "+ bancoOrg)
-    if(bancoOrg==""){
-      $$("#bancoOrg").append("--")
-    } else {
-      fnConsultarDatos;
-      //$$("#bancoOrg").append(bancoOrg)
-    }
 
-    if(titularCtaOrg==""){
-      $$("#titularCtaOrg").append("--")
-    } else {
-      fnConsultarDatos;
-    }
-    if(cbuOrg==""){
-      $$("#cbuOrg").append("--")
-    } else {
-      $$("#cbuOrg").append(cbuOrg)
-    }
+    var refDeOrg= colOrganizaciones
+    refDeOrg.get()
+      .then(function(querySnapshot) {
+          querySnapshot.forEach(function(doc){
+            if(email==doc.id){
+            console.log("banco: "+ doc.data().Banco);
+               bancoOrg=doc.data().Banco
+               titularCtaOrg= doc.data().Titular_Cta
+               cbuOrg= doc.data().Cbu_Cta
+               nroCtaOrg=doc.data().Nro_Cta
+               cuilOrg=doc.data().Nro_Cuil
+               cuentaMpOrg=doc.data().MercadoPago
 
-    if(nroCtaOrg==""){
-      $$("#nroCtaOrg").append("--")
-    } else {
-      $$("#nroCtaOrg").append(nroCtaOrg)
-    }
+               if(bancoOrg==undefined){
+                 $$("#bancoOrg").append("--")
+               } else {
+                 $$("#bancoOrg").append(bancoOrg);
+               }
 
-    if(cuilOrg==""){
-      $$("#cuilOrg").append("--")
-    } else {
-      $$("#cuilOrg").append(cuilOrg)
-    }
+               if(titularCtaOrg==undefined){
+                 $$("#titularCtaOrg").append("--")
+               } else {
+                 $$("#titularCtaOrg").append(titularCtaOrg);
+               }
 
-    if(cuentaMpOrg==""){
-      $$("#mPagoOrg").append("--")
-    } else {
-      $$("#mPagoOrg").append(cuentaMpOrg)
-    }
+               if(cbuOrg==undefined){
+                 $$("#cbuOrg").append("--")
+               } else {
+                 $$("#cbuOrg").append(cbuOrg)
+               }
+
+               if(nroCtaOrg==undefined){
+                 $$("#nroCtaOrg").append("--")
+               } else {
+                 $$("#nroCtaOrg").append(nroCtaOrg)
+               }
+
+               if(cuilOrg==undefined){
+                 $$("#cuilOrg").append("--")
+               } else {
+                 $$("#cuilOrg").append(cuilOrg)
+               }
+
+               if(cuentaMpOrg==undefined){
+                 $$("#mPagoOrg").append("--")
+               } else {
+                 $$("#mPagoOrg").append(cuentaMpOrg)
+               }
+
+            }
+
+          })
+      })
+      .catch( function(error){
+        console.log("Error : "+ error);
+      });
 
 
       $$("#nOrg").append(nombreOrganizacion);
@@ -947,16 +1083,7 @@ $$(document).on('page:init', '.page[data-name="publicarOrg"]', function (e) {
 $$("#publicarEnAdopcion").on("click", fnPublicarEnAdopcion);
 
 
-
-
 })
-
-
-
-
-
-
-
 // ------------------------- FUNCIONES -------------------------------------------------
 
 
@@ -1652,23 +1779,30 @@ function fnEditarCuilOrg(){
 
   });
 }
-/*
-function fnConsultarDatos(){
 
 
-var consultaUpdate= colOrganizaciones.doc(email);
-consultaUpdate.get()
-  .then(function(querySnapshot) {
-      querySnapshot.forEach(function(docOrg){
-        console.log("banco: "+ docOrg.data().Banco)
-        bancoOrg=docOrg.data().Banco;
+function setAnimal (nombreA){
+  var refAni= colAnimalesEnAdopcion
+  var indiceX=0;
+  refAni.get()
+    .then(function(querySnapshot) {
+        querySnapshot.forEach(function(docActual){
+          indiceX++;
+          if(nombreA==docActual.data().Nombre_Animal){
+             nombre_Animal=docActual.data().Nombre_Animal
+             tipo_Animal= docActual.data().Tipo_Animal
+             genero_Animal= docActual.data().Genero_Animal
+             descripcion_Animal=docActual.data().Descripcion_Animal
+             console.log("estoy en then: " + nombre_Animal)
+             console.log("es un " + tipo_Animal)
+             console.log("el indice es: " + indiceX)
+          }
 
-      })
-  $$("#bancoOrg").append(bancoOrg) ;
-  })
-  .catch( function(error){
-    console.log("Error : "+ error);
-  });
 
+        })
+        mainView.router.navigate('/verAnimalDesdeUsu/verA'+indice+'/')
+    })
+    .catch( function(error){
+      console.log("Error : "+ error);
+    });
 }
-*/
