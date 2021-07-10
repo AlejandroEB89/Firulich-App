@@ -90,6 +90,31 @@ var nroCtaOrg="";
 var cuilOrg="";
 var cuentaMpOrg="";
 
+// -------------- Variables para Adoptante ------------------//
+
+var nomAdoptante="";
+var apeAdoptante="";
+var profesionAdoptante="";
+var localidadAdoptante="";
+var provinciaAdoptante="";
+var telefonoAdoptante="";
+var direccionAdoptante="";
+var linkRedesAdoptante="";
+var porqueAdoptante="";
+var cicloVidaAdoptante="";
+var compromisoAdoptante="";
+var necesidadesAdoptante="";
+var alergiasAdoptante="";
+var viviendaAdoptante="";
+var familiaAdoptante="";
+var viviendaPropiaAdoptante="";
+var perimisoPropAdoptante="";
+var mudanzaAdoptante="";
+var castracionAdoptante="";
+var tieneMascotasAdoptante="";
+var cuidaMascotasAdoptante="";
+var algoMasAdoptante="";
+var emailAdoptante="";
 
 // -------------- Variables para base de datos  ------------------//
 var db=firebase.firestore();
@@ -924,50 +949,79 @@ $$(document).on('page:init', '.page[data-name="misPeticionesAdop"]', function (e
     var refMisPeticiones=colPeticionAdopcion.where("emailorg", "==", email);
     var indice=0;
 
-    refMisTransitos.get()
+    refMisPeticiones.get()
     .then(function(querySnapshot){
       querySnapshot.forEach(function(doc){
         indice++;
-        nombre_Transito=doc.data().Nombre
-        apellido_Transito=doc.data().Apellido
-        email_Transito=doc.data().email
-        telefono_Transito=doc.data().Telefono
-        localidad_Transito=doc.data().Localidad
-        provincia_Transito=doc.data().Provincia
-        redes_Transito=doc.data().Redes
-        tiempo_Transito=doc.data().Tiempo_Transito
-        hizo_Transito=doc.data().Hizo_Transito
-        exp_Transito=doc.data().Exp_Transito
-        vivienda_Transito=doc.data().Vivienda
-        familia_Transito=doc.data().Familia
-        mascotas_Transito=doc.data().Tiene_Mascotas
-        agrega_Transito=doc.data().Agrega
+        console.log("estoy en el then");
+        console.log("peticion para: " + doc.data().Animal)
+        nombre_Animal=doc.data().Animal
+        tipo_Animal=doc.data().Tipo_Animal
+        genero_Animal=doc.data().Genero_Animal
+        descripcion_Animal=doc.data().Descripcion_Animal
+        nomAdoptante=doc.data().Nombre
+        apeAdoptante=doc.data().Apellido
+        profesionAdoptante=doc.data().Profesion_Adop
+        localidadAdoptante=doc.data().Localidad
+        provinciaAdoptante=doc.data().Provincia
+        telefonoAdoptante=doc.data().Telefono
+        direccionAdoptante=doc.data().Direccion
+        linkRedesAdoptante=doc.data().Redes
+        porqueAdoptante=doc.data().Porque_Adop
+        cicloVidaAdoptante=doc.data().Ciclo_Adop
+        compromisoAdoptante=doc.data().Compromiso_Adop
+        necesidadesAdoptante=doc.data().Necesidades_Adop
+        alergiasAdoptante=doc.data().Alergias_Adop
+        viviendaAdoptante=doc.data().Vivienda
+        familiaAdoptante=doc.data().Familia
+        viviendaPropiaAdoptante=doc.data().Vivienda_Prop_Adop
+        perimisoPropAdoptante=doc.data().Permiso_Prop_Adop
+        mudanzaAdoptante=doc.data().Mudanza_Adop
+        castracionAdoptante=doc.data().Castracion_Adop
+        tieneMascotasAdoptante=doc.data().Tiene_Mascotas
+        cuidaMascotasAdoptante=doc.data().Cuida_Mascotas
+        algoMasAdoptante=doc.data().Agrega
+        emailAdoptante=doc.data().email
 
 
-   var acordionT=`  <li class="accordion-item">
+    var acordionT=`  <li class="accordion-item">
                       <a class="item-content item-link" href="#">
                         <div class="item-inner">
-                          <div class="item-title text-color-white"><b>`+nombre_Transito+` `+apellido_Transito+`</b></div>
+                          <div class="item-title text-color-white"><b>Petición para: `+nombre_Animal+`</b></div>
                           </div>
                       </a>
                       <div class="accordion-item-content">
                         <div class="block">
-                          <h4 class="item-title centrar text-color-white"><b>DATOS DEL HOGAR</b></h4>
-                            <p class="text-align-center text-color-white"><b> Vivienda:</b> `+vivienda_Transito+`</p>
-                            <p class="text-align-center text-color-white"><b> Grupo Familiar:</b> `+familia_Transito+`</p>
-                            <p class="text-align-center text-color-white"><b> Otras Mascotas:</b> `+mascotas_Transito+`</p>
-                            <p class="text-align-center text-color-white"> <b>Experiencias Tránsito:</b> `+exp_Transito+`</p>
-                            <p class="text-align-center text-color-white"> <b> Puede dar transito:</b> `+tiempo_Transito +`</p>
+                            <h4 class="item-title centrar text-color-white"><b>DATOS DEL ADOPTANTE</b></h4>
+                            <p class="text-align-center text-color-white"><b> Nombre Completo:</b> `+nomAdoptante+` `+apeAdoptante+`</p>
+                            <p class="text-align-center text-color-white"><b> Razón Adopción:</b> `+porqueAdoptante+`</p>
+                            <p class="text-align-center text-color-white"><b> Compromiso de por vida:</b> `+cicloVidaAdoptante+`</p>
+                            <p class="text-align-center text-color-white"><b> Cuidados del Animal:</b> `+compromisoAdoptante+`</p>
+                            <p class="text-align-center text-color-white"><b> Podes cubrir sus necesidades:</b> `+necesidadesAdoptante+`</p>
+                            <p class="text-align-center text-color-white"><b> Tiene Mascotas:</b> `+tieneMascotasAdoptante+`</p>
+                            <p class="text-align-center text-color-white"><b> Cuidado de sus mascotas:</b> `+cuidaMascotasAdoptante+`</p>
+                            <p class="text-align-center text-color-white"> <b> Grupo Familiar :</b> `+familiaAdoptante+`</p>
+                            <p class="text-align-center text-color-white"><b> Alergías:</b> `+alergiasAdoptante+`</p>
+                            <p class="text-align-center text-color-white"><b> Opinión sobre Castración:</b> `+castracionAdoptante+`</p>
+
+                            <h4 class="item-title centrar text-color-white"><b>DATOS DEL HOGAR</b></h4>
+                            <p class="text-align-center text-color-white"> <b> Vive en:</b> `+viviendaPropiaAdoptante+`</p>
+                            <p class="text-align-center text-color-white"> <b> Tipo de Vivienda:</b> `+viviendaAdoptante+`</p>
+                            <p class="text-align-center text-color-white"> <b> Permiso del Propietario:</b> `+perimisoPropAdoptante+`</p>
+                            <p class="text-align-center text-color-white"> <b> En caso de mudanza:</b> `+mudanzaAdoptante+`</p>
+
                             <h4 class="item-title centrar text-color-white"> <b>DATOS DE CONTACTO</b></h4>
-                            <p class="text-align-center text-color-white"> <b> Vive en:</b> `+localidad_Transito+`, `+provincia_Transito+`  </p>
-                            <p class="text-align-center text-color-white"> <b> Teléfono:</b> `+telefono_Transito+`</p>
-                            <p class="text-align-center text-color-white"> <b> E-mail:</b> `+email_Transito+`</p>
-                            <p class="text-align-center text-color-white"> <b> Redes:</b> `+redes_Transito+`</p>
+                            <p class="text-align-center text-color-white"> <b> Es de:</b> `+localidadAdoptante+`, `+provinciaAdoptante+`  </p>
+                            <p class="text-align-center text-color-white"> <b> Profesión:</b> `+profesionAdoptante+`</p>
+                            <p class="text-align-center text-color-white"> <b> Teléfono:</b> `+telefonoAdoptante+`</p>
+                            <p class="text-align-center text-color-white"> <b> E-mail:</b> `+emailAdoptante+`</p>
+                            <p class="text-align-center text-color-white"> <b> Redes:</b> `+linkRedesAdoptante+`</p>
+                            <p class="text-align-center text-color-white"> <b> Agrega:</b> `+algoMasAdoptante+`</p>
                           </div>
                         </div>
                     </li>`;
 
-      $$("#acordionTransitos").append(acordionT);
+      $$("#acordionPeticionesAdop").append(acordionT);
 
       })
     })
@@ -975,7 +1029,6 @@ $$(document).on('page:init', '.page[data-name="misPeticionesAdop"]', function (e
       console.log("Error: "+ error);
     });
 
-acordionPeticionesAdop
 
 })
 
