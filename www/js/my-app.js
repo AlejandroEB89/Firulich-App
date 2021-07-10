@@ -107,6 +107,7 @@ var tipo_Animal="";
 var genero_Animal="";
 var descripción_Animal="";
 
+
 // -------------- ------------------------------------------ ------------------//
 
 // Handle Cordova Device Ready Event
@@ -268,18 +269,18 @@ $$(document).on('page:init', '.page[data-name="enAdopcionOrg"]', function (e) {
 
 
     var refEnAdopDeOrg= colAnimalesEnAdopcion.where("email", "==" , emailOrg);
-    var indice=0;
+    var indAnimalesEnAdop=0;
     refEnAdopDeOrg.get()
       .then(function(querySnapshot) {
           querySnapshot.forEach(function(doc){
-            indice++;
+            indAnimalesEnAdop++;
             nombre_Animal=doc.data().Nombre_Animal
             genero_Animal= doc.data().Genero_Animal
             tipo_Animal=doc.data().Tipo_Animal
             descripcion_Animal=doc.data().Descripcion_Animal
-            console.log(nombre_Animal + " que es " + genero_Animal + " indice: " + indice);
-            var tarjetaAni='<div id="tarjeta'+indice+'" class="card demo-card-header-pic"><div id="imgAUsu'+indice+'" style="background-image:url(img/perro.jpg)" class="card-header align-items-flex-end row"> <p id="nomAUsu'+indice+'" class="txtCards align-items-flex-end noMargin"> ' + nombre_Animal +
-             '</p> </div> <div class="card-content card-content-padding"> <div class="row justify-content-space-around noMargin"> <p id="tipoAUsu'+indice+'" class=" align-items-flex-end noMargin"> ' + tipo_Animal+ '</p> <p class=" align-items-flex-end noMargin"> - </p> <p id="generoAUsu'+indice+'" class="align-items-flex-end noMargin">' + genero_Animal + '</p> </div><p id="descAUsu'+indice+'" class="text-align-justify">' + descripcion_Animal  + '</p> </div> <div class="card-footer"> <a id="verAUsu'+indice+'" href="/verAnimalDesdeUsu/verAUsu'+indice+'/" class="link verAnimal">' + 'Leer Más' + '</a></div> </div>';     //onclick="setAnimal(\''+nombre_Animal+'\')"
+            console.log(nombre_Animal + " que es " + genero_Animal + " indice: " + indAnimalesEnAdop);
+            var tarjetaAni='<div id="tarjeta'+indAnimalesEnAdop+'" class="card demo-card-header-pic"><div id="imgAUsu'+indAnimalesEnAdop+'" style="background-image:url(img/perro.jpg)" class="card-header align-items-flex-end row"> <p id="nomAUsu'+indAnimalesEnAdop+'" class="txtCards align-items-flex-end noMargin"> ' + nombre_Animal +
+             '</p> </div> <div class="card-content card-content-padding"> <div class="row justify-content-space-around noMargin"> <p id="tipoAUsu'+indAnimalesEnAdop+'" class=" align-items-flex-end noMargin"> ' + tipo_Animal+ '</p> <p class=" align-items-flex-end noMargin"> - </p> <p id="generoAUsu'+indAnimalesEnAdop+'" class="align-items-flex-end noMargin">' + genero_Animal + '</p> </div><p id="descAUsu'+indAnimalesEnAdop+'" class="text-align-justify">' + descripcion_Animal  + '</p> </div> <div class="card-footer"> <a id="verAUsu'+indAnimalesEnAdop+'" href="#" onclick="setAnimal(\''+nombre_Animal+'\')"  class="link verAnimal">' + 'Leer Más' + '</a></div> </div>';     //      /verAnimalDesdeUsu/verAUsu'+indice+'/
 
             $$("#bloqueAdopcionDeOrg").append(tarjetaAni);
 
@@ -306,19 +307,22 @@ $$(document).on('page:init', '.page[data-name="verAnimalDesdeUsu"]', function (e
 idTarjeta=page.route.params.id;
 nroT=idTarjeta.replace("verAUsu", "");
 console.log("el nro de tarjeta es:" + nroT);
-idNomUsu= "#nomAUsu" + nroT;
+
+/*idNomUsu= "#nomAUsu" + nroT;
 idDescUsu="#descAUsu" + nroT;
 idTipoUsu="#tipoAUsu" + nroT;
 idGeneroUsu="#generoAUsu" + nroT;
+*/
 
 idImgnUsu="#imgAUsu" + nroT;
 console.log("idimgnusu: "+idImgnUsu)
-console.log("div del nombre: "+ idNomUsu )
+/*console.log("div del nombre: "+ idNomUsu )
+
 nombre_Animal=$$(idNomUsu).html();
 genero_Animal=$$(idGeneroUsu).html();
 tipo_Animal=$$(idTipoUsu).html();
 descripcion_Animal=$$(idDescUsu).html();
-
+*/
 urlIm_Animalusu=$$(idImgnUsu).css("background-image");
 console.log("url: "+urlIm_Animalusu)
 imgn_Animal= urlIm_Animalusu.replace('url("http://localhost:3000/browser/www/', "");
@@ -361,7 +365,7 @@ $$(document).on('page:init', '.page[data-name="peticionAdopcion"]', function (e)
 
 
 
-      $$("#propietarioAdop").on("click", function(){
+      $$("#viviendaPropiaAdop").on("click", function(){
           tipoVivienda=$$("#viviendaPropiaAdop").val();
           if(tipoVivienda=="Alquiler"){
             console.log("alquila casa")
@@ -1572,6 +1576,10 @@ function fnAdoptar(){
         Cuida_Mascotas: cuidaMascotasAdop,
         Direccion: direccionAdop,
         Agrega: algoMasAdop,
+        Animal:nombre_Animal,
+        Tipo_Animal:tipo_Animal,
+        Genero_Animal:genero_Animal,
+        Descripcion_Animal:descripcion_Animal,
       }
 
 
@@ -1782,25 +1790,24 @@ function fnEditarCuilOrg(){
 
 
 function setAnimal (nombreA){
-  var refAni= colAnimalesEnAdopcion
+  console.log("SET ANIMAL de: "+ emailOrg)
+  var refAni= colAnimalesEnAdopcion.where("email", "==", emailOrg).where("Nombre_Animal", "==", nombreA);
   var indiceX=0;
   refAni.get()
     .then(function(querySnapshot) {
         querySnapshot.forEach(function(docActual){
-          indiceX++;
-          if(nombreA==docActual.data().Nombre_Animal){
+             console.log("entro al query for each")
+             indiceX++;
              nombre_Animal=docActual.data().Nombre_Animal
              tipo_Animal= docActual.data().Tipo_Animal
              genero_Animal= docActual.data().Genero_Animal
              descripcion_Animal=docActual.data().Descripcion_Animal
-             console.log("estoy en then: " + nombre_Animal)
-             console.log("es un " + tipo_Animal)
-             console.log("el indice es: " + indiceX)
-          }
 
+             console.log("animal es: " + nombre_Animal)
+             console.log("es un " + tipo_Animal)
 
         })
-        mainView.router.navigate('/verAnimalDesdeUsu/verA'+indice+'/')
+        mainView.router.navigate('/verAnimalDesdeUsu/verAUsu'+indiceX+'/')
     })
     .catch( function(error){
       console.log("Error : "+ error);
