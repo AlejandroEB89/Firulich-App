@@ -13,6 +13,12 @@ var app = new Framework7({
     panel: {
       swipe: 'left',
     },
+
+    dialog: {
+
+    buttonCancel: 'Cancelar',
+
+  },
     // Add default routes
     routes: [
       {path: '/index/',url: 'index.html',},
@@ -44,11 +50,12 @@ var app = new Framework7({
       {path: '/misRecomendaciones/',url: 'misRecomendaciones.html',},
       {path: '/nuevaRecomenda/',url: 'nuevaRecomenda.html',},
       {path: '/misRescatados/',url: 'misRescatados.html',},
+      {path: '/verAnimaldop/:id/',url: 'verAnimaldop.html',},
       {path: '/misAdopcion/',url: 'misAdopcion.html',},
-      {path: '/misPeticionesAdop/',url: 'misPeticionesAdop.html',},
-
-      {path: '/publicarOrg/',url: 'publicarOrg.html',},
       {path: '/verAnimal/:id/',url: 'verAnimal.html',},
+      {path: '/misPeticionesAdop/',url: 'misPeticionesAdop.html',},
+      {path: '/publicarOrg/',url: 'publicarOrg.html',},
+
 
     ]
     // ... other parameters
@@ -124,6 +131,7 @@ colAnimalesEnAdopcion=db.collection("animalesEnAdopcion");
 colFamiliasTransito= db.collection("familiasTransito");
 colRecomendaciones=db.collection("recomendaciones");
 colPeticionAdopcion=db.collection("peticionesAdop");
+colAnimalesAdoptados=db.collection("animalesAdoptados");
 
 // -------------- Variables para Animales ------------------//
 
@@ -131,7 +139,7 @@ var nombre_Animal="";
 var tipo_Animal="";
 var genero_Animal="";
 var descripción_Animal="";
-
+var id_AnimalBD="";
 
 // -------------- ------------------------------------------ ------------------//
 
@@ -576,9 +584,9 @@ $$(document).on('page:init', '.page[data-name="misAdopcion"]', function (e) {
             genero_Animal= docActual.data().Genero_Animal
             tipo_Animal=docActual.data().Tipo_Animal
             descripcion_Animal=docActual.data().Descripcion_Animal
-            console.log(nombre_Animal + " que es " + genero_Animal + " indice: " + indice);
-            var tarjeAnimal='<div id="tarjeta'+indice+'" class="card demo-card-header-pic"><div id="imgA'+indice+'" style="background-image:url(img/perro.jpg)" class="card-header align-items-flex-end row"> <p id="nomA'+indice+'" class="txtCards align-items-flex-end noMargin"> ' + nombre_Animal +
-             '</p> </div> <div class="card-content card-content-padding"> <div class="row justify-content-space-around noMargin"> <p id="tipoA'+indice+'" class=" align-items-flex-end noMargin"> ' + tipo_Animal+ '</p> <p class=" align-items-flex-end noMargin"> - </p> <p id="generoA'+indice+'" class="align-items-flex-end noMargin">' + genero_Animal + '</p> </div><p id="descA'+indice+'" class="text-align-justify">' + descripcion_Animal  + '</p> </div> <div class="card-footer"> <a id="verA' +indice+ '" href="/verAnimal/verA'+indice+'/" class="link verAnimal">' + 'Leer Más' + '</a></div> </div>';
+            console.log("-"+nombre_Animal+"-  que es " + genero_Animal + " indice: " + indice);
+            var tarjeAnimal='<div id="tarjeta'+indice+'" class="card demo-card-header-pic"><div id="imgA'+indice+'" style="background-image:url(img/perro.jpg)" class="card-header align-items-flex-end row"> <p id="nomA'+indice+'" class="txtCards align-items-flex-end noMargin">'+nombre_Animal+
+             '</p> </div> <div class="card-content card-content-padding"> <div class="row justify-content-space-around noMargin"> <p id="tipoA'+indice+'" class=" align-items-flex-end noMargin">'+tipo_Animal+'</p> <p class=" align-items-flex-end noMargin"> - </p> <p id="generoA'+indice+'" class="align-items-flex-end noMargin">'+genero_Animal +'</p> </div><p id="descA'+indice+'" class="text-align-justify">'+descripcion_Animal+'</p> </div> <div class="card-footer"> <a id="verA' +indice+ '" href="/verAnimal/verA'+indice+'/" class="link verAnimal">' + 'Leer Más' + '</a></div> </div>'; //
 
             $$("#bloqueAdopcion").append(tarjeAnimal);
 
@@ -613,7 +621,7 @@ descripcion_Animal=$$(idDesc).html();
 urlIm_Animal=$$(idImgn).css("background-image");
 imgn_Animal= urlIm_Animal.replace('url("http://localhost:3000/browser/www/', "");
 imgA=imgn_Animal.replace('")', "")
-console.log("animal es: " + nombre_Animal);
+console.log("animal es:-" +nombre_Animal+"-");
 console.log("es: " + tipo_Animal);
 console.log("es: " + genero_Animal);
 console.log(descripcion_Animal);
@@ -634,6 +642,83 @@ $$("#adoptado").on("click", fnMarcarComoAdoptado);
 $$(document).on('page:init', '.page[data-name="misRescatados"]', function (e) {
     // Do something here when page with data-name="about" attribute loaded and initialized
     console.log("estoy en misRescatados");
+    console.log(email)
+
+    var refMisAnimalesRescatados= colAnimalesAdoptados.where("emailorg", "==" , email);
+    var indice=0;
+    refMisAnimalesRescatados.get()
+      .then(function(querySnapshot) {
+          querySnapshot.forEach(function(docRes){
+            indice++;
+            nombre_Animal=docRes.data().Nombre_Animal
+            genero_Animal= docRes.data().Genero_Animal
+            tipo_Animal=docRes.data().Tipo_Animal
+            descripcion_Animal=docRes.data().Descripcion_Animal
+            nomAdoptante=docRes.data().Nombre_Adoptante
+            apeAdoptante=docRes.data().Apellido_Adoptante
+            console.log("-"+nombre_Animal+"-  adoptado por " + nomAdoptante + " indice: " + indice);
+            var tarjeAdoptado='<div id="tarjeta'+indice+'" class="card demo-card-header-pic"><div id="imgAdop'+indice+'" style="background-image:url(img/perro.jpg)" class="card-header align-items-flex-end row"> <p id="nomAnimAdop'+indice+'" class="txtCards align-items-flex-end noMargin">'+nombre_Animal+
+             '</p> </div> <div class="card-content card-content-padding"> <div class="row justify-content-space-around noMargin"> <p id="nomAdop'+indice+'" class=" align-items-flex-end noMargin">'+nomAdoptante+'</p> <p class=" align-items-flex-end noMargin"> - </p> <p id="apeAdop'+indice+'" class="align-items-flex-end noMargin">'+apeAdoptante +'</p> </div><p id="descAdop'+indice+'" class="text-align-justify">'+descripcion_Animal+'</p> </div> <div class="card-footer"> <a id="verAdop' +indice+ '" href="#" onclick="setAnimalAdoptado(\''+nombre_Animal+'\')" class="link verAnimal">' + 'Leer Más' + '</a></div> </div>'; // /verAnimaldop/verAdop'+indice+'/
+
+            $$("#bloqueAdoptados").append(tarjeAdoptado);
+
+          })
+      })
+      .catch( function(error){
+        console.log("Error : "+ error);
+      });
+
+
+
+})
+
+//    -------------------------PAGE INIT verAnimaldop (Ver animal Adoptado de org que inicio sesion)  -----------------------------------------------
+$$(document).on('page:init', '.page[data-name="verAnimaldop"]', function (e, page) {
+    // Do something here when page with data-name="about" attribute loaded and initialized
+    console.log('Pag. VerAnimaldop con id: ' + page.route.params.id );
+    console.log("estoy en verAnimaldop");
+
+
+    $$("#nomAdoptadoElegido").html(nombre_Animal);
+    $$("#fotoAadop").attr("src", "img/perro.jpg");        //Esta hardcodeadaaa
+    $$("#tipoYGeneroAdop").append(tipo_Animal+", "+genero_Animal);
+    $$("#descripAdop").html(descripcion_Animal);
+    $$("#nombreAdopTante").append(nomAdoptante+", "+apeAdoptante);
+    $$("#localidadPciaAdop").append(localidadAdoptante+", "+provinciaAdoptante);
+    $$("#profesiónAdoptante").append(profesionAdoptante);
+    $$("#direccionAdoptante").append(direccionAdoptante);
+    $$("#telefonoAdoptante").append(telefonoAdoptante);
+    $$("#redesAdoptante").append(linkRedesAdoptante);
+    $$("#familiaAdoptante").append(familiaAdoptante);
+    $$("#mascotasAdoptante").append(tieneMascotasAdoptante);
+    $$("#viviendaAdoptante").append(viviendaAdoptante);
+    $$("#viviendaPropAdoptante").append(viviendaPropiaAdoptante);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -1562,7 +1647,198 @@ function fnNuevaRecomenda(){
 
 
 function fnMarcarComoAdoptado(){
-  app.dialog.prompt("Ingresa el e-mail del adoptante", "¿Una nueva familia?") //tengo que hacer la conexion entre usuario-org-y peticion de adopcion
+  console.log("marcar como adoptado a:-"+nombre_Animal+"-");
+  console.log("el correo de org es:-"+ email+"-");
+  app.dialog.confirm("Vas a marcar como adoptado a: "+nombre_Animal,"Confirmar Adopción",function(){
+    app.dialog.prompt("Ingresa el e-mail del adoptante", "¿Una nueva familia?", function(correoAdop){
+
+      // 1° tengo que hacer la conexion entre usuario org y peticion de adopcion
+      // 2° tengo que eliminar el documento de ese animal de colAnimalesEnAdopcion
+      // 3° tengo que crear un nuevo documento en AnimalesRescatados con los datos del adoptante
+
+      console.log("el correo ingresado es:-"+correoAdop+"-");
+      var refMiAnimal=colAnimalesEnAdopcion.where("Nombre_Animal", "==", nombre_Animal)
+
+      refMiAnimal.get()                                                          //Busco los datos del animal seleccionado
+      .then(function(querySnapshot){
+        querySnapshot.forEach(function(doc){
+
+          console.log("estoy en el then de animalesEnAdopcion");
+          console.log("animal en adop : " + doc.data().Nombre_Animal)
+          nombre_Animal=doc.data().Nombre_Animal
+          tipo_Animal=doc.data().Tipo_Animal
+          genero_Animal=doc.data().Genero_Animal
+          descripcion_Animal=doc.data().Descripcion_Animal
+          id_AnimalBD=doc.id
+          console.log("id animal:-"+id_AnimalBD);
+        })
+      })
+      .catch( function(error){
+        console.log("Error: "+ error);
+      });
+
+
+      var miAdoptante=colUsuarios.doc(correoAdop)              //Busco los datos del correo ingresado
+      miAdoptante.get()
+      .then(function(docN){
+        console.log("entre al then..buscando al usuario: "+correoAdop)
+        if(docN.exists){                                                 //si el correo existe guardo sus datos
+          console.log("encontrado:-"+docN.data().Nombre+"-")
+          nomAdoptante=docN.data().Nombre
+          apeAdoptante=docN.data().Apellido
+          localidadAdoptante=docN.data().Localidad
+          provinciaAdoptante=docN.data().Provincia
+          emailAdoptante=docN.id
+        } else {
+          console.log("el usuario no existe")                          //si no existe guardo en emailadoptante para usarlo en el dialog de aviso que el usaurio no tiene peticion
+          emailAdoptante=correoAdop;
+        }
+        })
+      .catch( function(error){
+        console.log("Error: "+ error);
+      });
+
+
+      var miPeticion=colPeticionAdopcion.where("Animal", "==", nombre_Animal)         //Busco si hay una peticion de adop para ese animal
+      miPeticion.get()
+      .then(function(querySnapshot){
+        //app.dialog.preloader("Buscando Peticion de Adopción del usuario");
+          console.log("entre al then..buscando peticion de:-"+nombre_Animal+"-")
+//        if(docZ.exists){                                  //si la pongo aca arriba sale siempre por el else de linea 1651
+          querySnapshot.forEach(function(doc){
+            if(doc.exists){                                //no esta funcionando la condicion de "si existe" una peticion para el animal
+              if(emailAdoptante==doc.data().email){         //esta condicion funciona bien
+                  console.log("encontrada:-"+ doc.data().email+"-");
+                  console.log("Sii, ya tengo la peticion")
+                  telefonoAdoptante=doc.data().Telefono
+                  direccionAdoptante=doc.data().Direccion
+                  viviendaAdoptante=doc.data().Vivienda
+                  viviendaPropiaAdoptante=doc.data().Vivienda_Prop_Adop
+                  profesionAdoptante=doc.data().Profesion_Adop
+                  familiaAdoptante=doc.data().Familia
+                  linkRedesAdoptante=doc.data().Redes
+                  tieneMascotasAdoptante=doc.data().Tiene_Mascotas
+
+
+                  var nuevoAdoptado={
+                    emailAdoptante:emailAdoptante,
+                    emailorg:email,
+                    Nombre_Adoptante: nomAdoptante,
+                    Apellido_Adoptante: apeAdoptante,
+                    Vivienda: viviendaAdoptante,
+                    Vivienda_Prop: viviendaPropiaAdoptante,
+                    Profesion:profesionAdoptante,
+                    Direccion:direccionAdoptante,
+                    Familia: familiaAdoptante,
+                    Localidad: localidadAdoptante,
+                    Provincia: provinciaAdoptante,
+                    Telefono: telefonoAdoptante,
+                    Redes: linkRedesAdoptante,
+                    Nombre_Animal:nombre_Animal,
+                    Tipo_Animal:tipo_Animal,
+                    Genero_Animal:genero_Animal,
+                    Descripcion_Animal:descripcion_Animal,
+                    Tiene_Mascotas:tieneMascotasAdoptante,
+                  }
+
+                  app.dialog.confirm("¡"+nomAdoptante+" "+apeAdoptante+" va a adoptar a " +nombre_Animal+"!" ,"Confirmá la Adopción",function(){
+                    colAnimalesEnAdopcion.doc(id_AnimalBD).delete()
+                    .then(function() {
+                    console.log("Documento borrado! :" +id_AnimalBD);
+                    })
+                    .catch(function(error) {
+                    console.error("Error: ", error);
+                    });
+
+
+                    colAnimalesAdoptados.add(nuevoAdoptado)
+                      .then(function (docAdop){
+                        console.log("Se guardo en bd con el id: ", docAdop.id);
+                        app.dialog.alert ("¡Encontraste un lindo hogar para "+nombre_Animal+"! ¡Felicidades!" , "¡¡Que Alegría!!", function(){mainView.router.navigate("/misRescatados/");
+                        });
+                      })
+                      .catch(function(error){
+                        console.log("Error: " + error);
+                      });
+                  });
+
+              } else {
+                  console.log("el email no tiene una peticion");
+                  app.dialog.alert("¡"+emailAdoptante+" no tiene una petición de adopción para "+nombre_Animal+"!", "¡Oops!")
+                }
+            } else{
+                console.log("el animal no tiene una peticion")
+                app.dialog.alert("¡"+nombre_Animal+" no tiene una petición de adopción!", "¡Oops!")
+              }
+          })
+
+    /*    } else{
+          console.log("el animal no tiene una peticion")
+          app.dialog.alert("¡"+nombre_Animal+" no tiene una petición de adopción!", "¡Oops!")
+        }
+*/
+      })
+      .catch( function(error){
+        console.log("Error: "+ error);
+      });
+
+
+
+
+
+
+/*
+
+
+          email:email,
+          emailorg:emailOrg,
+          Nombre: nombreUsuario,
+          Apellido: apellidoUsuario,
+          Vivienda: viviendaAdop,
+          Familia: familiaAdop,
+          Localidad: localidad,
+          Provincia: provincia,
+          Telefono: telefonoAdop,
+          Redes: linkRedesAdop,
+          Porque_Adop: porqueAdop,
+          Ciclo_Adop: cicloVidaAdop,
+          Compromiso_Adop: compromisoAdop,
+          Necesidades_Adop: necesidadesAdop,
+          Alergias_Adop: alergiasAdop,
+          Vivienda_Prop_Adop: viviendaPropiaAdop,
+          Permiso_Prop_Adop: perimisoPropAdop,
+          Mudanza_Adop: mudanzaAdop,
+          Castracion_Adop: castracionAdop,
+          Profesion_Adop: profesionAdop,
+          Tiene_Mascotas: tieneMascotasAdop,
+          Cuida_Mascotas: cuidaMascotasAdop,
+          Direccion: direccionAdop,
+          Agrega: algoMasAdop,
+          Animal:nombre_Animal,
+          Tipo_Animal:tipo_Animal,
+          Genero_Animal:genero_Animal,
+          Descripcion_Animal:descripcion_Animal,
+
+
+
+
+
+
+*/
+
+
+
+
+
+
+    })
+  })
+
+
+
+
+
+
 }
 
 function fnAdoptar(){
@@ -1865,4 +2141,41 @@ function setAnimal (nombreA){
     .catch( function(error){
       console.log("Error : "+ error);
     });
+}
+
+function setAnimalAdoptado(adoptado){
+
+  var refMisadop= colAnimalesAdoptados.where("emailorg", "==" , email).where("Nombre_Animal", "==", adoptado);
+  var indice=0;
+  refMisadop.get()
+    .then(function(querySnapshot) {
+        querySnapshot.forEach(function(docAdop){
+          indice++;
+          nombre_Animal=docAdop.data().Nombre_Animal
+          genero_Animal=docAdop.data().Genero_Animal
+          tipo_Animal=docAdop.data().Tipo_Animal
+          descripcion_Animal=docAdop.data().Descripcion_Animal
+          nomAdoptante=docAdop.data().Nombre_Adoptante
+          apeAdoptante=docAdop.data().Apellido_Adoptante
+          profesionAdoptante=docAdop.data().Profesion
+          viviendaAdoptante=docAdop.data().Vivienda
+          viviendaPropiaAdoptante=docAdop.data().Vivienda_Prop
+          direccionAdoptante=docAdop.data().Direccion
+          familiaAdoptante=docAdop.data().Familia
+          localidadAdoptante=docAdop.data().Localidad
+          provinciaAdoptante=docAdop.data().Provincia
+          telefonoAdoptante=docAdop.data().Telefono
+          linkRedesAdoptante=docAdop.data().Redes
+          tieneMascotasAdoptante=docAdop.data().Tiene_Mascotas
+          console.log("-"+nombre_Animal+"-  adoptado por " + nomAdoptante + " indice: " + indice);
+
+
+        })
+      mainView.router.navigate('/verAnimaldop/verAdop'+indice+'/')
+    })
+    .catch( function(error){
+      console.log("Error : "+ error);
+    });
+
+
 }
