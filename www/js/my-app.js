@@ -72,6 +72,7 @@ var nombreUsuario="";
 var apellidoUsuario="";
 var nombreOrganizacion="";
 var nombreRespOrganizacion="";
+var apellidoRespOrganizacion="";
 var email="";
 var emailOrg="";
 var password="";
@@ -160,7 +161,7 @@ $$(document).on('page:init', '.page[data-name="index"]', function (e) {
 /*
     var tipodeUsuario="";
     var nombreUsuario="";
-    var apellidoUsuario="";
+    var apellidoRespOrganizacion="";
     var nombreOrganizacion="";
     var nombreRespOrganizacion="";
     var email="";
@@ -472,6 +473,41 @@ $$(document).on('page:init', '.page[data-name="serTransito"]', function (e) {
 $$(document).on('page:init', '.page[data-name="rescatadosOrg"]', function (e) {
     // Do something here when page with data-name="about" attribute loaded and initialized
     console.log("estoy en rescatadosOrg");
+    console.log("traer animales de: "+ emailOrg);
+
+
+
+        var refRescatadosOrg= colAnimalesAdoptados.where("emailorg", "==" , emailOrg);
+        var indice=0;
+        refRescatadosOrg.get()
+          .then(function(querySnapshot) {
+              querySnapshot.forEach(function(docResOrg){
+                indice++;
+                nombre_Animal=docResOrg.data().Nombre_Animal
+                genero_Animal= docResOrg.data().Genero_Animal
+                tipo_Animal=docResOrg.data().Tipo_Animal
+                descripcion_Animal=docResOrg.data().Descripcion_Animal
+                nomAdoptante=docResOrg.data().Nombre_Adoptante
+                apeAdoptante=docResOrg.data().Apellido_Adoptante
+                console.log("-"+nombre_Animal+"-  adoptado por " + nomAdoptante + " indice: " + indice);
+                var tarjeAdoptadoOrg='<div id="tarjetaAdOrg'+indice+'" class="card demo-card-header-pic"><div id="imgAdOrg'+indice+'" style="background-image:url(img/perro.jpg)" class="card-header align-items-flex-end row"> <p id="nomAnimAdOrg'+indice+'" class="txtCards align-items-flex-end noMargin">'+nombre_Animal+
+                 '</p> </div> <div class="card-content card-content-padding"> <div class="row justify-content-space-around noMargin"> <p id="nomAdOrg'+indice+'" class=" align-items-flex-end noMargin">'+nomAdoptante+'</p> <p class=" align-items-flex-end noMargin"> - </p> <p id="apeAdOrg'+indice+'" class="align-items-flex-end noMargin">'+apeAdoptante +'</p> </div><p id="descAdOrg'+indice+'" class="text-align-justify">'+descripcion_Animal+'</p> </div> <div class="card-footer"> <a id="verAdOrg' +indice+ '" href="#" onclick="setAnimalAdoptadoOrg(\''+nombre_Animal+'\')" class="link verAnimal">' + 'Leer Más' + '</a></div> </div>'; // /verAnimaldop/verAdop'+indice+'/
+
+                $$("#bloqueAdoptadosOrg").append(tarjeAdoptadoOrg);
+
+              })
+          })
+          .catch( function(error){
+            console.log("Error : "+ error);
+          });
+
+
+
+
+      console.log("El link a org es: " +linkAOrg)
+      $$("#aOrg").on("click", function(){mainView.router.navigate(linkAOrg)})     //ir hacia atrás
+
+
 
 
 
@@ -484,11 +520,39 @@ $$(document).on('page:init', '.page[data-name="rescatadosOrg"]', function (e) {
 $$(document).on('page:init', '.page[data-name="recomendacionesOrg"]', function (e) {
     // Do something here when page with data-name="about" attribute loaded and initialized
     console.log("estoy en recomendacionesOrg");
+    console.log("org es: "+ emailOrg)
 
+    var refRecomendaciones= colRecomendaciones.where("email", "==" , emailOrg);
+    refRecomendaciones.get()
+      .then(function(querySnapshot) {
+          querySnapshot.forEach(function(docRec){
+            tituloRec=docRec.data().titulo
+            txtRec=docRec.data().texto
+            console.log("Recomendación:" + tituloRec + " " +txtRec);
 
+            var nuevaRecomendaOrg=`  <li class="accordion-item"><a class="item-content item-link" href="#">
+                  <div class="item-inner">
+                    <div class="item-title text-color-white"><b>`+tituloRec+`</b></div>
+                  </div>
+                </a>
+                <div class="accordion-item-content">
+                  <div class="block">
+                    <p class="text-align-center text-color-white">`+txtRec+`</p>
 
+                  </div>
+                </div>
+              </li>`
 
+            $$("#acordionRecomendaOrg").append(nuevaRecomendaOrg)
 
+          })
+      })
+      .catch( function(error){
+        console.log("Error: "+ error);
+      });
+
+      console.log(linkAOrg)
+      $$("#vuelvoAOrg").on("click",function(){mainView.router.navigate(linkAOrg)});
 
 })
 
@@ -549,10 +613,23 @@ $$(document).on('page:init', '.page[data-name="infoOrg"]', function (e) {
     console.log("estoy en infoOrg");
     console.log(linkAOrg)
     console.log(nombreOrganizacion)
+    console.log(descripcionOrg)
+    console.log(localidadOrg)
+    console.log(provinciaOrg)
+    console.log(nombreRespOrganizacion)
+    console.log(apellidoRespOrganizacion)
+    console.log("email de org:-"+emailOrg+"-");
     $$("#vuelvoAVerOrg").on("click",function(){mainView.router.navigate(linkAOrg)});
 
 
     $$("#perfildeOrg").append(nombreOrganizacion);
+    $$("#nOrgdesdeUsu").append(nombreOrganizacion);
+    $$("#dOrgdesdeUsu").append(descripcionOrg);
+    $$("#nResOrgdesdeUsu").append(nombreRespOrganizacion+" "+apellidoRespOrganizacion);
+    $$("#lOrgdesdeUsu").append(localidadOrg);
+    $$("#pOrgdesdeUsu").append(provinciaOrg);
+
+
 
 
 
@@ -683,7 +760,7 @@ $$(document).on('page:init', '.page[data-name="verAnimaldop"]', function (e, pag
     $$("#fotoAadop").attr("src", "img/perro.jpg");        //Esta hardcodeadaaa
     $$("#tipoYGeneroAdop").append(tipo_Animal+", "+genero_Animal);
     $$("#descripAdop").html(descripcion_Animal);
-    $$("#nombreAdopTante").append(nomAdoptante+", "+apeAdoptante);
+    $$("#nombreAdopTante").append(nomAdoptante+" "+apeAdoptante);
     $$("#localidadPciaAdop").append(localidadAdoptante+", "+provinciaAdoptante);
     $$("#profesiónAdoptante").append(profesionAdoptante);
     $$("#direccionAdoptante").append(direccionAdoptante);
@@ -693,36 +770,7 @@ $$(document).on('page:init', '.page[data-name="verAnimaldop"]', function (e, pag
     $$("#mascotasAdoptante").append(tieneMascotasAdoptante);
     $$("#viviendaAdoptante").append(viviendaAdoptante);
     $$("#viviendaPropAdoptante").append(viviendaPropiaAdoptante);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    $$("#correoAdoptante").append(emailAdoptante);
 
 
 })
@@ -1186,7 +1234,7 @@ $$(document).on('page:init', '.page[data-name="miPerfilOrg"]', function (e){
 
 
       $$("#nOrg").append(nombreOrganizacion);
-      $$("#nResOrg").append(nombreRespOrganizacion+" "+apellidoUsuario);
+      $$("#nResOrg").append(nombreRespOrganizacion+" "+apellidoRespOrganizacion);
       $$("#dOrg").html(descripcionOrg);
       $$("#lOrg").append(localidad);
       $$("#pOrg").append(provincia);
@@ -1310,12 +1358,12 @@ function fnRegistrarOrg(){
   password = $$("#passwordRegistro").val();
   nombreOrganizacion = $$("#nomOrg").val();
   nombreRespOrganizacion = $$("#nomRespOrg").val();
-  apellidoUsuario = $$("#apeUsu").val();
+  apellidoRespOrganizacion = $$("#apeUsu").val();
   provincia = $$("#provincia").val();
   localidad = $$("#localidad").val();
   descripcionOrg = $$("#descOrg").val();
 
-  if (email=="" || password=="" || nombreRespOrganizacion=="" || apellidoUsuario=="" || nombreOrganizacion=="" || provincia=="" || localidad=="" ) {
+  if (email=="" || password=="" || nombreRespOrganizacion=="" || apellidoRespOrganizacion=="" || nombreOrganizacion=="" || provincia=="" || localidad=="" ) {
     app.dialog.alert("Completá todos los campos!!", "Oops");
   } else {
       firebase.auth().createUserWithEmailAndPassword(email, password)
@@ -1324,7 +1372,7 @@ function fnRegistrarOrg(){
                     var nuevaOrg={
                       Nombre:nombreOrganizacion,
                       nomResponsable:nombreRespOrganizacion,
-                      apellidoResponsable:apellidoUsuario,
+                      apellidoResponsable:apellidoRespOrganizacion,
                       TipoUsuario: tipodeUsuario,
                       Provincia: provincia,
                       Localidad: localidad,
@@ -1342,7 +1390,7 @@ function fnRegistrarOrg(){
                       });
 
                     app.dialog.confirm("Ya registraste a tu Organización!! Iniciá sesión para empezar!!", "Genial!");
-                    console.log('Se registró la organizacion: ' + nombreOrganizacion + " correctamente, y su responsable es: " + nombreRespOrganizacion + " " + apellidoUsuario );
+                    console.log('Se registró la organizacion: ' + nombreOrganizacion + " correctamente, y su responsable es: " + nombreRespOrganizacion + " " + apellidoRespOrganizacion );
                     console.log(descripcionOrg);
                     mainView.router.navigate('/index/');
                 })
@@ -1450,12 +1498,12 @@ function fnIniciarSesion (){
               console.log("Document data:", doc.data());
               nombreOrganizacion=doc.data().Nombre
               nombreRespOrganizacion=doc.data().nomResponsable
-              apellidoUsuario = doc.data().apellidoResponsable
+              apellidoRespOrganizacion = doc.data().apellidoResponsable
               tipodeUsuario=doc.data().TipoUsuario
               localidad=doc.data().Localidad
               provincia=doc.data().Provincia
               descripcionOrg=doc.data().Descripción
-              console.log( "Accedió: " +  nombreOrganizacion+ " que es una " + tipodeUsuario + " de " + localidad  + " " + provincia + " y su responsable es: " + nombreRespOrganizacion + " " + apellidoUsuario);
+              console.log( "Accedió: " +  nombreOrganizacion+ " que es una " + tipodeUsuario + " de " + localidad  + " " + provincia + " y su responsable es: " + nombreRespOrganizacion + " " + apellidoRespOrganizacion);
               mainView.router.navigate("/orgHome/");
           }
       }).catch((error) => {
@@ -1935,6 +1983,8 @@ function setOrganizacion(nombre){
         querySnapshot.forEach(function(docActual){
           indiceA++;
           if(nombre==docActual.data().Nombre){
+             nombreRespOrganizacion=docActual.data().nomResponsable
+             apellidoRespOrganizacion=docActual.data().apellidoResponsable
              nombreOrganizacion=docActual.data().Nombre
              localidadOrg= docActual.data().Localidad
              provinciaOrg= docActual.data().Provincia
@@ -2167,6 +2217,7 @@ function setAnimalAdoptado(adoptado){
           telefonoAdoptante=docAdop.data().Telefono
           linkRedesAdoptante=docAdop.data().Redes
           tieneMascotasAdoptante=docAdop.data().Tiene_Mascotas
+          emailAdoptante=docAdop.data().emailAdoptante
           console.log("-"+nombre_Animal+"-  adoptado por " + nomAdoptante + " indice: " + indice);
 
 
