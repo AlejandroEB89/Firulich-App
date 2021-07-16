@@ -70,14 +70,16 @@ var mainView = app.views.create('.view-main');
 var tipodeUsuario="";
 var nombreUsuario="";
 var apellidoUsuario="";
+var fechaNacUsuario="";
 var nombreOrganizacion="";
 var nombreRespOrganizacion="";
+var fechaCreacionOrg="";
 var apellidoRespOrganizacion="";
 var email="";
 var emailOrg="";
 var password="";
 var provincia="";
-var provinciaOrg="";
+var fechaCreacionOrg="";
 var localidad="";
 var localidadOrg="";
 var descripcionOrg="";
@@ -123,7 +125,8 @@ var tieneMascotasAdoptante="";
 var cuidaMascotasAdoptante="";
 var algoMasAdoptante="";
 var emailAdoptante="";
-
+var fechaNacAdoptante="";
+var edadUsuario="";
 // -------------- Variables para base de datos  ------------------//
 var db=firebase.firestore();
 colUsuarios=db.collection("usuarios");
@@ -187,6 +190,7 @@ $$(document).on('page:init', '.page[data-name="registro"]', function (e) {
            openIn: 'customModal',
            header: true,
            footer: true,
+           dateFormat: 'yyyy/mm/dd'
          });
 
    calendarModal = app.calendar.create({
@@ -194,11 +198,12 @@ $$(document).on('page:init', '.page[data-name="registro"]', function (e) {
           openIn: 'customModal',
           header: true,
           footer: true,
+          dateFormat: 'yyyy/mm/dd'
         });
 
 
 
-    $$("#btnRegistrar").on("click", fnRegistrar);  // fnComprobarDatos (deberia chequear primero)
+    $$("#btnRegistrar").on("click", fnRegistrar);
     $$("#toggleTipoUsuario").on("change", fnTipodeRegistro);
 
 
@@ -212,13 +217,17 @@ $$(document).on('page:init', '.page[data-name="registro"]', function (e) {
 $$(document).on('page:init', '.page[data-name="usuarioHome"]', function (e) {
     // Do something here when page with data-name="about" attribute loaded and initialized
     console.log("estoy en usuarioHome");
+    console.log("fecha Nac: " + fechaNacUsuario )
+
+
+
 
 
     $$("#usuNombrePerfil").html(nombreUsuario);
 
     $$("#cerrarSUsu").on("click", fnCerrarSesion);
 
-
+    fnCalcularEdad(fechaNacUsuario);
 
 
 
@@ -243,6 +252,7 @@ $$(document).on('page:init', '.page[data-name="listaOrg"]', function (e) {
           descripcionOrg=docActual.data().Descripción
           emailRefOrg=docActual.id
           console.log(nombreOrganizacion+ " de " + localidadOrg + " " + provinciaOrg + " " + emailRefOrg);
+
           tarjetasOrganizaciones='<div id="em-Org'+indice+'"class="hidden">'+emailRefOrg+'</div> <div id="org" class="card demo-card-header-pic"><div id="imgOrg'+indice+'" style="background-image:url(https://www.ecestaticos.com/image/clipping/557/418/79776773aab795837282c7d4947abaf7/por-que-nos-parece-que-los-perros-sonrien-una-historia-de-30-000-anos.jpg)" class="card-header align-items-flex-end"> <p id="nomOrg'+indice+
             '" class="txtCards align-items-flex-end noMargin"> ' + nombreOrganizacion +'</p> <p id="locOr'+indice+'" class="align-items-flex-end noMargin"> ' + localidadOrg+'</p>  </div> <div class="card-content card-content-padding"> <p id="pciaOr'+indice+'">' + provinciaOrg +
             '</p> <p id="descOr'+indice+'">' + descripcionOrg+'</p> </div> <div class="card-footer"> <a id="verOr'+indice+'" href="#" onclick="setOrganizacion(\''+nombreOrganizacion+'\')" class="link verOrg">' + 'Leer Más' + '</a></div> </div>'    //,+localidadOrg+,+provinciaOrg+,+descripcionOrg+        //\''+nombreOrganizacion+'\'
@@ -860,6 +870,7 @@ $$(document).on('page:init', '.page[data-name="misFliasTransito"]', function (e)
         familia_Transito=doc.data().Familia
         mascotas_Transito=doc.data().Tiene_Mascotas
         agrega_Transito=doc.data().Agrega
+        edadUsuario=doc.data().Edad
 
     /*    tabTransito=`<div id="tab-`+indice+`" class= "block tab bg-color-purple">
         <div class="block">
@@ -1039,6 +1050,7 @@ $$(document).on('page:init', '.page[data-name="misFliasTransito"]', function (e)
                       <div class="accordion-item-content">
                         <div class="block">
                           <h4 class="item-title centrar text-color-white"><b>DATOS DEL HOGAR</b></h4>
+                            <p class="text-align-center text-color-white"><b> Edad:</b> `+edadUsuario+`</p>
                             <p class="text-align-center text-color-white"><b> Vivienda:</b> `+vivienda_Transito+`</p>
                             <p class="text-align-center text-color-white"><b> Grupo Familiar:</b> `+familia_Transito+`</p>
                             <p class="text-align-center text-color-white"><b> Otras Mascotas:</b> `+mascotas_Transito+`</p>
@@ -1049,6 +1061,7 @@ $$(document).on('page:init', '.page[data-name="misFliasTransito"]', function (e)
                             <p class="text-align-center text-color-white"> <b> Teléfono:</b> `+telefono_Transito+`</p>
                             <p class="text-align-center text-color-white"> <b> E-mail:</b> `+email_Transito+`</p>
                             <p class="text-align-center text-color-white"> <b> Redes:</b> `+redes_Transito+`</p>
+                            <p class="text-align-center text-color-white"> <b> Desea agregar:</b> `+agrega_Transito+`</p>
                           </div>
                         </div>
                     </li>`;
@@ -1236,8 +1249,8 @@ $$(document).on('page:init', '.page[data-name="miPerfilOrg"]', function (e){
       $$("#nOrg").append(nombreOrganizacion);
       $$("#nResOrg").append(nombreRespOrganizacion+" "+apellidoRespOrganizacion);
       $$("#dOrg").html(descripcionOrg);
-      $$("#lOrg").append(localidad);
-      $$("#pOrg").append(provincia);
+      $$("#lOrg").append(localidadOrg);
+      $$("#pOrg").append(provinciaOrg);
 
 
       $$("#editarNomOrg").on("click", fnEditarNomOrg);
@@ -1298,8 +1311,10 @@ function fnRegistrarUsuario(){
   apellidoUsuario = $$("#apeUsu").val();
   provincia = $$("#provincia").val();
   localidad = $$("#localidad").val();
+  fechaNacUsuario= $$("#fechanac").val()
 
-  if (email=="" || password=="" || nombreUsuario=="" || apellidoUsuario=="" || provincia=="" || localidad=="" ) {
+
+  if (email=="" || password=="" || nombreUsuario=="" || apellidoUsuario=="" || provincia=="" || localidad=="" || fechaNacUsuario=="" ) {
     app.dialog.alert("Completá todos los campos!!", "Oops");                    /*Comprobar que esten todos los campos comletos*/
   } else {
       firebase.auth().createUserWithEmailAndPassword(email, password)
@@ -1311,6 +1326,7 @@ function fnRegistrarUsuario(){
                       TipoUsuario: tipodeUsuario,
                       Provincia: provincia,
                       Localidad: localidad,
+                      Fecha_Nac: fechaNacUsuario,
                     }
 
                     MiId=email;
@@ -1359,11 +1375,13 @@ function fnRegistrarOrg(){
   nombreOrganizacion = $$("#nomOrg").val();
   nombreRespOrganizacion = $$("#nomRespOrg").val();
   apellidoRespOrganizacion = $$("#apeUsu").val();
-  provincia = $$("#provincia").val();
-  localidad = $$("#localidad").val();
+  provinciaOrg = $$("#provincia").val();
+  localidadOrg = $$("#localidad").val();
   descripcionOrg = $$("#descOrg").val();
+  fechaCreacionOrg = $$("#fechaCreaOrg").val();
 
-  if (email=="" || password=="" || nombreRespOrganizacion=="" || apellidoRespOrganizacion=="" || nombreOrganizacion=="" || provincia=="" || localidad=="" ) {
+
+  if (email=="" || password=="" || nombreRespOrganizacion=="" || apellidoRespOrganizacion=="" || nombreOrganizacion=="" || provinciaOrg=="" || localidadOrg=="" ) {
     app.dialog.alert("Completá todos los campos!!", "Oops");
   } else {
       firebase.auth().createUserWithEmailAndPassword(email, password)
@@ -1374,9 +1392,10 @@ function fnRegistrarOrg(){
                       nomResponsable:nombreRespOrganizacion,
                       apellidoResponsable:apellidoRespOrganizacion,
                       TipoUsuario: tipodeUsuario,
-                      Provincia: provincia,
-                      Localidad: localidad,
+                      Provincia: provinciaOrg,
+                      Localidad: localidadOrg,
                       Descripción: descripcionOrg,
+                      Fecha_Crea_Org:fechaCreacionOrg,
                     }
 
                     MiId=email;
@@ -1438,6 +1457,8 @@ function fnTipodeRegistro (){
 
     $$("#fechaCreaOrgManejador").removeClass("hidden");
     $$("#fechaCreaOrgManejador").addClass("activo");
+    $$("#fechaNacManejador").removeClass("activo");
+    $$("#fechaNacManejador").addClass("hidden");
 
     console.log("El tipo de usuario es : " + tipodeUsuario );
 
@@ -1456,6 +1477,8 @@ function fnTipodeRegistro (){
 
     $$("#fechaCreaOrgManejador").removeClass("activo");
     $$("#fechaCreaOrgManejador").addClass("hidden");
+    $$("#fechaNacManejador").removeClass("hidden");
+    $$("#fechaNacManejador").addClass("activo");
     console.log ("El tipo de usuario es : " + tipodeUsuario) ;
   }
 
@@ -1479,6 +1502,7 @@ function fnIniciarSesion (){
           if (doc.exists) {                                  //si es usaurio se agrega nombreusuario y va a al perfil de usuario
               console.log("es un usuario!");
               console.log("Document data:", doc.data());
+              fechaNacUsuario=doc.data().Fecha_Nac
               nombreUsuario= doc.data().Nombre
               apellidoUsuario= doc.data().Apellido
               tipodeUsuario= doc.data().TipoUsuario
@@ -1500,10 +1524,11 @@ function fnIniciarSesion (){
               nombreRespOrganizacion=doc.data().nomResponsable
               apellidoRespOrganizacion = doc.data().apellidoResponsable
               tipodeUsuario=doc.data().TipoUsuario
-              localidad=doc.data().Localidad
-              provincia=doc.data().Provincia
+              localidadOrg=doc.data().Localidad
+              provinciaOrg=doc.data().Provincia
+              fechaCreacionOrg=doc.data().Fecha_Crea_Org
               descripcionOrg=doc.data().Descripción
-              console.log( "Accedió: " +  nombreOrganizacion+ " que es una " + tipodeUsuario + " de " + localidad  + " " + provincia + " y su responsable es: " + nombreRespOrganizacion + " " + apellidoRespOrganizacion);
+              console.log( "Accedió: " +  nombreOrganizacion+ " que es una " + tipodeUsuario + " de " + localidadOrg  + " " + provinciaOrg + " y su responsable es: " + nombreRespOrganizacion + " " + apellidoRespOrganizacion);
               mainView.router.navigate("/orgHome/");
           }
       }).catch((error) => {
@@ -1580,6 +1605,7 @@ function fnPublicarEnAdopcion(){
 
 function fnQuieroSerTransito(){
 
+  fnCalcularEdad(fechaNacUsuario);
   console.log(nombreUsuario, email);
   vivienda= $$("#vivienda").val();
   familia= $$("#familia").val();
@@ -1611,6 +1637,7 @@ function fnQuieroSerTransito(){
         emailorg:emailOrg,
         Nombre: nombreUsuario,
         Apellido: apellidoUsuario,
+        Edad: edadUsuario,
         Vivienda: vivienda,
         Familia: familia,
         Localidad: localidad,
@@ -1624,6 +1651,7 @@ function fnQuieroSerTransito(){
         Agrega: algoMas,
       }
 
+      console.log("edad transito: " + edadUsuario);
 
       colFamiliasTransito.add(postulacionTransito)
         .then(function (docRef){
@@ -1684,6 +1712,7 @@ function fnNuevaRecomenda(){
         .then(function (docRef){
           console.log("Se guardo en bd con el id: ", docRef.id);
           app.dialog.alert ("¡Creaste una nueva recomendación!", "¡¡Listo!!", function() {app.popup.close("#popupNuevaRecomenda")} );
+          mainView.router.navigate("/orgHome/");
         })
         .catch(function(error){
           console.log("Error: " + error);
@@ -1737,6 +1766,7 @@ function fnMarcarComoAdoptado(){
           localidadAdoptante=docN.data().Localidad
           provinciaAdoptante=docN.data().Provincia
           emailAdoptante=docN.id
+          fechaNacAdoptante=docN.data().Fecha_Nac
         } else {
           console.log("el usuario no existe")                          //si no existe guardo en emailadoptante para usarlo en el dialog de aviso que el usaurio no tiene peticion
           emailAdoptante=correoAdop;
@@ -1745,6 +1775,8 @@ function fnMarcarComoAdoptado(){
       .catch( function(error){
         console.log("Error: "+ error);
       });
+
+      fnCalcularEdad(fechaNacAdoptante);
 
 
       var miPeticion=colPeticionAdopcion.where("Animal", "==", nombre_Animal)         //Busco si hay una peticion de adop para ese animal
@@ -1787,7 +1819,10 @@ function fnMarcarComoAdoptado(){
                     Genero_Animal:genero_Animal,
                     Descripcion_Animal:descripcion_Animal,
                     Tiene_Mascotas:tieneMascotasAdoptante,
+                    Edad_Adoptante: edadUsuario,
                   }
+
+                  console.log("Edad adoptante: " + edadUsuario);
 
                   app.dialog.confirm("¡"+nomAdoptante+" "+apeAdoptante+" va a adoptar a " +nombre_Animal+"!" ,"Confirmá la Adopción",function(){
                     colAnimalesEnAdopcion.doc(id_AnimalBD).delete()
@@ -1990,6 +2025,7 @@ function setOrganizacion(nombre){
              provinciaOrg= docActual.data().Provincia
              descripcionOrg=docActual.data().Descripción
              emailOrg=docActual.id
+             fechaCreacionOrg=docActual.data().Fecha_Crea_Org
           }
 
 
@@ -2229,4 +2265,11 @@ function setAnimalAdoptado(adoptado){
     });
 
 
+}
+
+function fnCalcularEdad(fecha){
+        var hoy = new Date();
+        nacimiento=new Date(fecha);
+        edadUsuario=hoy.getFullYear() - nacimiento.getFullYear();
+        console.log("edad del Usuario: " + edadUsuario);
 }
