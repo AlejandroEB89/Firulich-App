@@ -127,6 +127,7 @@ var algoMasAdoptante="";
 var emailAdoptante="";
 var fechaNacAdoptante="";
 var edadUsuario="";
+var fechaDeAdopcion="";
 // -------------- Variables para base de datos  ------------------//
 var db=firebase.firestore();
 colUsuarios=db.collection("usuarios");
@@ -497,10 +498,12 @@ $$(document).on('page:init', '.page[data-name="rescatadosOrg"]', function (e) {
                 genero_Animal= docResOrg.data().Genero_Animal
                 tipo_Animal=docResOrg.data().Tipo_Animal
                 descripcion_Animal=docResOrg.data().Descripcion_Animal
-                fecha=docResOrg.data().Fecha_Adopcion
-                console.log("-"+nombre_Animal+"-  adoptado por " + nomAdoptante + " indice: " + indice + " fecha: " + fecha);
+                fechaDeAdopcion=docResOrg.data().Fecha_Adopcion
+
+
+                console.log("-"+nombre_Animal+"-  adoptado por " + nomAdoptante + " indice: " + indice + " fecha: " + fechaDeAdopcion);
                 var tarjeAdoptadoOrg='<div id="tarjetaAdOrg'+indice+'" class="card demo-card-header-pic"><div id="imgAdOrg'+indice+'" style="background-image:url(img/perro.jpg)" class="card-header align-items-flex-end row"> <p id="nomAnimAdOrg'+indice+'" class="txtCards align-items-flex-end noMargin">'+nombre_Animal+
-                 '</p> </div> <div class="card-content card-content-padding"> <p id="nomAdOrg'+indice+'" class=" align-items-flex-end noMargin"> Fecha Adopción: '+fecha+'</p> <p id="descAdOrg'+indice+'" class="text-align-justify maxTarjeta noMargin">'+descripcion_Animal+'</p> </div> <div class="card-footer"> <a id="verAdOrg' +indice+ '" href="#" onclick="setAnimalAdoptadoDeOrg(\''+nombre_Animal+'\')" class="link verAnimal">' + 'Leer Más' + '</a></div> </div>'; // /verAnimaldop/verAdop'+indice+'/
+                 '</p> </div> <div class="card-content card-content-padding"> <p id="nomAdOrg'+indice+'" class=" align-items-flex-end noMargin"> Fecha Adopción: '+fechaDeAdopcion+'</p> <p id="descAdOrg'+indice+'" class="text-align-justify maxTarjeta noMargin">'+descripcion_Animal+'</p> </div> <div class="card-footer"> <a id="verAdOrg' +indice+ '" href="#" onclick="setAnimalAdoptadoDeOrg(\''+nombre_Animal+'\')" class="link verAnimal">' + 'Leer Más' + '</a></div> </div>'; // /verAnimaldop/verAdop'+indice+'/
 
                 $$("#bloqueAdoptadosOrg").append(tarjeAdoptadoOrg);
 
@@ -537,17 +540,11 @@ $$(document).on('page:init', '.page[data-name="verAnimaldopDesdeUsu"]', function
     $$("#fotoAadop").attr("src", "img/perro.jpg");        //Esta hardcodeadaaa
     $$("#tipoYGeneroAdop").append(tipo_Animal+", "+genero_Animal);
     $$("#descripAdop").html(descripcion_Animal);
-    $$("#nombreAdopTante").append(nomAdoptante+" "+apeAdoptante);
-    $$("#localidadPciaAdop").append(localidadAdoptante+", "+provinciaAdoptante);
-    $$("#profesiónAdoptante").append(profesionAdoptante);
-    $$("#direccionAdoptante").append(direccionAdoptante);
-    $$("#telefonoAdoptante").append(telefonoAdoptante);
-    $$("#redesAdoptante").append(linkRedesAdoptante);
-    $$("#familiaAdoptante").append(familiaAdoptante);
-    $$("#mascotasAdoptante").append(tieneMascotasAdoptante);
-    $$("#viviendaAdoptante").append(viviendaAdoptante);
-    $$("#viviendaPropAdoptante").append(viviendaPropiaAdoptante);
-    $$("#correoAdoptante").append(emailAdoptante);
+    $$("#localidadYPciaAdop").append(localidadAdoptante+", "+provinciaAdoptante);
+    $$("#cuandoSeAdopto").append(fechaDeAdopcion);
+
+
+
 
 
 })
@@ -769,6 +766,8 @@ $$(document).on('page:init', '.page[data-name="misRescatados"]', function (e) {
             descripcion_Animal=docRes.data().Descripcion_Animal
             nomAdoptante=docRes.data().Nombre_Adoptante
             apeAdoptante=docRes.data().Apellido_Adoptante
+            edadUsuario=docRes.data().Edad_Adoptante
+
             console.log("-"+nombre_Animal+"-  adoptado por " + nomAdoptante + " indice: " + indice);
             var tarjeAdoptado='<div id="tarjeta'+indice+'" class="card demo-card-header-pic"><div id="imgAdop'+indice+'" style="background-image:url(img/perro.jpg)" class="card-header align-items-flex-end row"> <p id="nomAnimAdop'+indice+'" class="txtCards align-items-flex-end noMargin">'+nombre_Animal+
              '</p> </div> <div class="card-content card-content-padding">  <p id="nomAdop'+indice+'" class="align-items-flex-end noMargin"><b>Adoptante: '+nomAdoptante+' '+apeAdoptante+'</b></p> <p id="descAdop'+indice+'" class="text-align-justify maxTarjeta noMargin">'+descripcion_Animal+'</p> </div> <div class="card-footer"> <a id="verAdop' +indice+ '" href="#" onclick="setAnimalAdoptado(\''+nombre_Animal+'\')" class="link verAnimal">' + 'Leer Más' + '</a></div> </div>'; // /verAnimaldop/verAdop'+indice+'/
@@ -790,13 +789,15 @@ $$(document).on('page:init', '.page[data-name="verAnimaldop"]', function (e, pag
     // Do something here when page with data-name="about" attribute loaded and initialized
     console.log('Pag. VerAnimaldop con id: ' + page.route.params.id );
     console.log("estoy en verAnimaldop");
-
+    console.log("fechaDeAdopcion: "+fechaDeAdopcion)
 
     $$("#nomAdoptadoElegido").html(nombre_Animal);
     $$("#fotoAadop").attr("src", "img/perro.jpg");        //Esta hardcodeadaaa
     $$("#tipoYGeneroAdop").append(tipo_Animal+", "+genero_Animal);
     $$("#descripAdop").html(descripcion_Animal);
+    $$("#fechAdop").append(fechaDeAdopcion);
     $$("#nombreAdopTante").append(nomAdoptante+" "+apeAdoptante);
+    $$("#edadAdop").append(edadUsuario+" años");
     $$("#localidadPciaAdop").append(localidadAdoptante+", "+provinciaAdoptante);
     $$("#profesiónAdoptante").append(profesionAdoptante);
     $$("#direccionAdoptante").append(direccionAdoptante);
@@ -1133,6 +1134,7 @@ $$(document).on('page:init', '.page[data-name="misPeticionesAdop"]', function (e
         descripcion_Animal=doc.data().Descripcion_Animal
         nomAdoptante=doc.data().Nombre
         apeAdoptante=doc.data().Apellido
+        edadUsuario=doc.data().Edad
         profesionAdoptante=doc.data().Profesion_Adop
         localidadAdoptante=doc.data().Localidad
         provinciaAdoptante=doc.data().Provincia
@@ -1166,6 +1168,7 @@ $$(document).on('page:init', '.page[data-name="misPeticionesAdop"]', function (e
                         <div class="block">
                             <h4 class="item-title centrar text-color-white"><b>DATOS DEL ADOPTANTE</b></h4>
                             <p class="text-align-center text-color-white"><b> Nombre Completo:</b> `+nomAdoptante+` `+apeAdoptante+`</p>
+                            <p class="text-align-center text-color-white"><b> Edad:</b> `+edadUsuario+`</p>
                             <p class="text-align-center text-color-white"><b> Razón Adopción:</b> `+porqueAdoptante+`</p>
                             <p class="text-align-center text-color-white"><b> Compromiso de por vida:</b> `+cicloVidaAdoptante+`</p>
                             <p class="text-align-center text-color-white"><b> Cuidados del Animal:</b> `+compromisoAdoptante+`</p>
@@ -1841,11 +1844,11 @@ function fnMarcarComoAdoptado(){
                        mes = '0' + mes;
                    }
 
-                   var fechaAdopcion = anio + "-" + mes + "-" + dia;
-                   console.log("la fecha de adopcion sera: " + fechaAdopcion)
+                  fechaDeAdopcioncion =dia+"/"+mes+"/"+anio ;                     //anio + "-" + mes + "-" + dia
+                   console.log("la fecha de adopcion sera: " + fechaDeAdopcioncion)
 
                   var nuevoAdoptado={
-                    Fecha_Adopcion: fechaAdopcion,
+                    Fecha_Adopcion: fechaDeAdopcioncion,
                     emailAdoptante:emailAdoptante,
                     emailorg:email,
                     Nombre_Adoptante: nomAdoptante,
@@ -1970,7 +1973,8 @@ function fnMarcarComoAdoptado(){
 }
 
 function fnAdoptar(){
-  console.log(nombreUsuario, email, emailOrg);
+  console.log(nombreUsuario, email, emailOrg, fechaNacUsuario);
+  fnCalcularEdad(fechaNacUsuario);
 
   porqueAdop=$$("#porqueAdop").val();
   cicloVidaAdop=$$("#cicloVidaAdop").val();
@@ -2007,12 +2011,15 @@ function fnAdoptar(){
     app.dialog.confirm("¡" + nombreUsuario + ", la Adopción es un compromiso de por Vida!"
     + "</br>"+ "¡Nos vamos a estar comunicando con vos!" + "</br>"+ "¡Gracias!" , "Confirmá tu petición!", function(){
 
+
+
       var peticionDeAdopcion={
         //Nombre Animal: deberian estar los datos del animal tmb
         email:email,
         emailorg:emailOrg,
         Nombre: nombreUsuario,
         Apellido: apellidoUsuario,
+        Edad: edadUsuario,
         Vivienda: viviendaAdop,
         Familia: familiaAdop,
         Localidad: localidad,
@@ -2043,6 +2050,7 @@ function fnAdoptar(){
       colPeticionAdopcion.add(peticionDeAdopcion)
         .then(function (docRefo){
           console.log("Se guardo en bd con el id: ", docRefo.id);
+          console.log("la edad del usuario guardada es: "+edadUsuario)
           app.dialog.alert ("¡" +nombreUsuario+", ya recibimos tu petición de Adopción! ¡Nos vamos a comunicar con vos!", "¡¡Graciass!!", function() {mainView.router.navigate("/usuarioHome/")} );
         })
         .catch(function(error){
@@ -2288,6 +2296,7 @@ function setAnimalAdoptado(adoptado){
           descripcion_Animal=docAdop.data().Descripcion_Animal
           nomAdoptante=docAdop.data().Nombre_Adoptante
           apeAdoptante=docAdop.data().Apellido_Adoptante
+          edadUsuario=docAdop.data().Edad_Adoptante
           profesionAdoptante=docAdop.data().Profesion
           viviendaAdoptante=docAdop.data().Vivienda
           viviendaPropiaAdoptante=docAdop.data().Vivienda_Prop
@@ -2299,6 +2308,7 @@ function setAnimalAdoptado(adoptado){
           linkRedesAdoptante=docAdop.data().Redes
           tieneMascotasAdoptante=docAdop.data().Tiene_Mascotas
           emailAdoptante=docAdop.data().emailAdoptante
+          fechaDeAdopcion=docAdop.data().Fecha_Adopcion
           console.log("-"+nombre_Animal+"-  adoptado por " + nomAdoptante + " indice: " + indice);
 
 
@@ -2326,12 +2336,12 @@ function setAnimalAdoptadoDeOrg(animal){
           descripcion_Animal=docAdop.data().Descripcion_Animal
           localidadAdoptante=docAdop.data().Localidad
           provinciaAdoptante=docAdop.data().Provincia
-
+          fechaDeAdopcion=docAdop.data().Fecha_Adopcion
           console.log("-"+nombre_Animal+"-  adoptado por " + nomAdoptante + " indice: " + indice);
 
 
         })
-      mainView.router.navigate('/verAnimaldop/verAdop'+indice+'/')
+      mainView.router.navigate('/verAnimaldopDesdeUsu/verAdop'+indice+'/')
     })
     .catch( function(error){
       console.log("Error : "+ error);
@@ -2345,5 +2355,13 @@ function fnCalcularEdad(fecha){
         var hoy = new Date();
         nacimiento=new Date(fecha);
         edadUsuario=hoy.getFullYear() - nacimiento.getFullYear();
+        month = hoy.getMonth() - nacimiento.getMonth();
+        diaHoy=hoy.getDate();
+        diaNac=nacimiento.getDate();
+
+
+        if (month < 0 || (month ==0 && diaHoy < diaNac )) {
+                edadUsuario--;
+            }
         console.log("edad del Usuario: " + edadUsuario);
 }
