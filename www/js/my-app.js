@@ -34,8 +34,8 @@ var app = new Framework7({
       {path: '/enAdopcionOrg/',url: 'enAdopcionOrg.html',},
       {path: '/verAnimalDesdeUsu/:id',url: 'verAnimalDesdeUsu.html',},
       {path: '/peticionAdopcion/',url: 'peticionAdopcion.html',},
-
       {path: '/rescatadosOrg/',url: 'rescatadosOrg.html',},
+      {path: '/verAnimaldopDesdeUsu/:id',url: 'verAnimaldopDesdeUsu.html',},
       {path: '/recomendacionesOrg/',url: 'recomendacionesOrg.html',},
       {path: '/serTransito/',url: 'serTransito.html',},
       {path: '/donar/',url: 'donar.html',},
@@ -253,9 +253,9 @@ $$(document).on('page:init', '.page[data-name="listaOrg"]', function (e) {
           emailRefOrg=docActual.id
           console.log(nombreOrganizacion+ " de " + localidadOrg + " " + provinciaOrg + " " + emailRefOrg);
 
-          tarjetasOrganizaciones='<div id="em-Org'+indice+'"class="hidden">'+emailRefOrg+'</div> <div id="org" class="card demo-card-header-pic"><div id="imgOrg'+indice+'" style="background-image:url(https://www.ecestaticos.com/image/clipping/557/418/79776773aab795837282c7d4947abaf7/por-que-nos-parece-que-los-perros-sonrien-una-historia-de-30-000-anos.jpg)" class="card-header align-items-flex-end"> <p id="nomOrg'+indice+
-            '" class="txtCards align-items-flex-end noMargin"> ' + nombreOrganizacion +'</p> <p id="locOr'+indice+'" class="align-items-flex-end noMargin"> ' + localidadOrg+'</p>  </div> <div class="card-content card-content-padding"> <p id="pciaOr'+indice+'">' + provinciaOrg +
-            '</p> <p id="descOr'+indice+'">' + descripcionOrg+'</p> </div> <div class="card-footer"> <a id="verOr'+indice+'" href="#" onclick="setOrganizacion(\''+nombreOrganizacion+'\')" class="link verOrg">' + 'Leer Más' + '</a></div> </div>'    //,+localidadOrg+,+provinciaOrg+,+descripcionOrg+        //\''+nombreOrganizacion+'\'
+          tarjetasOrganizaciones='<div id="em-Org'+indice+'"class="hidden">'+emailRefOrg+'</div> <div id="org" class="card demo-card-header-pic "><div id="imgOrg'+indice+'" style="background-image:url(https://www.ecestaticos.com/image/clipping/557/418/79776773aab795837282c7d4947abaf7/por-que-nos-parece-que-los-perros-sonrien-una-historia-de-30-000-anos.jpg)" class="card-header align-items-flex-end"> <p id="nomOrg'+indice+
+            '" class="txtCards align-items-flex-end noMargin"> ' + nombreOrganizacion +'</p> <p id="locOr'+indice+'" class="align-items-flex-end noMargin"> ' + localidadOrg+'</p>  </div> <div class="card-content card-content-padding"> <p id="pciaOr'+indice+'" class="noMargin"><b>' + provinciaOrg +
+            '</b></p> <p id="descOr'+indice+'" class="maxTarjeta noMargin">' + descripcionOrg+'</p> </div> <div class="card-footer"> <a id="verOr'+indice+'" href="#" onclick="setOrganizacion(\''+nombreOrganizacion+'\')" class="link verOrg">' + 'Entrar' + '</a></div> </div>'    //,+localidadOrg+,+provinciaOrg+,+descripcionOrg+        //\''+nombreOrganizacion+'\'
 
           $$("#bloqueOrganizaciones").append(tarjetasOrganizaciones); //    /VerOrgDesdeUsu/verOr'+indice+'/
 
@@ -324,7 +324,7 @@ $$(document).on('page:init', '.page[data-name="enAdopcionOrg"]', function (e) {
             descripcion_Animal=doc.data().Descripcion_Animal
             console.log(nombre_Animal + " que es " + genero_Animal + " indice: " + indAnimalesEnAdop);
             var tarjetaAni='<div id="tarjeta'+indAnimalesEnAdop+'" class="card demo-card-header-pic"><div id="imgAUsu'+indAnimalesEnAdop+'" style="background-image:url(img/perro.jpg)" class="card-header align-items-flex-end row"> <p id="nomAUsu'+indAnimalesEnAdop+'" class="txtCards align-items-flex-end noMargin"> ' + nombre_Animal +
-             '</p> </div> <div class="card-content card-content-padding"> <div class="row justify-content-space-around noMargin"> <p id="tipoAUsu'+indAnimalesEnAdop+'" class=" align-items-flex-end noMargin"> ' + tipo_Animal+ '</p> <p class=" align-items-flex-end noMargin"> - </p> <p id="generoAUsu'+indAnimalesEnAdop+'" class="align-items-flex-end noMargin">' + genero_Animal + '</p> </div><p id="descAUsu'+indAnimalesEnAdop+'" class="text-align-justify">' + descripcion_Animal  + '</p> </div> <div class="card-footer"> <a id="verAUsu'+indAnimalesEnAdop+'" href="#" onclick="setAnimal(\''+nombre_Animal+'\')"  class="link verAnimal">' + 'Leer Más' + '</a></div> </div>';     //      /verAnimalDesdeUsu/verAUsu'+indice+'/
+             '</p> </div> <div class="card-content card-content-padding"> <div class="row justify-content-space-around noMargin"> <p id="tipoAUsu'+indAnimalesEnAdop+'" class=" align-items-flex-end noMargin"><b>' + tipo_Animal+ '</b></p> <p class=" align-items-flex-end noMargin"><b> - </b></p> <p id="generoAUsu'+indAnimalesEnAdop+'" class="align-items-flex-end noMargin"><b>' + genero_Animal + '</b></p> </div><p id="descAUsu'+indAnimalesEnAdop+'" class="text-align-justify maxTarjeta noMargin">' + descripcion_Animal  + '</p> </div> <div class="card-footer"> <a id="verAUsu'+indAnimalesEnAdop+'" href="#" onclick="setAnimal(\''+nombre_Animal+'\')"  class="link verAnimal">' + 'Leer Más' + '</a></div> </div>';     //      /verAnimalDesdeUsu/verAUsu'+indice+'/
 
             $$("#bloqueAdopcionDeOrg").append(tarjetaAni);
 
@@ -497,11 +497,10 @@ $$(document).on('page:init', '.page[data-name="rescatadosOrg"]', function (e) {
                 genero_Animal= docResOrg.data().Genero_Animal
                 tipo_Animal=docResOrg.data().Tipo_Animal
                 descripcion_Animal=docResOrg.data().Descripcion_Animal
-                nomAdoptante=docResOrg.data().Nombre_Adoptante
-                apeAdoptante=docResOrg.data().Apellido_Adoptante
-                console.log("-"+nombre_Animal+"-  adoptado por " + nomAdoptante + " indice: " + indice);
+                fecha=docResOrg.data().Fecha_Adopcion
+                console.log("-"+nombre_Animal+"-  adoptado por " + nomAdoptante + " indice: " + indice + " fecha: " + fecha);
                 var tarjeAdoptadoOrg='<div id="tarjetaAdOrg'+indice+'" class="card demo-card-header-pic"><div id="imgAdOrg'+indice+'" style="background-image:url(img/perro.jpg)" class="card-header align-items-flex-end row"> <p id="nomAnimAdOrg'+indice+'" class="txtCards align-items-flex-end noMargin">'+nombre_Animal+
-                 '</p> </div> <div class="card-content card-content-padding"> <div class="row justify-content-space-around noMargin"> <p id="nomAdOrg'+indice+'" class=" align-items-flex-end noMargin">'+nomAdoptante+'</p> <p class=" align-items-flex-end noMargin"> - </p> <p id="apeAdOrg'+indice+'" class="align-items-flex-end noMargin">'+apeAdoptante +'</p> </div><p id="descAdOrg'+indice+'" class="text-align-justify">'+descripcion_Animal+'</p> </div> <div class="card-footer"> <a id="verAdOrg' +indice+ '" href="#" onclick="setAnimalAdoptadoOrg(\''+nombre_Animal+'\')" class="link verAnimal">' + 'Leer Más' + '</a></div> </div>'; // /verAnimaldop/verAdop'+indice+'/
+                 '</p> </div> <div class="card-content card-content-padding"> <p id="nomAdOrg'+indice+'" class=" align-items-flex-end noMargin"> Fecha Adopción: '+fecha+'</p> <p id="descAdOrg'+indice+'" class="text-align-justify maxTarjeta noMargin">'+descripcion_Animal+'</p> </div> <div class="card-footer"> <a id="verAdOrg' +indice+ '" href="#" onclick="setAnimalAdoptadoDeOrg(\''+nombre_Animal+'\')" class="link verAnimal">' + 'Leer Más' + '</a></div> </div>'; // /verAnimaldop/verAdop'+indice+'/
 
                 $$("#bloqueAdoptadosOrg").append(tarjeAdoptadoOrg);
 
@@ -522,6 +521,33 @@ $$(document).on('page:init', '.page[data-name="rescatadosOrg"]', function (e) {
 
 
 
+
+
+})
+
+
+//    -------------------------PAGE INIT verAnimaldopDesdeUsu (Ver animal Adoptado desde Usuario)  -----------------------------------------------
+$$(document).on('page:init', '.page[data-name="verAnimaldopDesdeUsu"]', function (e, page) {
+    // Do something here when page with data-name="about" attribute loaded and initialized
+    console.log('Pag. VverAnimaldopDesdeUsu con id: ' + page.route.params.id );
+    console.log("estoy en verAnimaldop");
+
+
+    $$("#nomAnimalitoAdop").html(nombre_Animal);
+    $$("#fotoAadop").attr("src", "img/perro.jpg");        //Esta hardcodeadaaa
+    $$("#tipoYGeneroAdop").append(tipo_Animal+", "+genero_Animal);
+    $$("#descripAdop").html(descripcion_Animal);
+    $$("#nombreAdopTante").append(nomAdoptante+" "+apeAdoptante);
+    $$("#localidadPciaAdop").append(localidadAdoptante+", "+provinciaAdoptante);
+    $$("#profesiónAdoptante").append(profesionAdoptante);
+    $$("#direccionAdoptante").append(direccionAdoptante);
+    $$("#telefonoAdoptante").append(telefonoAdoptante);
+    $$("#redesAdoptante").append(linkRedesAdoptante);
+    $$("#familiaAdoptante").append(familiaAdoptante);
+    $$("#mascotasAdoptante").append(tieneMascotasAdoptante);
+    $$("#viviendaAdoptante").append(viviendaAdoptante);
+    $$("#viviendaPropAdoptante").append(viviendaPropiaAdoptante);
+    $$("#correoAdoptante").append(emailAdoptante);
 
 
 })
@@ -673,7 +699,7 @@ $$(document).on('page:init', '.page[data-name="misAdopcion"]', function (e) {
             descripcion_Animal=docActual.data().Descripcion_Animal
             console.log("-"+nombre_Animal+"-  que es " + genero_Animal + " indice: " + indice);
             var tarjeAnimal='<div id="tarjeta'+indice+'" class="card demo-card-header-pic"><div id="imgA'+indice+'" style="background-image:url(img/perro.jpg)" class="card-header align-items-flex-end row"> <p id="nomA'+indice+'" class="txtCards align-items-flex-end noMargin">'+nombre_Animal+
-             '</p> </div> <div class="card-content card-content-padding"> <div class="row justify-content-space-around noMargin"> <p id="tipoA'+indice+'" class=" align-items-flex-end noMargin">'+tipo_Animal+'</p> <p class=" align-items-flex-end noMargin"> - </p> <p id="generoA'+indice+'" class="align-items-flex-end noMargin">'+genero_Animal +'</p> </div><p id="descA'+indice+'" class="text-align-justify">'+descripcion_Animal+'</p> </div> <div class="card-footer"> <a id="verA' +indice+ '" href="/verAnimal/verA'+indice+'/" class="link verAnimal">' + 'Leer Más' + '</a></div> </div>'; //
+             '</p> </div> <div class="card-content card-content-padding"> <div class="row justify-content-space-around noMargin"> <p id="tipoA'+indice+'" class=" align-items-flex-end noMargin">'+tipo_Animal+'</p> <p class=" align-items-flex-end noMargin"> - </p> <p id="generoA'+indice+'" class="align-items-flex-end noMargin">'+genero_Animal +'</p> </div><p id="descA'+indice+'" class="text-align-justify maxTarjeta noMargin">'+descripcion_Animal+'</p> </div> <div class="card-footer"> <a id="verA' +indice+ '" href="/verAnimal/verA'+indice+'/" class="link verAnimal">' + 'Leer Más' + '</a></div> </div>'; //
 
             $$("#bloqueAdopcion").append(tarjeAnimal);
 
@@ -745,9 +771,9 @@ $$(document).on('page:init', '.page[data-name="misRescatados"]', function (e) {
             apeAdoptante=docRes.data().Apellido_Adoptante
             console.log("-"+nombre_Animal+"-  adoptado por " + nomAdoptante + " indice: " + indice);
             var tarjeAdoptado='<div id="tarjeta'+indice+'" class="card demo-card-header-pic"><div id="imgAdop'+indice+'" style="background-image:url(img/perro.jpg)" class="card-header align-items-flex-end row"> <p id="nomAnimAdop'+indice+'" class="txtCards align-items-flex-end noMargin">'+nombre_Animal+
-             '</p> </div> <div class="card-content card-content-padding"> <div class="row justify-content-space-around noMargin"> <p id="nomAdop'+indice+'" class=" align-items-flex-end noMargin">'+nomAdoptante+'</p> <p class=" align-items-flex-end noMargin"> - </p> <p id="apeAdop'+indice+'" class="align-items-flex-end noMargin">'+apeAdoptante +'</p> </div><p id="descAdop'+indice+'" class="text-align-justify">'+descripcion_Animal+'</p> </div> <div class="card-footer"> <a id="verAdop' +indice+ '" href="#" onclick="setAnimalAdoptado(\''+nombre_Animal+'\')" class="link verAnimal">' + 'Leer Más' + '</a></div> </div>'; // /verAnimaldop/verAdop'+indice+'/
-
-            $$("#bloqueAdoptados").append(tarjeAdoptado);
+             '</p> </div> <div class="card-content card-content-padding">  <p id="nomAdop'+indice+'" class="align-items-flex-end noMargin"><b>Adoptante: '+nomAdoptante+' '+apeAdoptante+'</b></p> <p id="descAdop'+indice+'" class="text-align-justify maxTarjeta noMargin">'+descripcion_Animal+'</p> </div> <div class="card-footer"> <a id="verAdop' +indice+ '" href="#" onclick="setAnimalAdoptado(\''+nombre_Animal+'\')" class="link verAnimal">' + 'Leer Más' + '</a></div> </div>'; // /verAnimaldop/verAdop'+indice+'/
+                                                                                //<div class="row justify-content-space-around noMargin"> </div>
+            $$("#bloqueAdoptados").append(tarjeAdoptado);                       //<p class=" align-items-flex-end noMargin"><b> -</b> </p> <p id="apeAdop'+indice+'" class="align-items-flex-end noMargin"><b>'+apeAdoptante +'</b></p>
 
           })
       })
@@ -1767,6 +1793,9 @@ function fnMarcarComoAdoptado(){
           provinciaAdoptante=docN.data().Provincia
           emailAdoptante=docN.id
           fechaNacAdoptante=docN.data().Fecha_Nac
+
+          fnCalcularEdad(fechaNacAdoptante);
+
         } else {
           console.log("el usuario no existe")                          //si no existe guardo en emailadoptante para usarlo en el dialog de aviso que el usaurio no tiene peticion
           emailAdoptante=correoAdop;
@@ -1776,7 +1805,7 @@ function fnMarcarComoAdoptado(){
         console.log("Error: "+ error);
       });
 
-      fnCalcularEdad(fechaNacAdoptante);
+
 
 
       var miPeticion=colPeticionAdopcion.where("Animal", "==", nombre_Animal)         //Busco si hay una peticion de adop para ese animal
@@ -1799,8 +1828,24 @@ function fnMarcarComoAdoptado(){
                   linkRedesAdoptante=doc.data().Redes
                   tieneMascotasAdoptante=doc.data().Tiene_Mascotas
 
+                  var hoy=new Date();                         // conversion de Date a fecha de adopcion
+                  var anio=hoy.getFullYear();
+                  var mes=hoy.getMonth()+1;
+                  var dia=hoy.getDate();
+
+                  if(dia < 10){
+                    dia = '0' + dia;
+                   }
+
+                   if(mes < 10){
+                       mes = '0' + mes;
+                   }
+
+                   var fechaAdopcion = anio + "-" + mes + "-" + dia;
+                   console.log("la fecha de adopcion sera: " + fechaAdopcion)
 
                   var nuevoAdoptado={
+                    Fecha_Adopcion: fechaAdopcion,
                     emailAdoptante:emailAdoptante,
                     emailorg:email,
                     Nombre_Adoptante: nomAdoptante,
@@ -2263,6 +2308,35 @@ function setAnimalAdoptado(adoptado){
     .catch( function(error){
       console.log("Error : "+ error);
     });
+
+
+}
+
+
+function setAnimalAdoptadoDeOrg(animal){
+  var refMisadop= colAnimalesAdoptados.where("emailorg", "==" , emailOrg).where("Nombre_Animal", "==", animal);
+  var indice=0;
+  refMisadop.get()
+    .then(function(querySnapshot) {
+        querySnapshot.forEach(function(docAdop){
+          indice++;
+          nombre_Animal=docAdop.data().Nombre_Animal
+          genero_Animal=docAdop.data().Genero_Animal
+          tipo_Animal=docAdop.data().Tipo_Animal
+          descripcion_Animal=docAdop.data().Descripcion_Animal
+          localidadAdoptante=docAdop.data().Localidad
+          provinciaAdoptante=docAdop.data().Provincia
+
+          console.log("-"+nombre_Animal+"-  adoptado por " + nomAdoptante + " indice: " + indice);
+
+
+        })
+      mainView.router.navigate('/verAnimaldop/verAdop'+indice+'/')
+    })
+    .catch( function(error){
+      console.log("Error : "+ error);
+    });
+
 
 
 }
