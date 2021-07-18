@@ -284,3 +284,7 @@ display: none !important;
 .margenPerfil{
   padding:15px;
 }
+
+.placeholderBlanco{
+--f7-input-placeholder-color: white;
+}

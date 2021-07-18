@@ -63,6 +63,28 @@
             </li>
 
             <li>
+              <a href="#" class="item-link item-content popup-open" data-popup=".popupEditarFechaOrg">
+                <div class="item-inner">
+                  <div id="fCrOrg" class="item-title text-color-white">
+                    <div class="item-header text-color-white">Fecha de Creación</div>
+                  </div>
+                  <div class="item-after text-color-white">Editar</div>
+                </div>
+              </a>
+            </li>
+
+            <li>
+              <a id="editarRedesOrg" href="#" class="item-link item-content">
+                <div class="item-inner">
+                  <div id="redesOrg" class="item-title text-color-white">
+                    <div class="item-header text-color-white">Redes</div>
+                  </div>
+                  <div class="item-after text-color-white">Editar</div>
+                </div>
+              </a>
+            </li>
+
+            <li>
               <a  href="#" class="item-link item-content popup-open" data-popup=".popupEditarDescOrg">
                 <div class="item-inner">
                   <div class="item-title text-color-white">
@@ -209,6 +231,61 @@
                   <!-- <a class="link popup-close"> ¡Entiendo!  popup-close </a> -->
                   <div class="block block-strong no-hairlines FormatoBtnIni  noMargin ">
                     <button id="editarDescOrg" class="button btn button-large button-fill">
+                      <span>¡Actualizar!</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <!----------------- POPUP PARA ACTUALIZAR FECHA DE CREACIÓN ----------------->
+
+
+      <div id="popupEditarFechaOrg" class="popup popupEditarFechaOrg">
+          <div class="view">
+            <div class="page">
+              <div class="navbar">
+                <div class="navbar-bg"></div>
+                <div class="navbar-inner">
+                  <div class="left">
+                    <a href="#" class="link popup-close">
+                        <i class="icon icon-back"></i>
+                        <span class="ios-only">Back</span>
+                    </a>
+                  </div>
+                  <div class="title center">Editar</div>
+                </div>
+              </div>
+              <div class="page-content bg-color-purple">
+                <div class="block formatoBloques no-hairlines">
+                <h2 class="text-color-white centrar noMargin"> Actualizá la Fecha de Creación</h2>
+                <p class="text-color-white centrar"> Seleccioná la fecha en la que tu organización comenzó a funcionar!</p>
+
+                <div class="list">
+                  <ul class="transp" >
+
+                    <li>
+                      <div class="item-content item-input">
+                          <div class="item-inner">
+                              <div class="item-title item-label text-color-white">Fecha de Creación de la Organización </div>
+                                  <div class="item-input-wrap">
+                                    <input id="creaFechaOrga" class="placeholderBlanco" type="text" placeholder="Click para seleccionar" readonly="readonly" " />
+                                  </div>
+                          </div>
+                      </div>
+                    </li>
+
+
+
+
+                  </ul>
+                  <!-- <a class="link popup-close"> ¡Entiendo!  popup-close </a> -->
+                  <div class="block block-strong no-hairlines FormatoBtnIni  noMargin ">
+                    <button id="editarFechaCOrg" class="button btn button-large button-fill">
                       <span>¡Actualizar!</span>
                     </button>
                   </div>

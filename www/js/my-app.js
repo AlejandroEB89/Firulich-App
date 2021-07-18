@@ -75,11 +75,11 @@ var nombreOrganizacion="";
 var nombreRespOrganizacion="";
 var fechaCreacionOrg="";
 var apellidoRespOrganizacion="";
+var redesOrg="";
 var email="";
 var emailOrg="";
 var password="";
 var provincia="";
-var fechaCreacionOrg="";
 var localidad="";
 var localidadOrg="";
 var descripcionOrg="";
@@ -191,7 +191,9 @@ $$(document).on('page:init', '.page[data-name="registro"]', function (e) {
            openIn: 'customModal',
            header: true,
            footer: true,
-           dateFormat: 'yyyy/mm/dd'
+           dateFormat: 'yyyy/mm/dd',
+           toolbarCloseText: 'Listo',
+           headerPlaceholder: 'Seleccionar Fecha'
          });
 
    calendarModal = app.calendar.create({
@@ -199,7 +201,9 @@ $$(document).on('page:init', '.page[data-name="registro"]', function (e) {
           openIn: 'customModal',
           header: true,
           footer: true,
-          dateFormat: 'yyyy/mm/dd'
+          dateFormat: 'yyyy/mm/dd',
+          toolbarCloseText: 'Listo',
+          headerPlaceholder: 'Seleccionar Fecha'
         });
 
 
@@ -661,6 +665,23 @@ $$(document).on('page:init', '.page[data-name="infoOrg"]', function (e) {
     $$("#nResOrgdesdeUsu").append(nombreRespOrganizacion+" "+apellidoRespOrganizacion);
     $$("#lOrgdesdeUsu").append(localidadOrg);
     $$("#pOrgdesdeUsu").append(provinciaOrg);
+
+    var creacionFecha=new Date(fechaCreacionOrg);
+    var y=creacionFecha.getFullYear();
+    var m=creacionFecha.getMonth()+1;
+    var d=creacionFecha.getDate();
+    var laFechaEs=d+"/"+m+"/"+y;
+    console.log("lafechaes: " +laFechaEs);
+
+    $$("#fechaCOrg").append(laFechaEs);
+
+    if(redesOrg==undefined){
+      $$("#redesOrgdesdeUsu").append("--")
+    } else {
+      $$("#redesOrgdesdeUsu").append(redesOrg);
+    }
+
+
 
 
 
@@ -1217,6 +1238,16 @@ $$(document).on('page:init', '.page[data-name="miPerfilOrg"]', function (e){
     console.log("desc: "+ descripcionOrg)
     console.log("banco: "+ bancoOrg)
 
+    calendarModal = app.calendar.create({
+           inputEl: '#creaFechaOrga',
+           openIn: 'customModal',
+           header: true,
+           footer: true,
+           dateFormat: 'yyyy/mm/dd',
+           toolbarCloseText: 'Listo',
+           headerPlaceholder: 'Seleccionar Fecha'
+         });
+
     var refDeOrg= colOrganizaciones
     refDeOrg.get()
       .then(function(querySnapshot) {
@@ -1229,6 +1260,13 @@ $$(document).on('page:init', '.page[data-name="miPerfilOrg"]', function (e){
                nroCtaOrg=doc.data().Nro_Cta
                cuilOrg=doc.data().Nro_Cuil
                cuentaMpOrg=doc.data().MercadoPago
+               redesOrg=doc.data().Redes
+               fechaCreacionOrg=doc.data().Fecha_Crea_Org
+               if(redesOrg==undefined){
+                 $$("#redesOrg").append("--")
+               } else {
+                 $$("#redesOrg").append(redesOrg);
+               }
 
                if(bancoOrg==undefined){
                  $$("#bancoOrg").append("--")
@@ -1282,6 +1320,16 @@ $$(document).on('page:init', '.page[data-name="miPerfilOrg"]', function (e){
       $$("#pOrg").append(provinciaOrg);
 
 
+      var creaOrgFecha=new Date(fechaCreacionOrg);
+      var ye=creaOrgFecha.getFullYear();
+      var me=creaOrgFecha.getMonth()+1;
+      var di=creaOrgFecha.getDate();
+      var laFechaOrgEs=di+"/"+me+"/"+ye;
+      console.log("lafechaes: " +laFechaOrgEs);
+
+      $$("#fCrOrg").append(laFechaOrgEs);
+
+
       $$("#editarNomOrg").on("click", fnEditarNomOrg);
       $$("#editarNomRespOrg").on("click", fnEditarNomRespOrg);
       $$("#editarLocOrg").on("click", fnEditarLocOrg);
@@ -1293,11 +1341,23 @@ $$(document).on('page:init', '.page[data-name="miPerfilOrg"]', function (e){
       $$("#editarcbuOrg").on("click", fnEditarCbuOrg);
       $$("#editarNroCtaOrg").on("click", fnEditarNroCtaOrg);
       $$("#editarCuilOrg").on("click", fnEditarCuilOrg);
+      $$("#editarRedesOrg").on("click", fnEditarRedesOrg);
+      $$("#editarFechaCOrg").on("click", fnEditarFechaCrea);
 
 
       var popup = app.popup.create({
 
         el: '#popupEditarDescOrg',
+        on: {
+          opened: function () {
+            console.log('Popup opened')
+          }
+        }
+      });
+
+      var popup = app.popup.create({
+
+        el: '#popupEditarFechaOrg',
         on: {
           opened: function () {
             console.log('Popup opened')
@@ -2079,6 +2139,7 @@ function setOrganizacion(nombre){
              descripcionOrg=docActual.data().Descripción
              emailOrg=docActual.id
              fechaCreacionOrg=docActual.data().Fecha_Crea_Org
+             redesOrg=docActual.data().Redes
           }
 
 
@@ -2098,13 +2159,13 @@ function fnEditarNomOrg(){
   app.dialog.prompt("Ingresa el nuevo nombre", "Editar Nombre de Organización", function(newNombreOrg){
     colOrganizaciones.doc(email).update({ Nombre: newNombreOrg })
     .then(function() {
-    console.log("actualizado ok: "+newNombreOrg );
+    nombreOrganizacion=newNombreOrg;
+    console.log("actualizado ok: "+nombreOrganizacion);
+    app.dialog.alert("Actualizaste el nombre de la Organización a: "+nombreOrganizacion, "¡Listo!", function(){mainView.router.navigate("/orgHome/")});
     })
     .catch(function(error) {
     console.log("Error: " + error);
     });
-    mainView.router.navigate("/miPerfilOrg/");
-
   });
 }
 
@@ -2113,7 +2174,8 @@ function fnEditarNomRespOrg(){
   app.dialog.prompt("Ingresa el nuevo nombre", "Editar Nombre del Responsable", function(nuevoNombre){
     colOrganizaciones.doc(email).update({ nomResponsable: nuevoNombre })
     .then(function() {
-    console.log("actualizado ok: "+nuevoNombre );
+    nombreRespOrganizacion=nuevoNombre;
+    console.log("actualizado ok: "+nombreRespOrganizacion );
     })
     .catch(function(error) {
     console.log("Error: " + error);
@@ -2121,7 +2183,9 @@ function fnEditarNomRespOrg(){
   app.dialog.prompt("Ingresa el nuevo apellido", "Editar Apellido del Responsable", function(nuevoApe){
     colOrganizaciones.doc(email).update({ apellidoResponsable: nuevoApe })
     .then(function() {
-    console.log("actualizado ok: "+nuevoApe );
+      apellidoRespOrganizacion=nuevoApe;
+    console.log("actualizado ok: "+apellidoRespOrganizacion );
+    app.dialog.alert("Actualizaste nombre y apellido del Responsable a: "+nombreRespOrganizacion+" "+apellidoRespOrganizacion, "¡Listo!", function(){mainView.router.navigate("/orgHome/")})
     })
     .catch(function(error) {
     console.log("Error: " + error);
@@ -2135,14 +2199,53 @@ function fnEditarNomRespOrg(){
 
 function fnEditarLocOrg(){
   console.log("editar localidad")
-  app.dialog.prompt("Ingresa el nuevo nombre", "Editar Nombre de Organización")
+  app.dialog.prompt("Ingresa ela localidad", "Editar Localidad", function (nuevaLoc){
+    colOrganizaciones.doc(email).update({ Localidad: nuevaLoc })
+    .then(function() {
+    console.log("actualizado ok: "+nuevaLoc );
+    localidadOrg=nuevaLoc;
+    app.dialog.alert("Actualizaste tu Localidad a: "+localidadOrg, "¡Listo!", function(){mainView.router.navigate("/orgHome/")})
+    })
+    .catch(function(error) {
+    console.log("Error: " + error);
+    });
+  });
 }
 
 
 function fnEditarPciaOrg(){
   console.log("editar provincia")
-  app.dialog.prompt("Ingresa el nuevo nombre", "Editar Nombre de Organización")
+  app.dialog.prompt("Ingresa la provincia", "Editar Provincia", function (nuevaPcia){
+    colOrganizaciones.doc(email).update({ Provincia: nuevaPcia })
+    .then(function() {
+    console.log("actualizado ok: "+nuevaPcia);
+    provinciaOrg=nuevaPcia;
+    app.dialog.alert("Actualizaste tu Provincia a: "+provinciaOrg, "¡Listo!", function(){mainView.router.navigate("/orgHome/")})
+    })
+    .catch(function(error) {
+    console.log("Error: " + error);
+    });
+  });
+
 }
+
+function fnEditarRedesOrg(){
+  console.log("editar redes")
+  app.dialog.prompt("Ingresa el link", "Editar Redes Sociales", function (nuevaRed){
+    colOrganizaciones.doc(email).update({ Redes: nuevaRed})
+    .then(function() {
+    console.log("actualizado ok: "+nuevaRed);
+    redesOrg=nuevaRed;
+    app.dialog.alert("Actualizaste tus redes a: "+redesOrg, "¡Listo!", function(){mainView.router.navigate("/orgHome/")})
+    })
+    .catch(function(error) {
+    console.log("Error: " + error);
+    });
+  });
+
+}
+
+
 
 function fnEditarDescOrg(){
   console.log("editar descripcion")
@@ -2151,14 +2254,40 @@ function fnEditarDescOrg(){
     colOrganizaciones.doc(email).update({ Descripción: nuevaDescripcion })
     .then(function() {
     console.log("actualizado ok: "+nuevaDescripcion );
+    descripcionOrg=nuevaDescripcion;
+    app.dialog.alert("Actualizaste tu descripción", "¡Listo!")
     })
     .catch(function(error) {
     console.log("Error: " + error);
     });
     app.popup.close("#popupEditarDescOrg");
-    mainView.router.navigate("/miPerfilOrg/");
+    mainView.router.navigate("/orgHome/");
 
 }
+
+function fnEditarFechaCrea(){
+  console.log("editar fecha")
+    nuevaFecha=$$("#creaFechaOrga").val();
+    if(nuevaFecha==""){
+      app.dialog.alert("Tenes que seleccionar una fecha!", "Oops");
+    } else{
+        console.log("newfecha: "+nuevaFecha);
+        colOrganizaciones.doc(email).update({ Fecha_Crea_Org: nuevaFecha })
+        .then(function() {
+        console.log("actualizado ok: "+nuevaFecha );
+        fechaCreacionOrg=nuevaFecha;
+        app.dialog.alert("Actualizaste la fecha de creación", "¡Listo!")
+        })
+        .catch(function(error) {
+        console.log("Error: " + error);
+        });
+        app.popup.close("#popupEditarFechaOrg");
+        mainView.router.navigate("/orgHome/");
+      }
+
+}
+
+
 
 function fnEditarMPagoOrg(){
   console.log("editar mercadoPAgo")
@@ -2172,7 +2301,7 @@ function fnEditarMPagoOrg(){
     console.log("Error: " + error);
     });
     mainView.router.navigate("/miPerfilOrg/");
-
+    mainView.router.refreshPage();
   });
 }
 
