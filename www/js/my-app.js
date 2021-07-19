@@ -1813,222 +1813,105 @@ function fnNuevaRecomenda(){
 
 
 function fnMarcarComoAdoptado(){
+  // 1° tengo que tener datos del animal, de la peticion de adopcion, y del usuario.
+  // 2° tengo que eliminar el documento de ese animal de colAnimalesEnAdopcion
+  // 3° tengo que crear un nuevo documento en AnimalesRescatados con los datos del adoptante
   console.log("marcar como adoptado a:-"+nombre_Animal+"-");
   console.log("el correo de org es:-"+ email+"-");
+
+
   app.dialog.confirm("Vas a marcar como adoptado a: "+nombre_Animal,"Confirmar Adopción",function(){
-    app.dialog.prompt("Ingresa el e-mail del adoptante", "¿Una nueva familia?", function(correoAdop){
-
-      // 1° tengo que hacer la conexion entre usuario org y peticion de adopcion
-      // 2° tengo que eliminar el documento de ese animal de colAnimalesEnAdopcion
-      // 3° tengo que crear un nuevo documento en AnimalesRescatados con los datos del adoptante
-
-      console.log("el correo ingresado es:-"+correoAdop+"-");
-      var refMiAnimal=colAnimalesEnAdopcion.where("Nombre_Animal", "==", nombre_Animal)
-
-      refMiAnimal.get()                                                          //Busco los datos del animal seleccionado
-      .then(function(querySnapshot){
+  var miPeticion=colPeticionAdopcion.where("Animal", "==", nombre_Animal)         //Busco si hay una peticion de adop para ese animal
+    miPeticion.get()
+    .then(function(querySnapshot){
         querySnapshot.forEach(function(doc){
+        console.log("entre al then..buscando peticion de:-"+nombre_Animal+"-")
+          if(doc.exists){
+            //console.log(doc.data());
+            console.log("tengo peticion para: "+ nombre_Animal);
+            fnTraerDatosAnimal();   //Busco los datos del animal seleccionado
 
-          console.log("estoy en el then de animalesEnAdopcion");
-          console.log("animal en adop : " + doc.data().Nombre_Animal)
-          nombre_Animal=doc.data().Nombre_Animal
-          tipo_Animal=doc.data().Tipo_Animal
-          genero_Animal=doc.data().Genero_Animal
-          descripcion_Animal=doc.data().Descripcion_Animal
-          id_AnimalBD=doc.id
-          console.log("id animal:-"+id_AnimalBD);
-        })
-      })
-      .catch( function(error){
-        console.log("Error: "+ error);
-      });
-
-
-      var miAdoptante=colUsuarios.doc(correoAdop)              //Busco los datos del correo ingresado
-      miAdoptante.get()
-      .then(function(docN){
-        console.log("entre al then..buscando al usuario: "+correoAdop)
-        if(docN.exists){                                                 //si el correo existe guardo sus datos
-          console.log("encontrado:-"+docN.data().Nombre+"-")
-          nomAdoptante=docN.data().Nombre
-          apeAdoptante=docN.data().Apellido
-          localidadAdoptante=docN.data().Localidad
-          provinciaAdoptante=docN.data().Provincia
-          emailAdoptante=docN.id
-          fechaNacAdoptante=docN.data().Fecha_Nac
-
-          fnCalcularEdad(fechaNacAdoptante);
-
-        } else {
-          console.log("el usuario no existe")                          //si no existe guardo en emailadoptante para usarlo en el dialog de aviso que el usaurio no tiene peticion
-          emailAdoptante=correoAdop;
-        }
-        })
-      .catch( function(error){
-        console.log("Error: "+ error);
-      });
-
-
-
-
-      var miPeticion=colPeticionAdopcion.where("Animal", "==", nombre_Animal)         //Busco si hay una peticion de adop para ese animal
-      miPeticion.get()
-      .then(function(querySnapshot){
-        //app.dialog.preloader("Buscando Peticion de Adopción del usuario");
-          console.log("entre al then..buscando peticion de:-"+nombre_Animal+"-")
-//        if(docZ.exists){                                  //si la pongo aca arriba sale siempre por el else de linea 1651
-          querySnapshot.forEach(function(doc){
-            if(doc.exists){                                //no esta funcionando la condicion de "si existe" una peticion para el animal
-              if(emailAdoptante==doc.data().email){         //esta condicion funciona bien
-                  console.log("encontrada:-"+ doc.data().email+"-");
-                  console.log("Sii, ya tengo la peticion")
-                  telefonoAdoptante=doc.data().Telefono
-                  direccionAdoptante=doc.data().Direccion
-                  viviendaAdoptante=doc.data().Vivienda
-                  viviendaPropiaAdoptante=doc.data().Vivienda_Prop_Adop
-                  profesionAdoptante=doc.data().Profesion_Adop
-                  familiaAdoptante=doc.data().Familia
-                  linkRedesAdoptante=doc.data().Redes
-                  tieneMascotasAdoptante=doc.data().Tiene_Mascotas
-
-                  var hoy=new Date();                         // conversion de Date a fecha de adopcion
-                  var anio=hoy.getFullYear();
-                  var mes=hoy.getMonth()+1;
-                  var dia=hoy.getDate();
-
-                  if(dia < 10){
-                    dia = '0' + dia;
-                   }
-
-                   if(mes < 10){
-                       mes = '0' + mes;
-                   }
-
-                  fechaDeAdopcioncion =dia+"/"+mes+"/"+anio ;                     //anio + "-" + mes + "-" + dia
-                   console.log("la fecha de adopcion sera: " + fechaDeAdopcioncion)
-
-                  var nuevoAdoptado={
-                    Fecha_Adopcion: fechaDeAdopcioncion,
-                    emailAdoptante:emailAdoptante,
-                    emailorg:email,
-                    Nombre_Adoptante: nomAdoptante,
-                    Apellido_Adoptante: apeAdoptante,
-                    Vivienda: viviendaAdoptante,
-                    Vivienda_Prop: viviendaPropiaAdoptante,
-                    Profesion:profesionAdoptante,
-                    Direccion:direccionAdoptante,
-                    Familia: familiaAdoptante,
-                    Localidad: localidadAdoptante,
-                    Provincia: provinciaAdoptante,
-                    Telefono: telefonoAdoptante,
-                    Redes: linkRedesAdoptante,
-                    Nombre_Animal:nombre_Animal,
-                    Tipo_Animal:tipo_Animal,
-                    Genero_Animal:genero_Animal,
-                    Descripcion_Animal:descripcion_Animal,
-                    Tiene_Mascotas:tieneMascotasAdoptante,
-                    Edad_Adoptante: edadUsuario,
-                  }
-
-                  console.log("Edad adoptante: " + edadUsuario);
-
-                  app.dialog.confirm("¡"+nomAdoptante+" "+apeAdoptante+" va a adoptar a " +nombre_Animal+"!" ,"Confirmá la Adopción",function(){
-                    colAnimalesEnAdopcion.doc(id_AnimalBD).delete()
-                    .then(function() {
-                    console.log("Documento borrado! :" +id_AnimalBD);
-                    })
-                    .catch(function(error) {
-                    console.error("Error: ", error);
-                    });
-
-
-                    colAnimalesAdoptados.add(nuevoAdoptado)
-                      .then(function (docAdop){
-                        console.log("Se guardo en bd con el id: ", docAdop.id);
-                        app.dialog.alert ("¡Encontraste un lindo hogar para "+nombre_Animal+"! ¡Felicidades!" , "¡¡Que Alegría!!", function(){mainView.router.navigate("/misRescatados/");
-                        });
-                      })
-                      .catch(function(error){
-                        console.log("Error: " + error);
-                      });
-                  });
-
-              } else {
-                  console.log("el email no tiene una peticion");
-                  app.dialog.alert("¡"+emailAdoptante+" no tiene una petición de adopción para "+nombre_Animal+"!", "¡Oops!")
-                }
-            } else{
-                console.log("el animal no tiene una peticion")
-                app.dialog.alert("¡"+nombre_Animal+" no tiene una petición de adopción!", "¡Oops!")
-              }
+          } else{
+              console.log("el animal no tiene una peticion")
+              app.dialog.confirm("¡"+nombre_Animal+" no tiene una petición de adopción! ¿Deseas ingresar los datos manualmente?", "¡Oops!", fnIngresarAdopManual)
+            }
           })
+          // el resto de las cosas las tengo que hacer por afuera del for each
+          //deberia hacer un confirm (es usuario de firulichapp? Si? => app.dialog.prompt(ingresa el mail) ----- No? => function ingresar datos manualmente)
+          app.dialog.create({
+              title: '¡Atención!',
+              text: 'Si no es un usuario Firulichapp podés ingresar sus datos manualmente',
 
-    /*    } else{
-          console.log("el animal no tiene una peticion")
-          app.dialog.alert("¡"+nombre_Animal+" no tiene una petición de adopción!", "¡Oops!")
-        }
-*/
+              buttons: [
+
+                {text: 'Es usuario Firulichapp',
+                  onClick: function(){
+                    console.log("es usuario firulichapp");
+                    app.dialog.prompt("Ingresa su email", "Datos Adoptante", function(correoAdop){
+                        console.log("Usuario:-"+correoAdop+"-");
+                        fnTraerDatosUsuario(correoAdop);
+                        setTimeout(function(){
+                          console.log("antes de la petición emailAdoptante es:-"+ emailAdoptante+"-");
+                          var miPeticionAdop=colPeticionAdopcion.where("email", "==", emailAdoptante)         //Busco si hay una peticion de adop para ese animal
+                          miPeticionAdop.get()
+
+                          .then((querySnapshot) => {
+                            querySnapshot.forEach((doc) => {
+                              // doc.data() is never undefined for query doc snapshots
+                              console.log("bucle");
+                              if (nombre_Animal==doc.data().Animal) {
+                                  console.log("sIIIIIIIIII")
+                                  console.log("tengo la peticion del usuario:-"+ doc.data().email+"-");
+                                  telefonoAdoptante=doc.data().Telefono
+                                  direccionAdoptante=doc.data().Direccion
+                                  viviendaAdoptante=doc.data().Vivienda
+                                  viviendaPropiaAdoptante=doc.data().Vivienda_Prop_Adop
+                                  profesionAdoptante=doc.data().Profesion_Adop
+                                  familiaAdoptante=doc.data().Familia
+                                  linkRedesAdoptante=doc.data().Redes
+                                  tieneMascotasAdoptante=doc.data().Tiene_Mascotas
+
+                                  app.dialog.confirm("¡"+nomAdoptante+" "+apeAdoptante+" va a adoptar a " +nombre_Animal+"!" ,"Confirmá la Adopción", fnGuardarAdopcion);
+
+                               } else {
+                                  // doc.data() will be undefined in this case
+                                  console.log("el email no tiene una peticion");
+                                  app.dialog.alert("¡"+emailAdoptante+" no tiene una petición de adopción para "+nombre_Animal+", o no está registrado en Firulichapp!" , "¡Oops!");
+                                }
+                            });
+
+                          })
+                          .catch((error) => {
+                              console.log("Error getting document:", error);
+                          });
+
+                        },1800);
+                    })
+                  },
+                },
+
+                {text: 'Ingresar manualmente',
+                  onClick:function(){
+                    console.log("ingresar manualmente");
+                  },
+                },
+
+
+                {text: 'Cancelar',
+                  onClick:function(){
+                      console.log("cancelar todo")
+                    },
+                },
+              ],
+            verticalButtons: true,
+            }).open();
+
+
       })
-      .catch( function(error){
+    .catch( function(error){
         console.log("Error: "+ error);
       });
-
-
-
-
-
-
-/*
-
-
-          email:email,
-          emailorg:emailOrg,
-          Nombre: nombreUsuario,
-          Apellido: apellidoUsuario,
-          Vivienda: viviendaAdop,
-          Familia: familiaAdop,
-          Localidad: localidad,
-          Provincia: provincia,
-          Telefono: telefonoAdop,
-          Redes: linkRedesAdop,
-          Porque_Adop: porqueAdop,
-          Ciclo_Adop: cicloVidaAdop,
-          Compromiso_Adop: compromisoAdop,
-          Necesidades_Adop: necesidadesAdop,
-          Alergias_Adop: alergiasAdop,
-          Vivienda_Prop_Adop: viviendaPropiaAdop,
-          Permiso_Prop_Adop: perimisoPropAdop,
-          Mudanza_Adop: mudanzaAdop,
-          Castracion_Adop: castracionAdop,
-          Profesion_Adop: profesionAdop,
-          Tiene_Mascotas: tieneMascotasAdop,
-          Cuida_Mascotas: cuidaMascotasAdop,
-          Direccion: direccionAdop,
-          Agrega: algoMasAdop,
-          Animal:nombre_Animal,
-          Tipo_Animal:tipo_Animal,
-          Genero_Animal:genero_Animal,
-          Descripcion_Animal:descripcion_Animal,
-
-
-
-
-
-
-*/
-
-
-
-
-
-
-    })
-  })
-
-
-
-
-
+    });
 
 }
 
@@ -2494,3 +2377,163 @@ function fnCalcularEdad(fecha){
             }
         console.log("edad del Usuario: " + edadUsuario);
 }
+
+
+function fnIngresarAdopManual (){
+  console.log("voy a ingresar los datos manualmente");
+}
+
+function fnTraerDatosAnimal(){
+    console.log("traigo datos de animal: " + nombre_Animal)
+    var refMiAnimal=colAnimalesEnAdopcion.where("Nombre_Animal", "==", nombre_Animal)
+
+    refMiAnimal.get()
+    .then(function(querySnapshot){
+      querySnapshot.forEach(function(doc){
+
+        console.log("estoy en el then de animalesEnAdopcion");
+        console.log("animal en adop : " + doc.data().Nombre_Animal)
+        nombre_Animal=doc.data().Nombre_Animal
+        tipo_Animal=doc.data().Tipo_Animal
+        genero_Animal=doc.data().Genero_Animal
+        descripcion_Animal=doc.data().Descripcion_Animal
+        id_AnimalBD=doc.id
+        console.log("id animal:-"+id_AnimalBD);
+      })
+    })
+    .catch( function(error){
+      console.log("Error: "+ error);
+    });
+
+}
+
+
+function fnTraerDatosUsuario(e){
+  console.log("traigo datos de usuario: "+ e);
+    var miAdoptante=colUsuarios.doc(e)              //Busco los datos del correo ingresado
+    miAdoptante.get()
+    .then(function(docN){
+      console.log("entre al then..buscando al usuario: "+e)
+      if(docN.exists){                                                 //si el correo existe guardo sus datos
+        console.log("encontrado:-"+docN.data().Nombre+"-")
+        nomAdoptante=docN.data().Nombre
+        apeAdoptante=docN.data().Apellido
+        localidadAdoptante=docN.data().Localidad
+        provinciaAdoptante=docN.data().Provincia
+        emailAdoptante=docN.id
+        fechaNacAdoptante=docN.data().Fecha_Nac
+
+        fnCalcularEdad(fechaNacAdoptante);
+
+      } else {
+        console.log("el usuario no existe")                          //si no existe guardo en emailadoptante para usarlo en el dialog de aviso que el usaurio no tiene peticion
+        emailAdoptante=e;
+      }
+      })
+    .catch( function(error){
+      console.log("Error: "+ error);
+    });
+
+}
+
+
+function fnGuardarAdopcion(){
+  console.log("guardar adopcion")
+
+  var hoy=new Date();                         // conversion de Date a fecha de adopcion
+  var anio=hoy.getFullYear();
+  var mes=hoy.getMonth()+1;
+  var dia=hoy.getDate();
+
+  if(dia < 10){
+    dia = '0' + dia;
+   }
+
+   if(mes < 10){
+       mes = '0' + mes;
+   }
+
+  fechaDeAdopcioncion =dia+"/"+mes+"/"+anio ;                     //anio + "-" + mes + "-" + dia
+   console.log("la fecha de adopcion sera: " + fechaDeAdopcioncion)
+
+  var nuevoAdoptado={
+    Fecha_Adopcion: fechaDeAdopcioncion,
+    emailAdoptante:emailAdoptante,
+    emailorg:email,
+    Nombre_Adoptante: nomAdoptante,
+    Apellido_Adoptante: apeAdoptante,
+    Vivienda: viviendaAdoptante,
+    Vivienda_Prop: viviendaPropiaAdoptante,
+    Profesion:profesionAdoptante,
+    Direccion:direccionAdoptante,
+    Familia: familiaAdoptante,
+    Localidad: localidadAdoptante,
+    Provincia: provinciaAdoptante,
+    Telefono: telefonoAdoptante,
+    Redes: linkRedesAdoptante,
+    Nombre_Animal:nombre_Animal,
+    Tipo_Animal:tipo_Animal,
+    Genero_Animal:genero_Animal,
+    Descripcion_Animal:descripcion_Animal,
+    Tiene_Mascotas:tieneMascotasAdoptante,
+    Edad_Adoptante: edadUsuario,
+  }
+
+  console.log("Edad adoptante: " + edadUsuario);
+
+
+    colAnimalesEnAdopcion.doc(id_AnimalBD).delete()
+    .then(function() {
+    console.log("Animal borrado de EnAdopcion! :" +id_AnimalBD);
+    })
+    .catch(function(error) {
+    console.error("Error: ", error);
+    });
+
+
+    colAnimalesAdoptados.add(nuevoAdoptado)
+      .then(function (docAdop){
+        console.log("Se guardo en bd con el id: ", docAdop.id);
+        app.dialog.alert ("¡Encontraste un lindo hogar para "+nombre_Animal+"! ¡Felicidades!" , "¡¡Que Alegría!!", function(){mainView.router.navigate("/misRescatados/");
+        });
+      })
+      .catch(function(error){
+        console.log("Error: " + error);
+      });
+
+
+
+}
+
+/*
+function fnEsUsuario(em){
+  console.log("fnEsUsuario:-"+em+"-");
+  fnTraerDatosUsuario(em);
+
+  var miPeticionAdop=colPeticionAdopcion.where("email", "==", emailAdoptante)         //Busco si hay una peticion de adop para ese animal
+  miPeticionAdop.get()
+  .then(function(doc){
+    if(doc.exists){
+      console.log("tengo la peticion del usuario:-"+ doc.data().email+"-");
+      telefonoAdoptante=doc.data().Telefono
+      direccionAdoptante=doc.data().Direccion
+      viviendaAdoptante=doc.data().Vivienda
+      viviendaPropiaAdoptante=doc.data().Vivienda_Prop_Adop
+      profesionAdoptante=doc.data().Profesion_Adop
+      familiaAdoptante=doc.data().Familia
+      linkRedesAdoptante=doc.data().Redes
+      tieneMascotasAdoptante=doc.data().Tiene_Mascotas
+    }
+
+    else {
+        console.log("el email no tiene una peticion");
+        app.dialog.confirm("¡"+emailAdoptante+" no tiene una petición de adopción para "+nombre_Animal+"! ¿Deseas ingresar los datos manualmente?", "¡Oops!", fnIngresarAdopManual)
+      }
+
+  })
+  .catch( function(error){
+    console.log("Error: "+ error);
+  });
+
+}
+*/
