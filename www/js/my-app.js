@@ -55,6 +55,8 @@ var app = new Framework7({
       {path: '/verAnimal/:id/',url: 'verAnimal.html',},
       {path: '/misPeticionesAdop/',url: 'misPeticionesAdop.html',},
       {path: '/publicarOrg/',url: 'publicarOrg.html',},
+      {path: '/ingresoManual/',url: 'ingresoManual.html',},      //hacer esta page init
+
 
 
     ]
@@ -100,6 +102,10 @@ var nroCtaOrg="";
 var cuilOrg="";
 var cuentaMpOrg="";
 
+var tituloRec="";
+var txtRec="";
+var idRec="";
+
 // -------------- Variables para Adoptante ------------------//
 
 var nomAdoptante="";
@@ -128,6 +134,7 @@ var emailAdoptante="";
 var fechaNacAdoptante="";
 var edadUsuario="";
 var fechaDeAdopcion="";
+var avisoEsUsuario="";
 // -------------- Variables para base de datos  ------------------//
 var db=firebase.firestore();
 colUsuarios=db.collection("usuarios");
@@ -553,6 +560,49 @@ $$(document).on('page:init', '.page[data-name="verAnimaldopDesdeUsu"]', function
 
 })
 
+
+//    -------------------------PAGE INIT ingresoManual (ingresar manualmente datos de una adopción)  -----------------------------------------------
+$$(document).on('page:init', '.page[data-name="ingresoManual"]', function (e) {
+    // Do something here when page with data-name="about" attribute loaded and initialized
+    console.log("estoy en ingresoManual");
+
+    $$("#marcarAdop").append(nombre_Animal);
+    $$("#marcar").on("click", function(){
+
+        nomAdoptante=$$("#nomManual").val();
+        apeAdoptante=$$("#apeManual").val();
+        edadUsuario=$$("#edadManual").val();
+        provinciaAdoptante=$$("#pciaManual").val();
+        localidadAdoptante=$$("#localidadManual").val();
+        profesionAdoptante=$$("#profesionManual").val();
+        direccionAdoptante=$$("#direccionManual").val();
+        telefonoAdoptante=$$("#telManual").val();
+        linkRedesAdoptante=$$("#linkRedesManual").val();
+        viviendaAdoptante=$$("#viviendaManual").val();
+        viviendaPropiaAdoptante=$$("#viviendaPropManual").val();
+        familiaAdoptante=$$("#familiaManual").val();
+        tieneMascotasAdoptante=$$("#mascotasManual").val();
+        emailAdoptante="No es usuario Firulichapp";
+
+        if (linkRedesAdoptante==""){
+          linkRedesAdoptante="--";
+        }
+
+        if(nomAdoptante=="" || apeAdoptante=="" || edadUsuario=="" || provinciaAdoptante=="" ||  localidadAdoptante=="" ||  profesionAdoptante==""
+        ||  direccionAdoptante=="" || telefonoAdoptante=="" || viviendaAdoptante=="" || viviendaPropiaAdoptante=="" ||  familiaAdoptante=="" ||  tieneMascotasAdoptante=="" ){
+          app.dialog.alert("¡Completá todos los campos!", "¡Oops!");
+        } else{
+          console.log("estoy en else");
+          app.dialog.confirm("¡"+nomAdoptante+" "+apeAdoptante+" va a adoptar a " +nombre_Animal+"!" ,"Confirmá la Adopción", fnGuardarAdopcion);
+        }
+
+    });
+
+
+
+
+})
+
 //    -------------------------PAGE INIT recomendacionesOrg (recomendaciones de X org (desde usuario)) -----------------------------------------------
 $$(document).on('page:init', '.page[data-name="recomendacionesOrg"]', function (e) {
     // Do something here when page with data-name="about" attribute loaded and initialized
@@ -854,7 +904,18 @@ $$(document).on('page:init', '.page[data-name="misRecomendaciones"]', function (
                 <div class="accordion-item-content">
                   <div class="block">
                     <p class="text-align-center text-color-white">`+txtRec+`</p>
-
+                  </div>
+                  <div class="row">
+                  <a href="#" class="item-link item-content popup-open" data-popup=".popupEditarReco" onclick="setRecomendacion(\``+tituloRec+`\`)">
+                    <div class="item-inner">
+                      <div class="item-after text-color-white">Editar</div>
+                    </div>
+                  </a>
+                  <a href="#" class="item-link item-content" onclick="fnBorrarRecomenda(\``+tituloRec+`\`)">
+                    <div class="item-inner">
+                      <div class="item-after text-color-white">Borrar</div>
+                    </div>
+                  </a>
                   </div>
                 </div>
               </li>`
@@ -883,6 +944,10 @@ $$(document).on('page:init', '.page[data-name="misRecomendaciones"]', function (
 
 
     $$("#botonPublicarRecomenda").on("click", fnNuevaRecomenda);
+    $$("#editaRecomenda").on("click", fnEditarRecomenda);
+
+
+
 
 
 })
@@ -1852,40 +1917,45 @@ function fnMarcarComoAdoptado(){
                         fnTraerDatosUsuario(correoAdop);
                         setTimeout(function(){
                           console.log("antes de la petición emailAdoptante es:-"+ emailAdoptante+"-");
-                          var miPeticionAdop=colPeticionAdopcion.where("email", "==", emailAdoptante)         //Busco si hay una peticion de adop para ese animal
-                          miPeticionAdop.get()
+                          if (avisoEsUsuario=="NO"){
+                            console.log(avisoEsUsuario);
+                            app.dialog.alert("¡No existe ese usuario!", "Oops!")
+                          }
+                          else{
+                            var miPeticionAdop=colPeticionAdopcion.where("email", "==", emailAdoptante)         //Busco si hay una peticion de adop para ese animal
+                            miPeticionAdop.get()
 
-                          .then((querySnapshot) => {
-                            querySnapshot.forEach((doc) => {
-                              // doc.data() is never undefined for query doc snapshots
-                              console.log("bucle");
-                              if (nombre_Animal==doc.data().Animal) {
-                                  console.log("sIIIIIIIIII")
-                                  console.log("tengo la peticion del usuario:-"+ doc.data().email+"-");
-                                  telefonoAdoptante=doc.data().Telefono
-                                  direccionAdoptante=doc.data().Direccion
-                                  viviendaAdoptante=doc.data().Vivienda
-                                  viviendaPropiaAdoptante=doc.data().Vivienda_Prop_Adop
-                                  profesionAdoptante=doc.data().Profesion_Adop
-                                  familiaAdoptante=doc.data().Familia
-                                  linkRedesAdoptante=doc.data().Redes
-                                  tieneMascotasAdoptante=doc.data().Tiene_Mascotas
+                            .then((querySnapshot) => {
+                              querySnapshot.forEach((doc) => {
+                                // doc.data() is never undefined for query doc snapshots
+                                console.log("bucle");
+                                if (nombre_Animal==doc.data().Animal) {
+                                    console.log("sIIIIIIIIII")
+                                    console.log("tengo la peticion del usuario:-"+ doc.data().email+"-");
+                                    telefonoAdoptante=doc.data().Telefono
+                                    direccionAdoptante=doc.data().Direccion
+                                    viviendaAdoptante=doc.data().Vivienda
+                                    viviendaPropiaAdoptante=doc.data().Vivienda_Prop_Adop
+                                    profesionAdoptante=doc.data().Profesion_Adop
+                                    familiaAdoptante=doc.data().Familia
+                                    linkRedesAdoptante=doc.data().Redes
+                                    tieneMascotasAdoptante=doc.data().Tiene_Mascotas
 
-                                  app.dialog.confirm("¡"+nomAdoptante+" "+apeAdoptante+" va a adoptar a " +nombre_Animal+"!" ,"Confirmá la Adopción", fnGuardarAdopcion);
+                                    app.dialog.confirm("¡"+nomAdoptante+" "+apeAdoptante+" va a adoptar a " +nombre_Animal+"!" ,"Confirmá la Adopción", fnGuardarAdopcion);
 
-                               } else {
-                                  // doc.data() will be undefined in this case
-                                  console.log("el email no tiene una peticion");
-                                  app.dialog.alert("¡"+emailAdoptante+" no tiene una petición de adopción para "+nombre_Animal+", o no está registrado en Firulichapp!" , "¡Oops!");
-                                }
+                                 } else {
+                                    // doc.data() will be undefined in this case
+                                    console.log("el email no tiene una peticion");
+                                    app.dialog.alert("¡"+emailAdoptante+" no tiene una petición de adopción para "+nombre_Animal+", o no está registrado en Firulichapp!" , "¡Oops!");
+                                  }
+                              });
+
+                            })
+                            .catch((error) => {
+                                console.log("Error getting document:", error);
                             });
-
-                          })
-                          .catch((error) => {
-                              console.log("Error getting document:", error);
-                          });
-
-                        },1800);
+                          }
+                        },1300);
                     })
                   },
                 },
@@ -1893,6 +1963,8 @@ function fnMarcarComoAdoptado(){
                 {text: 'Ingresar manualmente',
                   onClick:function(){
                     console.log("ingresar manualmente");
+                    fnTraerDatosAnimal();
+                    mainView.router.navigate("/ingresoManual/")
                   },
                 },
 
@@ -2428,6 +2500,7 @@ function fnTraerDatosUsuario(e){
       } else {
         console.log("el usuario no existe")                          //si no existe guardo en emailadoptante para usarlo en el dialog de aviso que el usaurio no tiene peticion
         emailAdoptante=e;
+        avisoEsUsuario="NO";
       }
       })
     .catch( function(error){
@@ -2501,39 +2574,75 @@ function fnGuardarAdopcion(){
         console.log("Error: " + error);
       });
 
+  }
 
+function setRecomendacion(rec){
+  console.log(email)
+  console.log("rec:-"+rec+"-");
+  var refReco= colRecomendaciones.where("email", "==", email)
+  refReco.get()
+  .then(function(querySnapshot) {
+      querySnapshot.forEach(function(doc){
+        if(doc.data().titulo==rec){
+          console.log("titulos coinciden")
+          tituloRec=doc.data().titulo;
+          txtRec=doc.data().texto;
+          idRec=doc.id;
+          $$("#editaTitRec").val(tituloRec);
+          $$("#editaTextRec").text(txtRec);
 
-}
+        }
+      })
 
-/*
-function fnEsUsuario(em){
-  console.log("fnEsUsuario:-"+em+"-");
-  fnTraerDatosUsuario(em);
-
-  var miPeticionAdop=colPeticionAdopcion.where("email", "==", emailAdoptante)         //Busco si hay una peticion de adop para ese animal
-  miPeticionAdop.get()
-  .then(function(doc){
-    if(doc.exists){
-      console.log("tengo la peticion del usuario:-"+ doc.data().email+"-");
-      telefonoAdoptante=doc.data().Telefono
-      direccionAdoptante=doc.data().Direccion
-      viviendaAdoptante=doc.data().Vivienda
-      viviendaPropiaAdoptante=doc.data().Vivienda_Prop_Adop
-      profesionAdoptante=doc.data().Profesion_Adop
-      familiaAdoptante=doc.data().Familia
-      linkRedesAdoptante=doc.data().Redes
-      tieneMascotasAdoptante=doc.data().Tiene_Mascotas
-    }
-
-    else {
-        console.log("el email no tiene una peticion");
-        app.dialog.confirm("¡"+emailAdoptante+" no tiene una petición de adopción para "+nombre_Animal+"! ¿Deseas ingresar los datos manualmente?", "¡Oops!", fnIngresarAdopManual)
-      }
 
   })
   .catch( function(error){
-    console.log("Error: "+ error);
+    console.log("Error : "+ error);
   });
 
 }
-*/
+
+function fnEditarRecomenda (){
+  app.dialog.confirm("¿Vas a guardar los cambios en tu recomendación?", "¡Hey!", function(){
+    tituloRec=$$("#editaTitRec").val();
+    txtRec=$$("#editaTextRec").text();
+
+    var editaReco=colRecomendaciones.doc(idRec).update
+    ({ titulo: tituloRec,
+        texto: txtRec })
+
+    .then(function() {
+    console.log("actualizado ok");
+    app.dialog.alert("¡Recomendación Actulizada!", "¡Listo!", function(){
+        app.popup.close("#popupEditarReco");
+        mainView.router.navigate('/orgHome/')} )
+    })
+    .catch(function(error) {
+    console.log("Error: " + error);
+    });
+  })
+
+}
+
+
+function fnBorrarRecomenda (titulo){
+
+  setRecomendacion(titulo);
+  setTimeout(function(){
+    console.log("aca es: " + tituloRec);
+    app.dialog.confirm("¿Vas a borrar la recomendación?", "¡Hey!", function(){
+
+        var borrarReco=colRecomendaciones.doc(idRec).delete()
+
+        .then(function() {
+        console.log("documento borrado");
+        app.dialog.alert("¡Recomendación Borrada!", "¡Listo!", function(){
+            mainView.router.navigate('/orgHome/')} )
+        })
+        .catch(function(error) {
+        console.log("Error: " + error);
+        });
+    })
+  },1000);
+
+}

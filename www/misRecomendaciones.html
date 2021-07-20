@@ -92,5 +92,64 @@
     </div>
 
 
+
+    <div id="popupEditarReco" class="popup popupEditarReco">
+        <div class="view">
+          <div class="page">
+            <div class="navbar">
+              <div class="navbar-bg"></div>
+              <div class="navbar-inner">
+                <div class="left">
+                  <a href="#" class="link popup-close">
+                      <i class="icon icon-back"></i>
+                      <span class="ios-only">Back</span>
+                  </a>
+                </div>
+                <div class="title center">Editar</div>
+              </div>
+            </div>
+            <div class="page-content bg-color-purple">
+              <div class="block formatoBloques no-hairlines">
+              <h2 class="text-color-white centrar noMargin"> Editá tu Recomendación </h2>
+
+
+              <div class="list">
+                <ul class="transp" >
+                  <li class="item-content item-input item-input-outline">
+                    <div class="item-inner">
+                      <div class="item-title item-label inputsindex">Título</div>
+                      <div class="item-input-wrap inputsindex">
+                        <input id="editaTitRec" type="text" placeholder="Ingresa el titulo.." required validate />
+                        <span class="input-clear-button"></span>
+                      </div>
+                    </div>
+                  </li>
+
+                  <li class="item-content item-input item-input-outline">
+                    <div class="text-editor text-editor-init item-input-outline" data-placeholder="Ingresa el texto acá..."
+                        data-buttons='[["bold", "italic", "underline", "strikeThrough"], ["orderedList", "unorderedList"]]'>
+                      <div id="editaTextRec" class="text-editor-content inputsindex" contenteditable></div>
+                      <span class="input-clear-button"></span>
+                    </div>
+                  </li>
+
+
+
+
+                </ul>
+                <!-- <a class="link popup-close"> ¡Entiendo!  popup-close </a> -->
+                <div class="block block-strong no-hairlines FormatoBtnIni  noMargin ">
+                  <button id="editaRecomenda" class="button btn button-large button-fill">
+                    <span>¡ACTUALIZAR!</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
   </div>
 </div>

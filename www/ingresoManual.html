@@ -1,0 +1,233 @@
+<!-- We don't need a full layout in this file because this page will be parsed with Ajax.  -->
+<div class="page" data-name="ingresoManual">
+  <div class="navbar">
+      <div class="navbar-bg"></div>
+      <div class="navbar-inner">
+          <div class="left">
+            <a href="/misAdopcion/" class="link">
+                <i class="icon icon-back"></i>
+                <span class="ios-only">Back</span>
+            </a>
+          </div>
+          <div id="marcarAdop" class="title"> Adopción de: </div>
+
+      </div>
+  </div>
+
+  <!-- Toolbar
+  <div class="toolbar tabbar toolbar-bottom">
+      <div class="toolbar-inner">
+          <a id="btnAdoptar" href="#" class="tab-link btnToolbar">¡ENVIAR!</a>
+      </div>
+  </div>
+-->
+
+
+    <div class="page-content">
+      <div class="block">
+        <div class="block-title centrar">Ingresar datos de adopción manualmente</div>
+
+          <div class="list no-hairlines-md">                       <!-- Inputs formulario -->
+            <ul>
+              <li class="item-content item-input">
+                <div class="item-inner">
+                  <div class="item-title item-label">Nombre</div>
+                  <div class="item-input-wrap">
+                    <input type="text" id="nomManual" placeholder="Nombre Adoptante"/>
+                    <span class="input-clear-button"></span>
+                  </div>
+                </div>
+              </li>
+
+              <li class="item-content item-input">
+                <div class="item-inner">
+                  <div class="item-title item-label">Apellido</div>
+                  <div class="item-input-wrap">
+                    <input type="text" id="apeManual" placeholder="Apellido Adoptante"/>
+                    <span class="input-clear-button"></span>
+                  </div>
+                </div>
+              </li>
+
+
+              <li class="item-content item-input">
+                <div class="item-inner">
+                  <div class="item-title item-label">Edad</div>
+                  <div class="item-input-wrap">
+                    <input type="text" id="edadManual" placeholder="Edad Adoptante"/>
+                    <span class="input-clear-button"></span>
+                  </div>
+                </div>
+              </li>
+
+              <li class="item-content item-input">
+                <div class="item-inner">
+                  <div class="item-title item-label">Provincia</div>
+                  <div class="item-input-wrap input-dropdown-wrap">
+                    <select id="pciaManual" placeholder="Seleccioná">
+                      <option value="Río Negro">Río Negro</option>
+                      <option value="Chubut"> Chubut</option>
+                      <option value="Neuquén"> Neuquén </option>
+                    </select>
+                  </div>
+                </div>
+              </li>
+
+              <li class="item-content item-input">
+                <div class="item-inner">
+                  <div class="item-title item-label">Localidad</div>
+                  <div class="item-input-wrap">
+                    <input type="text" id="localidadManual" placeholder="Ingresá su Localidad"/>
+                    <span class="input-clear-button"></span>
+                  </div>
+                </div>
+              </li>
+
+              <li class="item-content item-input">
+                <div class="item-inner">
+                  <div class="item-title item-label">Profesión</div>
+                  <div class="item-input-wrap">
+                    <input type="text" id="profesionManual" placeholder="Ingresá su Profesión"/>
+                    <span class="input-clear-button"></span>
+                  </div>
+                </div>
+              </li>
+
+              <li class="item-content item-input">
+                <div class="item-inner">
+                  <div class="item-title item-label">Dirección</div>
+                  <div class="item-input-wrap">
+                    <input type="text" id="direccionManual" placeholder="Ingresá su Dirección"/>
+                    <span class="input-clear-button"></span>
+                  </div>
+                </div>
+              </li>
+
+              <li class="item-content item-input">
+                <div class="item-inner">
+                  <div class="item-title item-label">Teléfono</div>
+                  <div class="item-input-wrap">
+                    <input type="tel" id="telManual" placeholder="Ingresá su teléfono"/>
+                    <span class="input-clear-button"></span>
+                  </div>
+                </div>
+              </li>
+
+              <li class="item-content item-input">
+                <div class="item-inner">
+                  <div class="item-title item-label">Facebook/Instagram</div>
+                  <div class="item-input-wrap">
+                    <input id="linkRedesManual" type="text" placeholder="Ingresar redes (opcional)" />
+                    <span class="input-clear-button"></span>
+                  </div>
+                </div>
+              </li>
+
+              <li class="item-content item-input">
+                <div class="item-inner">
+                  <div class="item-title item-label">Hogar</div>
+                  <div class="item-input-wrap input-dropdown-wrap">
+                    <select id="viviendaManual" placeholder="Seleccioná">
+                      <option value="Casa sin patio">Casa sin Patio</option>
+                      <option value="Casa con patio abierto"> Casa con patio abierto </option>
+                      <option value="Casa con patio cerrado"> Casa con patio cerrado </option>
+                      <option value="Depto sin patio"> Depto sin patio </option>
+                      <option value="Depto con patio abierto"> Depto con patio abierto </option>
+                      <option value="Depto con patio cerrado"> Depto con patio cerrado </option>
+                    </select>
+                  </div>
+                </div>
+              </li>
+
+
+              <li class="item-content item-input">
+                <div class="item-inner">
+                  <div class="item-title item-label">Tipo de Vivienda</div>
+                  <div class="item-input-wrap input-dropdown-wrap">
+                    <select id="viviendaPropManual" placeholder="Seleccioná">
+                      <option value="Vivienda Propia">Vivienda Propia</option>
+                      <option value="Alquiler"> Alquiler </option>
+                    </select>
+                  </div>
+                </div>
+              </li>
+
+              <li class="item-content item-input">
+                <div class="item-inner">
+                  <div class="item-title item-label">Grupo Familiar</div>
+                  <div class="item-input-wrap">
+                    <textarea id="familiaManual" placeholder="Como está compuesto el grupo familiar"></textarea>
+                    <span class="input-clear-button"></span>
+                  </div>
+                </div>
+              </li>
+
+              <li class="item-content item-input">
+                <div class="item-inner">
+                  <div class="item-title item-label">Otras Mascotas</div>
+                  <div class="item-input-wrap">
+                    <textarea id="mascotasManual" placeholder="¿Tiene otras mascotas?"></textarea>
+                    <span class="input-clear-button"></span>
+                  </div>
+                </div>
+              </li>
+
+            </ul>
+          </div>
+
+
+
+
+      <div class="block block-strong no-hairlines FormatoBtnIni  noMargin">
+        <button id="marcar" class="button btn button-large button-fill button-preloader ${isLoading ? 'button-loading' : ''} @click=${()=> showInfinite(true)}"
+          @click=${load}>
+          <span class="preloader"></span>
+          <span>Guardar Adopción</span>
+        </button>
+      </div>
+
+    </div>
+
+
+      <div id="popupInfoAdopcion" class="popup popup-open">
+          <div class="view">
+            <div class="page">
+              <div class="navbar">
+                <div class="navbar-bg"></div>
+                <div class="navbar-inner">
+                  <div class="title center">¡Importante!</div>
+                  <div class="right">
+                    <!-- Link to close popup-->
+
+                  </div>
+                </div>
+              </div>
+              <div class="page-content bg-color-purple">
+                <div class="block formatoBloques no-hairlines">
+                <h1 class="text-color-white centrar"> ¿Por qué te pedimos esta información? </h1>
+                <p class="text-color-white justificar"> Adoptar a un animal no debe ser nunca una decisión tomada a la ligera, debe ser algo muy meditado, dado que el animal que vaya a formar parte de su familia vivirá con usted muchos años.</p>
+                <p class="text-color-white justificar">NOTA IMPORTANTE: TANTO EL FORMULARIO COMO EL PROCESO DE ADOPCION DEBEN SER REALIZADOS POR LA PERSONA CON LA CUAL VIVIRÁ POR SIEMPRE EL ANIMAL, Y ESTA DEBE SER SIN EXCEPCION, MAYOR DE EDAD.</p>
+                <p class="text-color-white justificar">Tené en cuenta que cada animalito en tránsito/adopción tiene una historia y
+                personalidad distinta. Contar con estos datos hace que el proceso de elección de su hogar sea mas sencillo y que se adapte a lo que
+                más le conviene al animal.
+                </p>
+                <p class="text-color-white justificar">  Por eso te pedimos que te tomes el tiempo de completar el formulario que prosigue. </p>
+                <p class="text-color-white justificar">  ¡Gracias por comprender y ayudarnos! </p>
+                <!-- <a class="link popup-close"> ¡Entiendo! </a> -->
+                <div class="block block-strong no-hairlines FormatoBtnIni  noMargin popup-close">
+                  <button id="entiendoAdop" class="button btn button-large button-fill">
+                    <span>¡Entiendo!</span>
+                  </button>
+                </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+
+
+
+    </div>
+</div>
