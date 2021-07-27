@@ -80,6 +80,7 @@ var apellidoRespOrganizacion="";
 var redesOrg="";
 var email="";
 var emailOrg="";
+var urlFotoPerfilOrg="";
 var password="";
 var provincia="";
 var localidad="";
@@ -154,6 +155,7 @@ var genero_Animal="";
 var descripción_Animal="";
 var id_AnimalBD="";
 var urlAnimal="";
+var ind="";
 // -------------- ------------------------------------------ ------------------//
 
 // Handle Cordova Device Ready Event
@@ -170,17 +172,7 @@ $$(document).on('page:init', function (e) {
 //  -------------------------- PAGE INIT INDEX ----------------------------------------------------
 $$(document).on('page:init', '.page[data-name="index"]', function (e) {
     console.log("estoy en index");
-/*
-    var tipodeUsuario="";
-    var nombreUsuario="";
-    var apellidoRespOrganizacion="";
-    var nombreOrganizacion="";
-    var nombreRespOrganizacion="";
-    var email="";
-    var password="";
-    var provincia="";
-    var localidad="";
-*/
+
     console.log("ahora tipo de usuario es : " + tipodeUsuario);
 
     $$("#btnIniciarSesion").on("click", fnIniciarSesion);
@@ -773,34 +765,29 @@ $$(document).on('page:init', '.page[data-name="verAnimal"]', function (e, page) 
     console.log('Pag. VerAnimal con id: ' + page.route.params.id );
     console.log("estoy en verAnimal");
 
-/*idPag=page.route.params.id;
-nroI=idPag.replace ("verA", "");
-console.log("el nro de tarjeta es:" + nroI);
-idNom= "#nomA" + nroI;
-idDesc="#descA" + nroI;
-idTipo="#tipoA" + nroI;
-idGenero="#generoA" + nroI;
-idImgn="#imgA" + nroI;
-console.log("div del nombre: "+ idNom )*
-nombre_Animal=$$(idNom).html();
-genero_Animal=$$(idGenero).html();
-tipo_Animal=$$(idTipo).html();
-descripcion_Animal=$$(idDesc).html();
-urlIm_Animal=$$(idImgn).css("background-image");
-imgn_Animal= urlIm_Animal.replace('url("http://localhost:3000/browser/www/', "");
-imgA=imgn_Animal.replace('")', "")*/
-console.log("animal es:-" +nombre_Animal+"-");
-console.log("es: " + tipo_Animal);
-console.log("es: " + genero_Animal);
-console.log(descripcion_Animal);
-console.log("url: "+ urlAnimal);
 
-$$("#nomAnimalElegido").html(nombre_Animal);
-$$("#fotoA").attr("src", urlAnimal);
-$$("#tipoYGenero").html(tipo_Animal+", "+genero_Animal)
-$$("#descripA").html(descripcion_Animal);
+    var popup = app.popup.create({
 
-$$("#adoptado").on("click", fnMarcarComoAdoptado);
+      el: '#popupPeticionDeAnimal',
+      on: {
+        opened: function () {
+          console.log('Popup opened')
+        }
+      }
+    });
+
+    console.log("animal es:-" +nombre_Animal+"-");
+    console.log("es: " + tipo_Animal);
+    console.log("es: " + genero_Animal);
+    console.log(descripcion_Animal);
+    console.log("url: "+ urlAnimal);
+
+    $$("#nomAnimalElegido").html(nombre_Animal);
+    $$("#fotoA").attr("src", urlAnimal);
+    $$("#tipoYGenero").html(tipo_Animal+", "+genero_Animal)
+    $$("#descripA").html(descripcion_Animal);
+
+    $$("#adoptado").on("click", fnMarcarComoAdoptado);
 
 
 })
@@ -1186,6 +1173,8 @@ $$(document).on('page:init', '.page[data-name="miPerfilOrg"]', function (e){
       });
 
 
+
+      $$("#fotoPerfil").attr("src", urlFotoPerfilOrg); //aca se va aponer la foto de perfil
       $$("#nOrg").append(nombreOrganizacion);
       $$("#nResOrg").append(nombreRespOrganizacion+" "+apellidoRespOrganizacion);
       $$("#dOrg").html(descripcionOrg);
@@ -1203,6 +1192,8 @@ $$(document).on('page:init', '.page[data-name="miPerfilOrg"]', function (e){
       $$("#fCrOrg").append(laFechaOrgEs);
 
 
+      $$("#btnCamara2").on("click", fnEditarCamara2);     //  estas funciones hay que desarrollar
+      $$("#btnGaleria2").on("click", fnEditarGaleria2);   //
       $$("#editarNomOrg").on("click", fnEditarNomOrg);
       $$("#editarNomRespOrg").on("click", fnEditarNomRespOrg);
       $$("#editarLocOrg").on("click", fnEditarLocOrg);
@@ -1698,9 +1689,92 @@ function fnMarcarComoAdoptado(){
   // 3° tengo que crear un nuevo documento en AnimalesRescatados con los datos del adoptante
   console.log("marcar como adoptado a:-"+nombre_Animal+"-");
   console.log("el correo de org es:-"+ emailOrg+"-");
-
-
   app.dialog.confirm("Vas a marcar como adoptado a: "+nombre_Animal,"Confirmar Adopción",function(){
+    app.dialog.create({
+        title: '¡Atención!',
+        text: 'Si no es un usuario Firulichapp podés ingresar sus datos manualmente',
+        buttons: [
+
+          {text: 'Es usuario Firulichapp',
+            onClick: function(){                                              //quizas seria mejor si al hacer click en es usuario--haga laconsulta de las peticiones de ese animal y muestre los nombres de los adoptantes en un dialog..
+              console.log("es usuario firulichapp");
+              fnTraerDatosAnimal();
+              var miPeticion=colPeticionAdopcion.where("Animal", "==", nombre_Animal)
+              miPeticion.get()
+              .then(function(querySnapshot){
+                  console.log("estoy en las peticiones");
+                  //console.log(querySnapshot.data());
+                    querySnapshot.forEach(function(doc){
+                      if(doc.exists){
+                        //console.log(doc.data());
+                        console.log("Adoptante: "+ doc.data().Nombre+" "+doc.data().Apellido);
+                        nomAdoptante=doc.data().Nombre;
+                        apeAdoptante=doc.data().Apellido
+                        localidadAdoptante=doc.data().Localidad
+                        provinciaAdoptante=doc.data().Provincia
+                        edadUsuario=doc.data().Edad
+                        emailAdoptante=doc.data().email
+
+                        var acoA=`  <li class="accordion-item">
+                                         <a class="item-content item-link" href="#" >
+                                           <div class="item-inner">
+                                             <div class="item-title text-color-white"><b>`+nomAdoptante+` `+apeAdoptante+`</b></div>
+                                             </div>
+                                         </a>
+                                         <div class="accordion-item-content">
+                                           <div class="block">
+                                             <h4 class="item-title centrar text-color-white"><b>DATOS DEL ADOPTANTE</b></h4>
+                                               <p class="text-align-center text-color-white"><b> Edad:</b> `+edadUsuario+`</p>
+                                               <p class="text-align-center text-color-white"> <b> Vive en:</b> `+localidadAdoptante+`, `+provinciaAdoptante+`  </p>
+                                               <div class="block block-strong no-hairlines FormatoBtnIni  noMargin">
+                                                 <button onclick="SetAdoptante(\``+emailAdoptante+`\`)" class="button btn button-large button-fill">
+                                                   <span> Establecer como Adoptante</span>
+                                                 </button>
+                                               </div>
+                                             </div>
+                                           </div>
+                                       </li>`;
+
+                        app.popup.open("#popupPeticionDeAnimal");
+
+                        $$("#peticionesDelAnimal").html(nombre_Animal);
+                        $$("#adoptantesAnimalX").append(acoA);
+
+
+                    } //aca termina el if doc exists
+
+                    }); //aca termina el forEach
+                  }) //el then
+                .catch((error) => {
+                      console.log("Error getting document:", error);
+                });
+
+            } //fin onclick primer boton
+          }, //fin primer boton
+        {text: 'Ingresar Datos Manualmente',
+            onClick: function(){
+              console.log("ingresar manualmente");
+              fnTraerDatosAnimal();
+              mainView.router.navigate("/ingresoManual/")
+            } //fin onClick ingreso manual
+        }, //  fin boton ingreso manual
+
+        {text: 'Cancelar',
+          onClick:function(){
+              console.log("cancelar todo")
+            },
+        },
+      ],
+      verticalButtons: true,
+    }).open(); //fin dialogo creado (es usuario firulichapp o no)
+
+
+
+  });   // finaliza el primer confirm
+}  //hasta aca tengo que comentar desde el principio (op2)
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/*  app.dialog.confirm("Vas a marcar como adoptado a: "+nombre_Animal,"Confirmar Adopción",function(){
   var miPeticion=colPeticionAdopcion.where("Animal", "==", nombre_Animal)         //Busco si hay una peticion de adop para ese animal
     miPeticion.get()
     .then(function(querySnapshot){
@@ -1725,7 +1799,7 @@ function fnMarcarComoAdoptado(){
               buttons: [
 
                 {text: 'Es usuario Firulichapp',
-                  onClick: function(){
+                  onClick: function(){                                              //quizas seria mejor si al hacer click en es usuario--haga laconsulta de las peticiones de ese animal y muestre los nombres de los adoptantes en un dialog..
                     console.log("es usuario firulichapp");
                     app.dialog.prompt("Ingresa su email", "Datos Adoptante", function(correoAdop){
                         console.log("Usuario:-"+correoAdop+"-");
@@ -1743,9 +1817,10 @@ function fnMarcarComoAdoptado(){
                             .then((querySnapshot) => {
                               querySnapshot.forEach((doc) => {
                                 // doc.data() is never undefined for query doc snapshots
-                                console.log("bucle");
+                                console.log("hay peticion de ese usuario");
+
                                 if (nombre_Animal==doc.data().Animal) {
-                                    console.log("sIIIIIIIIII")
+                                    console.log("existe de ese usuario para este animal")
                                     console.log("tengo la peticion del usuario:-"+ doc.data().email+"-");
                                     telefonoAdoptante=doc.data().Telefono
                                     direccionAdoptante=doc.data().Direccion
@@ -1761,8 +1836,9 @@ function fnMarcarComoAdoptado(){
                                  } else {
                                     // doc.data() will be undefined in this case
                                     console.log("el email no tiene una peticion");
-                                    app.dialog.alert("¡"+emailAdoptante+" no tiene una petición de adopción para "+nombre_Animal+", o no está registrado en Firulichapp!" , "¡Oops!");
+                                    app.dialog.alert("¡"+emailAdoptante+" no tiene una petición de adopción para "+nombre_Animal+"!" , "¡Oops!");
                                   }
+
                               });
 
                             })
@@ -1772,6 +1848,12 @@ function fnMarcarComoAdoptado(){
                           }
                         },1300);
                     })
+
+                    //aca deberia ---1°hacer consulta a peticiones de adopcion para ese animal
+                    //mostrar en un dialog las peticiones (con los nombres de usuario como botones)
+                    //al hacer clik => dialog.confirm "elusuarioapretado va a adoptar a nombreanimal", fnGuardarAdopcion
+
+
                   },
                 },
 
@@ -1800,7 +1882,7 @@ function fnMarcarComoAdoptado(){
       });
     });
 
-}
+}  */ //hasta aca inclusive es la ocpion 1
 
 function fnAdoptar(){
   console.log(nombreUsuario, email, emailOrg, fechaNacUsuario);
@@ -2201,6 +2283,7 @@ function setAnimalAdoptado(adoptado){
           genero_Animal=docAdop.data().Genero_Animal
           tipo_Animal=docAdop.data().Tipo_Animal
           descripcion_Animal=docAdop.data().Descripcion_Animal
+          urlAnimal=docAdop.data().url_Animal
           nomAdoptante=docAdop.data().Nombre_Adoptante
           apeAdoptante=docAdop.data().Apellido_Adoptante
           edadUsuario=docAdop.data().Edad_Adoptante
@@ -2505,10 +2588,10 @@ function fnGaleria() {
 }*/
 
 function onSuccessCamara(imageData) {
-
+  ind++;
   console.log("imgdata: "+imageData)
   getFileObject(imageData, function(fileObject) { //fn1
-     var uploadTask = storageRef.child('animales/test.jpg').put(fileObject); //recibe un archivo blob y lo sube al cloud storage
+     var uploadTask = storageRef.child('animales/img'+nombreOrganizacion+ind+'.jpg').put(fileObject); //recibe un archivo blob y lo sube al cloud storage
      uploadTask.on('state_changed', function(snapshot) {                   //promesa que administra o supervisa el estado de la carga cuando cambie el estado de su snapshot, mostrando el estado del snapsht,
          console.log(snapshot);                                            //
      }, function(error) { //funcion de error
@@ -2537,7 +2620,7 @@ var blobToFile = function(blob, name) {
 //A partir de la ubicacion de nuestro file y una funcion (cb) ejecuta getfileBlob (funcion especificada abajo)
 function getFileObject(filePathOrUrl, cb) {
  getFileBlob(filePathOrUrl, function(blob) { //fn2      //llama a la funcion getFileBlob con el url introducido y una funcion que:
-     cb(blobToFile(blob, 'test.jpg'));             //ejecuta nuestro cb (callback) sobre el blob con nombre y fecha cambiada (el nombre sera 'test.jpg')
+     cb(blobToFile(blob, 'img'+nombreOrganizacion+ind+'.jpg'));             //ejecuta nuestro cb (callback) sobre el blob con nombre y fecha cambiada (el nombre sera 'test.jpg')
  });
 };
 //obtiene un file desde el servidor utilizando un url,  lo transfrma a tipo blob y ejecuta una funcion (cb) para luego enviarlo al servidor
@@ -2568,3 +2651,138 @@ function getFileBlob(url, cb) {
 function onErrorCamara() {
     console.log('error de camara');
 }
+
+
+function SetAdoptante(mail){
+  console.log("set Adoptante");
+  console.log("mail del usuario: "+ mail);
+  fnTraerDatosUsuario(mail);
+  setTimeout(function(){
+    console.log("antes de la petición emailAdoptante es:-"+ emailAdoptante+"-");
+      var miPeticionAdop=colPeticionAdopcion.where("email", "==", emailAdoptante)         //Busco si hay una peticion de adop para ese animal
+      miPeticionAdop.get()
+
+      .then((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+          // doc.data() is never undefined for query doc snapshots
+          console.log("hay peticion de ese usuario");
+
+          if (nombre_Animal==doc.data().Animal) {
+              console.log("existe de ese usuario para este animal")
+              console.log("tengo la peticion del usuario:-"+ doc.data().email+"-");
+              telefonoAdoptante=doc.data().Telefono
+              direccionAdoptante=doc.data().Direccion
+              viviendaAdoptante=doc.data().Vivienda
+              viviendaPropiaAdoptante=doc.data().Vivienda_Prop_Adop
+              profesionAdoptante=doc.data().Profesion_Adop
+              familiaAdoptante=doc.data().Familia
+              linkRedesAdoptante=doc.data().Redes
+              tieneMascotasAdoptante=doc.data().Tiene_Mascotas
+
+              app.dialog.confirm("¡"+nomAdoptante+" "+apeAdoptante+" va a adoptar a " +nombre_Animal+"!" ,"Confirmá la Adopción", fnGuardarAdopcion);
+              app.popup.close("#popupPeticionDeAnimal");
+           } else {
+              // doc.data() will be undefined in this case
+              console.log("el email no tiene una peticion");
+              app.dialog.alert("¡"+emailAdoptante+" no tiene una petición de adopción para "+nombre_Animal+"!" , "¡Oops!");
+            }
+
+        });
+
+      })
+      .catch((error) => {
+          console.log("Error getting document:", error);
+      });
+
+  },1300);
+}
+
+
+
+
+function fnEditarCamara2() {
+// FOTO DESDE CAMARA
+    navigator.camera.getPicture(onSuccessCamara2,onErrorCamara,
+            {
+                quality: 70,
+                destinationType: Camera.DestinationType.FILE_URI,
+                sourceType: Camera.PictureSourceType.CAMERA,
+                correctOrientation: true,
+
+            });
+}
+
+
+function fnEditarGaleria2() {
+    navigator.camera.getPicture(onSuccessCamara2,onErrorCamara,
+            {
+                quality: 50,
+                destinationType: Camera.DestinationType.FILE_URI,
+                sourceType: Camera.PictureSourceType.PHOTOLIBRARY
+            });
+
+}
+
+/*function onSuccessCamara(imageURI) {
+    $$("#foto").attr("src", imageURI);
+   // RESTA QUE ESTA FOTO SUBA AL STORAGE…. O HACER OTRA COSA...
+
+}*/
+
+function onSuccessCamara2(imageData) {
+  ind++;
+  console.log("imgdata: "+imageData)
+  getFileObject(imageData, function(fileObject) { //fn1
+     var uploadTask = storageRef.child('perfiles/img'+nombreOrganizacion+ind+'.jpg').put(fileObject); //recibe un archivo blob y lo sube al cloud storage
+     uploadTask.on('state_changed', function(snapshot) {                   //promesa que administra o supervisa el estado de la carga cuando cambie el estado de su snapshot, mostrando el estado del snapsht,
+         console.log(snapshot);                                            //
+     }, function(error) { //funcion de error
+         console.log(error);
+         app.dialog.alert(error)
+     }, function() {     //funcion que si todo sale bien:
+         uploadTask.snapshot.ref.getDownloadURL().then( //obtengo el url de descarga
+           function(downloadURL) {
+           console.log('el archivo esta disponible en', downloadURL);//Muestro el link
+             app.dialog.alert('La imagen ya está subida', "¡Genial!")
+           //aca abajo puedo elegir que hacer con mi imagen que ya esta cargada y la puedo manejar a partir de mi download link
+            urlFotoPerfilOrg=downloadURL;
+            $$("#fotoPerfil").attr("src", urlFotoPerfilOrg);
+            console.log("url: " + urlFotoPerfilOrg)
+         });
+     });
+   });
+
+   // lo de abajo se ejecuta en la funcion on succes (es necesario ejecutar solo getFileFbject) dentro del succes
+//toma un blob y un nombre y cambia fecha y nombre, luego devuelve el blob
+var blobToFile = function(blob, name) {
+ blob.lastModifiedDate = new Date()    //modifica la ultima fecha del blob
+ blob.name = name                      //modifica el nombre del blob
+ return blob
+}
+//A partir de la ubicacion de nuestro file y una funcion (cb) ejecuta getfileBlob (funcion especificada abajo)
+function getFileObject(filePathOrUrl, cb) {
+ getFileBlob(filePathOrUrl, function(blob) { //fn2      //llama a la funcion getFileBlob con el url introducido y una funcion que:
+     cb(blobToFile(blob, 'img'+nombreOrganizacion+ind+'.jpg'));             //ejecuta nuestro cb (callback) sobre el blob con nombre y fecha cambiada (el nombre sera 'test.jpg')
+ });
+};
+//obtiene un file desde el servidor utilizando un url,  lo transfrma a tipo blob y ejecuta una funcion (cb) para luego enviarlo al servidor
+function getFileBlob(url, cb) {
+ var xhr= new XMLHttpRequest()   //creo una nueva instancia de XMLHttpRequest
+ xhr.open('GET', url)            //inicializo una peticion asincronica del url al server
+ xhr.responseType = "blob"       // declaro que el valor del tipo de respuesta es blob (para luego usarlo mas adelante)
+ xhr.addEventListener('load', ()=>{//Le agrego un event listener que cuando cargue  se va a ejecutar
+   cb(xhr.response)              //mi cb (callback) con la respuesta del servidor
+ })
+ xhr.send()                      //Envia la peticion nuevamente.
+}
+//Se ejecuta la funcion getfileObject con nuestra imagen y el cb que:
+/*orden de funcionamiento:
+1. getFileObject(imageData, fn1)    || inserto un url
+2. getFileBlob (url, fn2)           || realizo desde ese url una peticion, me devuelve un blob
+3. fn2                              || ejecuto la funcion 1 con el resultado de:
+4. bloblToFile(blob, test.jpg)      || desde mi blob obtengo un file
+5. fn1                              ||
+*/
+
+
+ }
