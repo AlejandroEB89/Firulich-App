@@ -260,10 +260,15 @@ display: none !important;
 .foto{
   max-width:100%;
   display:inline;
+
 }
 
 .margenTop{
   margin-top: 4vh;
+}
+
+.margenes{
+  padding:10px;
 }
 
 .bordes{
@@ -287,4 +292,10 @@ display: none !important;
 
 .placeholderBlanco{
 --f7-input-placeholder-color: white;
+}
+
+.fotoPerfil{
+  border-radius: 50%;
+  height: 50px;
+  width: 50px;
 }

@@ -208,6 +208,8 @@ $$(document).on('page:init', '.page[data-name="registro"]', function (e) {
 
 
 
+    $$("#btnCamaraPerfil").on("click", fnCamaraPerfil)
+    $$("#btnGaleriaPerfil").on("click", fnGaleriaPerfil);
     $$("#btnRegistrar").on("click", fnRegistrar);
     $$("#toggleTipoUsuario").on("change", fnTipodeRegistro);
 
@@ -256,11 +258,10 @@ $$(document).on('page:init', '.page[data-name="listaOrg"]', function (e) {
           provinciaOrg= docActual.data().Provincia
           descripcionOrg=docActual.data().Descripción
           emailRefOrg=docActual.id
+          urlFotoPerfilOrg=docActual.data().url_FotoPerfil
           console.log(nombreOrganizacion+ " de " + localidadOrg + " " + provinciaOrg + " " + emailRefOrg);
 
-          tarjetasOrganizaciones='<div id="em-Org'+indice+'"class="hidden">'+emailRefOrg+'</div> <div id="org" class="card demo-card-header-pic "><div id="imgOrg'+indice+'" style="background-image:url(https://www.ecestaticos.com/image/clipping/557/418/79776773aab795837282c7d4947abaf7/por-que-nos-parece-que-los-perros-sonrien-una-historia-de-30-000-anos.jpg)" class="card-header align-items-flex-end"> <p id="nomOrg'+indice+
-            '" class="txtCards align-items-flex-end noMargin"> ' + nombreOrganizacion +'</p> <p id="locOr'+indice+'" class="align-items-flex-end noMargin"> ' + localidadOrg+'</p>  </div> <div class="card-content card-content-padding"> <p id="pciaOr'+indice+'" class="noMargin"><b>' + provinciaOrg +
-            '</b></p> <p id="descOr'+indice+'" class="maxTarjeta noMargin">' + descripcionOrg+'</p> </div> <div class="card-footer"> <a id="verOr'+indice+'" href="#" onclick="setOrganizacion(\''+nombreOrganizacion+'\')" class="link verOrg">' + 'Entrar' + '</a></div> </div>'    //,+localidadOrg+,+provinciaOrg+,+descripcionOrg+        //\''+nombreOrganizacion+'\'
+          tarjetasOrganizaciones='<a href="#" onclick="setOrganizacion(\''+nombreOrganizacion+'\')" class="link verOrg"> <div id="org" class="card demo-card-header-pic "><div style="background-image:url('+urlFotoPerfilOrg+')" class="card-header align-items-flex-end"> </div>  <div class="card-content card-content-padding"><div><p class="txtCards align-items-flex-end noMargin text-color-black"> ' + nombreOrganizacion +'</p> </div> <p class="text-color-black"> ' + localidadOrg+', '+ provinciaOrg +'</p> <p  class="text-align-justify maxTarjeta noMargin text-color-black">' + descripcionOrg+'</p> </div> </div></a>'    //,+localidadOrg+,+provinciaOrg+,+descripcionOrg+        //\''+nombreOrganizacion+'\'
 
           $$("#bloqueOrganizaciones").append(tarjetasOrganizaciones); //    /VerOrgDesdeUsu/verOr'+indice+'/
 
@@ -722,6 +723,8 @@ $$(document).on('page:init', '.page[data-name="orgHome"]', function (e) {
     // Do something here when page with data-name="about" attribute loaded and initialized
     console.log("estoy en orgHome" );
 
+    
+    $$("#perfilFoto").attr("src", urlFotoPerfilOrg);
     $$("#orgNombrePerfil").html(nombreOrganizacion);
     $$("#cerrarSOrg").on("click", fnCerrarSesion);
 })
@@ -1207,11 +1210,21 @@ $$(document).on('page:init', '.page[data-name="miPerfilOrg"]', function (e){
       $$("#editarCuilOrg").on("click", fnEditarCuilOrg);
       $$("#editarRedesOrg").on("click", fnEditarRedesOrg);
       $$("#editarFechaCOrg").on("click", fnEditarFechaCrea);
-
+      $$("#actualizarFotoPerfil").on("click", fnEditarFotoPerfil);
 
       var popup = app.popup.create({
 
         el: '#popupEditarDescOrg',
+        on: {
+          opened: function () {
+            console.log('Popup opened')
+          }
+        }
+      });
+
+      var popup = app.popup.create({
+
+        el: '#popupEditarFotoPerfil',
         on: {
           opened: function () {
             console.log('Popup opened')
@@ -1336,9 +1349,9 @@ function fnRegistrarOrg(){
   localidadOrg = $$("#localidad").val();
   descripcionOrg = $$("#descOrg").val();
   fechaCreacionOrg = $$("#fechaCreaOrg").val();
+  urlFotoPerfilOrg = $$("#fotoPerfilDeOrg").attr("src");
 
-
-  if (emailOrg=="" || password=="" || nombreRespOrganizacion=="" || apellidoRespOrganizacion=="" || nombreOrganizacion=="" || provinciaOrg=="" || localidadOrg=="" ) {
+  if (emailOrg=="" || password=="" || nombreRespOrganizacion=="" || apellidoRespOrganizacion=="" || nombreOrganizacion=="" || provinciaOrg=="" || localidadOrg=="" || urlFotoPerfilOrg=="" ) {
     app.dialog.alert("Completá todos los campos!!", "Oops");
   } else {
       firebase.auth().createUserWithEmailAndPassword(emailOrg, password)
@@ -1353,6 +1366,7 @@ function fnRegistrarOrg(){
                       Localidad: localidadOrg,
                       Descripción: descripcionOrg,
                       Fecha_Crea_Org:fechaCreacionOrg,
+                      url_FotoPerfil:urlFotoPerfilOrg,
                     }
 
                     MiId=emailOrg;
@@ -1411,6 +1425,8 @@ function fnTipodeRegistro (){
 
     $$("#descOrgManejador").removeClass("hidden");
     $$("#descOrgManejador").addClass("activo");
+    $$("#fotoPerfilOrgManejador").removeClass("hidden");
+    $$("#fotoPerfilOrgManejador").addClass("activo");
 
     $$("#fechaCreaOrgManejador").removeClass("hidden");
     $$("#fechaCreaOrgManejador").addClass("activo");
@@ -1432,6 +1448,8 @@ function fnTipodeRegistro (){
     $$("#descOrgManejador").removeClass("activo");
     $$("#descOrgManejador").addClass("hidden");
 
+    $$("#fotoPerfilOrgManejador").removeClass("activo");
+    $$("#fotoPerfilOrgManejador").addClass("hidden");
     $$("#fechaCreaOrgManejador").removeClass("activo");
     $$("#fechaCreaOrgManejador").addClass("hidden");
     $$("#fechaNacManejador").removeClass("hidden");
@@ -1486,6 +1504,7 @@ function fnIniciarSesion (){
               provinciaOrg=doc.data().Provincia
               fechaCreacionOrg=doc.data().Fecha_Crea_Org
               descripcionOrg=doc.data().Descripción
+              urlFotoPerfilOrg=doc.data().url_FotoPerfil
               console.log( "Accedió: " +  nombreOrganizacion+ " que es una " + tipodeUsuario + " de " + localidadOrg  + " " + provinciaOrg + " y su responsable es: " + nombreRespOrganizacion + " " + apellidoRespOrganizacion);
               mainView.router.navigate("/orgHome/");
           }
@@ -2746,7 +2765,116 @@ function onSuccessCamara2(imageData) {
              app.dialog.alert('La imagen ya está subida', "¡Genial!")
            //aca abajo puedo elegir que hacer con mi imagen que ya esta cargada y la puedo manejar a partir de mi download link
             urlFotoPerfilOrg=downloadURL;
-            $$("#fotoPerfil").attr("src", urlFotoPerfilOrg);
+            $$("#edicionfotoPerfil").attr("src", urlFotoPerfilOrg);
+            console.log("url: " + urlFotoPerfilOrg)
+         });
+     });
+   });
+
+   // lo de abajo se ejecuta en la funcion on succes (es necesario ejecutar solo getFileFbject) dentro del succes
+//toma un blob y un nombre y cambia fecha y nombre, luego devuelve el blob
+var blobToFile = function(blob, name) {
+ blob.lastModifiedDate = new Date()    //modifica la ultima fecha del blob
+ blob.name = name                      //modifica el nombre del blob
+ return blob
+}
+//A partir de la ubicacion de nuestro file y una funcion (cb) ejecuta getfileBlob (funcion especificada abajo)
+function getFileObject(filePathOrUrl, cb) {
+ getFileBlob(filePathOrUrl, function(blob) { //fn2      //llama a la funcion getFileBlob con el url introducido y una funcion que:
+     cb(blobToFile(blob, 'img'+nombreOrganizacion+ind+'.jpg'));             //ejecuta nuestro cb (callback) sobre el blob con nombre y fecha cambiada (el nombre sera 'test.jpg')
+ });
+};
+//obtiene un file desde el servidor utilizando un url,  lo transfrma a tipo blob y ejecuta una funcion (cb) para luego enviarlo al servidor
+function getFileBlob(url, cb) {
+ var xhr= new XMLHttpRequest()   //creo una nueva instancia de XMLHttpRequest
+ xhr.open('GET', url)            //inicializo una peticion asincronica del url al server
+ xhr.responseType = "blob"       // declaro que el valor del tipo de respuesta es blob (para luego usarlo mas adelante)
+ xhr.addEventListener('load', ()=>{//Le agrego un event listener que cuando cargue  se va a ejecutar
+   cb(xhr.response)              //mi cb (callback) con la respuesta del servidor
+ })
+ xhr.send()                      //Envia la peticion nuevamente.
+}
+//Se ejecuta la funcion getfileObject con nuestra imagen y el cb que:
+/*orden de funcionamiento:
+1. getFileObject(imageData, fn1)    || inserto un url
+2. getFileBlob (url, fn2)           || realizo desde ese url una peticion, me devuelve un blob
+3. fn2                              || ejecuto la funcion 1 con el resultado de:
+4. bloblToFile(blob, test.jpg)      || desde mi blob obtengo un file
+5. fn1                              ||
+*/
+
+
+ }
+
+
+function fnEditarFotoPerfil(){
+  console.log("editar foto perfil")
+    urlNuevaFoto=$$("#edicionfotoPerfil").attr("src");
+    console.log("newfoto: "+urlNuevaFoto);
+    colOrganizaciones.doc(emailOrg).update({ url_FotoPerfil: urlNuevaFoto })
+    .then(function() {
+    urlFotoPerfilOrg=urlNuevaFoto;
+    console.log("actualizado ok: "+urlFotoPerfilOrg );
+
+    app.dialog.alert("Actualizaste tu foto de perfil!", "¡Listo!")
+    })
+    .catch(function(error) {
+    console.log("Error: " + error);
+    });
+    app.popup.close("#popupEditarFotoPerfil");
+    mainView.router.navigate("/orgHome/");
+}
+
+
+
+
+function fnCamaraPerfil() {
+// FOTO DESDE CAMARA
+    navigator.camera.getPicture(onSuccessCamaraPerfil,onErrorCamara,
+            {
+                quality: 70,
+                destinationType: Camera.DestinationType.FILE_URI,
+                sourceType: Camera.PictureSourceType.CAMERA,
+                correctOrientation: true,
+
+            });
+}
+
+
+function fnGaleriaPerfil() {
+    navigator.camera.getPicture(onSuccessCamaraPerfil,onErrorCamara,
+            {
+                quality: 50,
+                destinationType: Camera.DestinationType.FILE_URI,
+                sourceType: Camera.PictureSourceType.PHOTOLIBRARY
+            });
+
+}
+
+/*function onSuccessCamara(imageURI) {
+    $$("#foto").attr("src", imageURI);
+   // RESTA QUE ESTA FOTO SUBA AL STORAGE…. O HACER OTRA COSA...
+
+}*/
+
+function onSuccessCamaraPerfil(imageData) {
+  ind++;
+  console.log("imgdata: "+imageData)
+  getFileObject(imageData, function(fileObject) { //fn1
+     var uploadTask = storageRef.child('perfiles/img'+nombreOrganizacion+ind+'.jpg').put(fileObject); //recibe un archivo blob y lo sube al cloud storage
+     uploadTask.on('state_changed', function(snapshot) {                   //promesa que administra o supervisa el estado de la carga cuando cambie el estado de su snapshot, mostrando el estado del snapsht,
+         console.log(snapshot);                                            //
+     }, function(error) { //funcion de error
+         console.log(error);
+         app.dialog.alert(error)
+     }, function() {     //funcion que si todo sale bien:
+         uploadTask.snapshot.ref.getDownloadURL().then( //obtengo el url de descarga
+           function(downloadURL) {
+           console.log('el archivo esta disponible en', downloadURL);//Muestro el link
+             app.dialog.alert('La imagen ya está subida', "¡Genial!")
+           //aca abajo puedo elegir que hacer con mi imagen que ya esta cargada y la puedo manejar a partir de mi download link
+            urlFotoPerfilOrg=downloadURL;
+            $$("#fotoPerfilDeOrg").attr("src", urlFotoPerfilOrg);
             console.log("url: " + urlFotoPerfilOrg)
          });
      });

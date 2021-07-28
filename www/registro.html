@@ -15,8 +15,8 @@
   </div>
 
 <div class="page-content">
-  <div class="block formatoBloques no-hairlines">
-    <form class="list" id="formRegistro">
+  <div class="block">
+    <div class="list no-hairlines-md">
           <ul>
     <!--  ------------TOGGLE TIPO DE USUARIO ------------   -->
             <li>
@@ -163,9 +163,34 @@
             </div>
             </li>
 
+  <!--  ------------ INPUT FOTO PERFIL DE LA ORGANIZACIón ------------   -->
+            <li>
+              <div id="fotoPerfilOrgManejador"  class="row hidden">
+
+                <div class="block-title ">Elegí tu foto de perfil</div>
+                  <div class="row margenTop">
+                    <div class="col">
+                        <button class="col button button-outline button-round button-raised" id="btnGaleriaPerfil">GALERIA</button>
+                    </div>
+                    <div class="col">
+                        <button class="col button button-outline button-round button-raised" id="btnCamaraPerfil">CAMARA</button>
+                    </div>
+                  </div>
+                  <div class="row block">
+                      <div class="block col">
+                          <img src="" id="fotoPerfilDeOrg" width="100%">
+                      </div>
+                  </div>
+
+              </div>
+
+
+
+            </li>
+
 
           </ul>
-      </form>
+      </div>
   <!--  ------------ BOTON REGISTRAR------------   -->
       <div class="block block-strong noMargin no-hairlines">
         <button id="btnRegistrar" class="button button-large button-fill button-preloader ${isLoading ? 'button-loading' : ''}"

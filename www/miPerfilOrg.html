@@ -14,27 +14,23 @@
       </div>
   </div>
     <div class="page-content bg-color-purple">
+      <img src="" id="fotoPerfil"  class="foto">   <!-- width="100%" -->
+
       <div class="block margenTop">
         <h3 class="block-title centrar text-color-white">¡Actualizá tus datos!</h3>
         <div class="list">
           <ul class="transp bordes">
 
             <li>
-              <div class="block">
-                <div class="item-header text-color-white">Foto de Perfil</div>
-                  <div class="row block">
-                      <div class="block col">
-                          <img src="" id="fotoPerfil" width="100%">
-                      </div>
+              <a  href="#" class="item-link item-content popup-open" data-popup=".popupEditarFotoPerfil">
+                <div class="item-inner">
+                  <div class="item-title text-color-white">
+                    <div class="item-header text-color-white">Actualizar Foto Perfil</div>
                   </div>
-                <div class="item-after text-color-white"> Editar foto </div>
-                  <div class="block block-strong no-hairlines FormatoBtnIni noMargin">
-                      <button class="btn button button-filled text-color-white button-large" id="btnGaleria2">GALERIA</button>
-                  </div>
-                  <div class="block block-strong no-hairlines FormatoBtnIni noMargin">
-                      <button class="btn button  button-filled text-color-white button-large" id="btnCamara2">CAMARA</button>
-                  </div>
-              </div>
+                  <div class="item-after text-color-white">Editar</div>
+                </div>
+              </a>
+
           </li>
 
             <li>
@@ -250,6 +246,65 @@
                   <!-- <a class="link popup-close"> ¡Entiendo!  popup-close </a> -->
                   <div class="block block-strong no-hairlines FormatoBtnIni  noMargin ">
                     <button id="editarDescOrg" class="button btn button-large button-fill">
+                      <span>¡Actualizar!</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+<!----------------- POPUP PARA ACTUALIZAR FOTO DE PERFIL ----------------->
+
+      <div id="popupEditarFotoPerfil" class="popup popupEditarFotoPerfil">
+          <div class="view">
+            <div class="page">
+              <div class="navbar">
+                <div class="navbar-bg"></div>
+                <div class="navbar-inner">
+                  <div class="left">
+                    <a href="#" class="link popup-close">
+                        <i class="icon icon-back"></i>
+                        <span class="ios-only">Back</span>
+                    </a>
+                  </div>
+                  <div class="title center">Editar</div>
+                </div>
+              </div>
+              <div class="page-content bg-color-purple">
+                <div class="block">
+                <h2 class="text-color-white centrar noMargin"> Actualizá tu Foto de Perfil</h2>
+                <p class="text-color-white centrar noMargin"> Te recomendamos usar fotos en formato horizontal.</p>
+
+                <div class="list">
+                  <ul class="transp" >
+
+                    <li>
+                      <div class="block-title text-color-white margenes centrar">Agregá una foto</div>
+                      <div class="row">
+                          <div class="col FormatoBtnIni">
+                              <button class="col button-large button-fill button button-outline button-round button-raised" id="btnGaleria2">GALERIA</button>
+                          </div>
+                          <div class="col FormatoBtnIni">
+                              <button class="col button-large button-fill button button-outline button-round button-raised" id="btnCamara2">CAMARA</button>
+                          </div>
+                      </div>
+                      <div class="row block">
+                          <div class=" block col">
+                              <img src="" id="edicionfotoPerfil" width="100%">
+                          </div>
+                      </div>
+                  </li>
+
+
+
+                  </ul>
+                  <!-- <a class="link popup-close"> ¡Entiendo!  popup-close </a> -->
+                  <div class="block block-strong no-hairlines FormatoBtnIni  noMargin ">
+                    <button id="actualizarFotoPerfil" class="button btn button-large button-fill">
                       <span>¡Actualizar!</span>
                     </button>
                   </div>
