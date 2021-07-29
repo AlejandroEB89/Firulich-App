@@ -136,6 +136,7 @@ var fechaNacAdoptante="";
 var edadUsuario="";
 var fechaDeAdopcion="";
 var avisoEsUsuario="";
+var timeStampAdop="";
 // -------------- Variables para base de datos  ------------------//
 var db=firebase.firestore();
 var storageRef = firebase.storage().ref();
@@ -399,7 +400,7 @@ $$(document).on('page:init', '.page[data-name="peticionAdopcion"]', function (e)
 
 
 
-      $$("#viviendaPropiaAdop").on("click", function(){
+      $$("#viviendaPropiaAdop").on("change", function(){
           tipoVivienda=$$("#viviendaPropiaAdop").val();
           if(tipoVivienda=="Alquiler"){
             console.log("alquila casa")
@@ -449,7 +450,7 @@ $$(document).on('page:init', '.page[data-name="serTransito"]', function (e) {
 
 
       $$("#btnSerTransito").on("click", fnQuieroSerTransito);
-      $$("#hizoTransito").on("click", function(){
+      $$("#hizoTransito").on("change", function(){
           hizoTransito=$$("#hizoTransito").val();
           if(hizoTransito=="no"){
             console.log("no hizo transito")
@@ -723,7 +724,8 @@ $$(document).on('page:init', '.page[data-name="orgHome"]', function (e) {
     // Do something here when page with data-name="about" attribute loaded and initialized
     console.log("estoy en orgHome" );
 
-    
+
+
     $$("#perfilFoto").attr("src", urlFotoPerfilOrg);
     $$("#orgNombrePerfil").html(nombreOrganizacion);
     $$("#cerrarSOrg").on("click", fnCerrarSesion);
@@ -1003,7 +1005,110 @@ $$(document).on('page:init', '.page[data-name="misPeticionesAdop"]', function (e
     // Do something here when page with data-name="about" attribute loaded and initialized
     console.log("estoy en misPeticionesAdop");
 
+    ultimaVistaPeticion=Date.now();
+    console.log(ultimaVistaPeticion)
+
     var refMisPeticiones=colPeticionAdopcion.where("emailorg", "==", emailOrg);
+
+    refMisPeticiones.onSnapshot((querySnapshot) => {
+        var peticiones = [] ;         // [ [timestamp, Animal], [timestamp, Animal] ]
+        querySnapshot.forEach((doc) => {
+          //  ultpeticion=doc.data().Animal;
+
+            nombre_Animal=doc.data().Animal
+            tipo_Animal=doc.data().Tipo_Animal
+            genero_Animal=doc.data().Genero_Animal
+            descripcion_Animal=doc.data().Descripcion_Animal
+            nomAdoptante=doc.data().Nombre
+            apeAdoptante=doc.data().Apellido
+            edadUsuario=doc.data().Edad
+            profesionAdoptante=doc.data().Profesion_Adop
+            localidadAdoptante=doc.data().Localidad
+            provinciaAdoptante=doc.data().Provincia
+            telefonoAdoptante=doc.data().Telefono
+            direccionAdoptante=doc.data().Direccion
+            linkRedesAdoptante=doc.data().Redes
+            porqueAdoptante=doc.data().Porque_Adop
+            cicloVidaAdoptante=doc.data().Ciclo_Adop
+            compromisoAdoptante=doc.data().Compromiso_Adop
+            necesidadesAdoptante=doc.data().Necesidades_Adop
+            alergiasAdoptante=doc.data().Alergias_Adop
+            viviendaAdoptante=doc.data().Vivienda
+            familiaAdoptante=doc.data().Familia
+            viviendaPropiaAdoptante=doc.data().Vivienda_Prop_Adop
+            perimisoPropAdoptante=doc.data().Permiso_Prop_Adop
+            mudanzaAdoptante=doc.data().Mudanza_Adop
+            castracionAdoptante=doc.data().Castracion_Adop
+            tieneMascotasAdoptante=doc.data().Tiene_Mascotas
+            cuidaMascotasAdoptante=doc.data().Cuida_Mascotas
+            algoMasAdoptante=doc.data().Agrega
+            emailAdoptante=doc.data().email
+            timeStampAdop=doc.data().time_Stamp_Adop
+            peticiones.push([doc.data().timeStampAdop, doc.data().Animal]);
+            /*cantPeticiones=peticiones.length;
+            console.log("cant: "+ cantPeticiones);
+            for (i=1; i<=cantPeticiones; i++){
+              //stampPeticion="stampPeticion"+i
+              //animalPeticion="aniamlPeticion"+i
+              stampPeticion= peticiones[0][0];
+              animalPeticion= peticiones[1][1];
+              console.log(stampPeticion)
+              console.log(animalPeticion)
+            }*/
+
+        var acordionT=`  <li class="accordion-item">
+                          <a class="item-content item-link" href="#">
+                            <div class="item-inner">
+                              <div class="item-title text-color-white"><b>Petición para: `+nombre_Animal+`</b></div>
+                              </div>
+                          </a>
+                          <div class="accordion-item-content">
+                            <div class="block">
+                                <h4 class="item-title centrar text-color-white"><b>DATOS DEL ADOPTANTE</b></h4>
+                                <p class="text-align-center text-color-white"><b> Nombre Completo:</b> `+nomAdoptante+` `+apeAdoptante+`</p>
+                                <p class="text-align-center text-color-white"><b> Edad:</b> `+edadUsuario+`</p>
+                                <p class="text-align-center text-color-white"><b> Razón Adopción:</b> `+porqueAdoptante+`</p>
+                                <p class="text-align-center text-color-white"><b> Compromiso de por vida:</b> `+cicloVidaAdoptante+`</p>
+                                <p class="text-align-center text-color-white"><b> Cuidados del Animal:</b> `+compromisoAdoptante+`</p>
+                                <p class="text-align-center text-color-white"><b> Podes cubrir sus necesidades:</b> `+necesidadesAdoptante+`</p>
+                                <p class="text-align-center text-color-white"><b> Tiene Mascotas:</b> `+tieneMascotasAdoptante+`</p>
+                                <p class="text-align-center text-color-white"><b> Cuidado de sus mascotas:</b> `+cuidaMascotasAdoptante+`</p>
+                                <p class="text-align-center text-color-white"> <b> Grupo Familiar :</b> `+familiaAdoptante+`</p>
+                                <p class="text-align-center text-color-white"><b> Alergías:</b> `+alergiasAdoptante+`</p>
+                                <p class="text-align-center text-color-white"><b> Opinión sobre Castración:</b> `+castracionAdoptante+`</p>
+
+                                <h4 class="item-title centrar text-color-white"><b>DATOS DEL HOGAR</b></h4>
+                                <p class="text-align-center text-color-white"> <b> Vive en:</b> `+viviendaPropiaAdoptante+`</p>
+                                <p class="text-align-center text-color-white"> <b> Tipo de Vivienda:</b> `+viviendaAdoptante+`</p>
+                                <p class="text-align-center text-color-white"> <b> Permiso del Propietario:</b> `+perimisoPropAdoptante+`</p>
+                                <p class="text-align-center text-color-white"> <b> En caso de mudanza:</b> `+mudanzaAdoptante+`</p>
+
+                                <h4 class="item-title centrar text-color-white"> <b>DATOS DE CONTACTO</b></h4>
+                                <p class="text-align-center text-color-white"> <b> Es de:</b> `+localidadAdoptante+`, `+provinciaAdoptante+`  </p>
+                                <p class="text-align-center text-color-white"> <b> Profesión:</b> `+profesionAdoptante+`</p>
+                                <p class="text-align-center text-color-white"> <b> Teléfono:</b> `+telefonoAdoptante+`</p>
+                                <p class="text-align-center text-color-white"> <b> E-mail:</b> `+emailAdoptante+`</p>
+                                <p class="text-align-center text-color-white"> <b> Redes:</b> `+linkRedesAdoptante+`</p>
+                                <p class="text-align-center text-color-white"> <b> Agrega:</b> `+algoMasAdoptante+`</p>
+                              </div>
+                            </div>
+                        </li>`;
+
+          $$("#acordionPeticionesAdop").append(acordionT);
+
+        });  ////falta resolver que se muestre cuando hay una nueva...
+        console.log("ultimapeticion: " + timeStampAdop);
+        cordova.plugins.notification.local.schedule({
+	      title: 'Tenés una nueva Petición',
+    	  trigger: { in: 1, unit: 'minute' },
+        foreground: true,
+ 	      vibrate: true
+});
+    });
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
+/*    var refMisPeticiones=colPeticionAdopcion.where("emailorg", "==", emailOrg);
     var indice=0;
 
     refMisPeticiones.get()
@@ -1087,7 +1192,7 @@ $$(document).on('page:init', '.page[data-name="misPeticionesAdop"]', function (e
     .catch( function(error){
       console.log("Error: "+ error);
     });
-
+*/
 
 })
 
@@ -1546,7 +1651,9 @@ function fnIniciarSesion (){
 
 
 function fnCerrarSesion(){
-  app.dialog.confirm("¿Querés cerrar la sesión actual?", "¡Hey!", function(){mainView.router.navigate("/index/")});
+  app.dialog.confirm("¿Querés cerrar la sesión actual?", "¡Hey!", function(){
+    mainView.router.navigate("/index/")
+  });
 }
 
 
@@ -1925,6 +2032,8 @@ function fnAdoptar(){
   linkRedesAdop=$$("#linkRedesAdop").val();
   direccionAdop=$$("#direccionAdop").val();
   algoMasAdop=$$("#algoMasAdop").val();
+  timeStampAdop=Date.now();
+  console.log("tiempo: "+timeStampAdop);
 
 
   if(viviendaPropiaAdop=="Vivienda Propia"){
@@ -1975,6 +2084,7 @@ function fnAdoptar(){
         Tipo_Animal:tipo_Animal,
         Genero_Animal:genero_Animal,
         Descripcion_Animal:descripcion_Animal,
+        time_Stamp_Adop:timeStampAdop,
       }
 
 
