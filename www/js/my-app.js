@@ -1011,10 +1011,10 @@ $$(document).on('page:init', '.page[data-name="misPeticionesAdop"]', function (e
     var refMisPeticiones=colPeticionAdopcion.where("emailorg", "==", emailOrg);
 
     refMisPeticiones.onSnapshot((querySnapshot) => {
-        var peticiones = [] ;         // [ [timestamp, Animal], [timestamp, Animal] ]
+        var peticiones = [] ; // [ [timestamp, Animal], [timestamp, Animal] ] // armo otro arreglo con el timestamp y el animal que corresponde
         querySnapshot.forEach((doc) => {
-          //  ultpeticion=doc.data().Animal;
 
+            //peticiones.push([doc.data().timeStampAdop, doc.data().Animal]);
             nombre_Animal=doc.data().Animal
             tipo_Animal=doc.data().Tipo_Animal
             genero_Animal=doc.data().Genero_Animal
@@ -1044,7 +1044,7 @@ $$(document).on('page:init', '.page[data-name="misPeticionesAdop"]', function (e
             algoMasAdoptante=doc.data().Agrega
             emailAdoptante=doc.data().email
             timeStampAdop=doc.data().time_Stamp_Adop
-            peticiones.push([doc.data().timeStampAdop, doc.data().Animal]);
+
             /*cantPeticiones=peticiones.length;
             console.log("cant: "+ cantPeticiones);
             for (i=1; i<=cantPeticiones; i++){
@@ -1098,12 +1098,12 @@ $$(document).on('page:init', '.page[data-name="misPeticionesAdop"]', function (e
 
         });  ////falta resolver que se muestre cuando hay una nueva...
         console.log("ultimapeticion: " + timeStampAdop);
-        cordova.plugins.notification.local.schedule({
-	      title: 'Tenés una nueva Petición',
-    	  trigger: { in: 1, unit: 'minute' },
-        foreground: true,
- 	      vibrate: true
-});
+        /*cordova.plugins.notification.local.schedule({
+  	      title: 'Tenés una nueva Petición',
+      	  trigger: { in: 1, unit: 'minute' },
+          foreground: true,
+   	      vibrate: true
+        });*/
     });
 
 
