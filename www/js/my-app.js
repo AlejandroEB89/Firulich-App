@@ -77,6 +77,8 @@ var nombreOrganizacion="";
 var nombreRespOrganizacion="";
 var fechaCreacionOrg="";
 var apellidoRespOrganizacion="";
+var latitud="";
+var longitud="";
 var redesOrg="";
 var email="";
 var emailOrg="";
@@ -157,11 +159,47 @@ var descripción_Animal="";
 var id_AnimalBD="";
 var urlAnimal="";
 var ind="";
-// -------------- ------------------------------------------ ------------------//
-
+// --------------Variables para mapas ------------------------------------------ ------------------//
+var map="";
+var platform="";
+var latitud="";
+var longitud="";
+var pos="";
+// -------------------------------------------------------- ------------------//
 // Handle Cordova Device Ready Event
 $$(document).on('deviceready', function() {
     console.log("Device is ready!");
+    platform = new H.service.Platform({
+      'apikey': 'nREUKFWksz9bAOp4X0mDLYLsCWmoSZ0ps2XiFwmvIkg'
+ });
+
+/*
+// CODIGO PARA GEOLOCALIZACION DEL DISPOSITIVO ///
+ var onSuccessGPS = function(position) {
+        alert('Latitude: '          + position.coords.latitude          + '\n' +
+              'Longitude: '         + position.coords.longitude         + '\n' +
+              'Altitude: '          + position.coords.altitude          + '\n' +
+              'Accuracy: '          + position.coords.accuracy          + '\n' +
+              'Altitude Accuracy: ' + position.coords.altitudeAccuracy  + '\n' +
+              'Heading: '           + position.coords.heading           + '\n' +
+              'Speed: '             + position.coords.speed             + '\n' +
+              'Timestamp: '         + position.timestamp                + '\n');
+
+              latitud=position.coords.latitude;
+              longitud=position.coords.longitude;
+              console.log("pos: "+latitud+" "+ longitud);
+    };
+
+    // onError Callback receives a PositionError object
+    //
+    function onErrorGPS(error) {
+        alert('code: '    + error.code    + '\n' +
+              'message: ' + error.message + '\n');
+    }
+
+    navigator.geolocation.getCurrentPosition(onSuccessGPS, onErrorGPS);
+*/
+
 });
 
 // Option 1. Using one 'page:init' handler for all pages
@@ -217,6 +255,55 @@ $$(document).on('page:init', '.page[data-name="registro"]', function (e) {
 
 
 })
+
+//    -------------------------PAGE INIT VER ZONA-----------------------------------------------
+$$(document).on('page:init', '.page[data-name="verZona"]', function (e) {
+    // Do something here when page with data-name="about" attribute loaded and initialized
+    console.log("estoy en verZona");
+
+
+
+
+
+
+              var defaultLayers = platform.createDefaultLayers();
+
+
+
+          	// Instantiate (and display) a map object:
+          	map = new H.Map(
+                  document.getElementById('mapContainer'),
+              	defaultLayers.vector.normal.map,
+              	{
+                	zoom: 14,
+                	center: { lat: latitud, lng: longitud }
+                  });
+
+
+
+              	coords = {lat: latitud, lng: longitud};
+              //	marker = new H.map.Marker(coords);
+
+              	// Add the marker to the map and center the map at the location of the marker:
+              	//map.addObject(marker);
+              	map.setCenter(coords);
+
+                var behavior = new H.mapevents.Behavior(new H.mapevents.MapEvents(map));
+                var ui = H.ui.UI.createDefault(map, defaultLayers, 'es-ES');    ///TypeError: cant read property UI of undefined
+
+
+
+
+
+
+
+
+
+
+
+
+})
+
 
 
 
@@ -314,8 +401,8 @@ $$(document).on('page:init', '.page[data-name="enAdopcionOrg"]', function (e) {
             descripcion_Animal=doc.data().Descripcion_Animal
             urlAnimal=doc.data().url_Animal
             console.log(nombre_Animal + " que es " + genero_Animal + " indice: " + indAnimalesEnAdop);
-            var tarjetaAni='<div id="tarjeta'+indAnimalesEnAdop+'" class="card demo-card-header-pic"><div id="imgAUsu'+indAnimalesEnAdop+'" style="background-image:url('+urlAnimal+')" class="card-header align-items-flex-end row"> <p id="nomAUsu'+indAnimalesEnAdop+'" class="txtCards align-items-flex-end noMargin"> ' + nombre_Animal +
-             '</p> </div> <div class="card-content card-content-padding"> <div class="row justify-content-space-around noMargin"> <p id="tipoAUsu'+indAnimalesEnAdop+'" class=" align-items-flex-end noMargin"><b>' + tipo_Animal+ '</b></p> <p class=" align-items-flex-end noMargin"><b> - </b></p> <p id="generoAUsu'+indAnimalesEnAdop+'" class="align-items-flex-end noMargin"><b>' + genero_Animal + '</b></p> </div><p id="descAUsu'+indAnimalesEnAdop+'" class="text-align-justify maxTarjeta noMargin">' + descripcion_Animal  + '</p> </div> <div class="card-footer"> <a id="verAUsu'+indAnimalesEnAdop+'" href="#" onclick="setAnimal(\''+nombre_Animal+'\')"  class="link verAnimal">' + 'Leer Más' + '</a></div> </div>';     //      /verAnimalDesdeUsu/verAUsu'+indice+'/
+
+               var tarjetaAni='<a href="#" onclick="setAnimal(\''+nombre_Animal+'\')" class="link verOrg"> <div id="org" class="card demo-card-header-pic "><div style="background-image:url('+urlAnimal+')" class="card-header align-items-flex-end txtCards"> ' + nombre_Animal +' </div>  <div class="card-content card-content-padding"> <p class="text-color-black"> <b>' + tipo_Animal+', '+ genero_Animal +'</b></p> <p  class="text-align-justify maxTarjeta noMargin text-color-black">' + descripcion_Animal+'</p> </div> </div></a>'
 
             $$("#bloqueAdopcionDeOrg").append(tarjetaAni);
 
@@ -338,43 +425,12 @@ $$(document).on('page:init', '.page[data-name="verAnimalDesdeUsu"]', function (e
     console.log("animal es: "+ nombre_Animal);
 
 
-/*
-idTarjeta=page.route.params.id;
-nroT=idTarjeta.replace("verAUsu", "");
-console.log("el nro de tarjeta es:" + nroT);
-
-idNomUsu= "#nomAUsu" + nroT;
-idDescUsu="#descAUsu" + nroT;
-idTipoUsu="#tipoAUsu" + nroT;
-idGeneroUsu="#generoAUsu" + nroT;
-
-
-idImgnUsu="#imgAUsu" + nroT;
-console.log("idimgnusu: "+idImgnUsu)
-console.log("div del nombre: "+ idNomUsu )
-
-nombre_Animal=$$(idNomUsu).html();
-genero_Animal=$$(idGeneroUsu).html();
-tipo_Animal=$$(idTipoUsu).html();
-descripcion_Animal=$$(idDescUsu).html();
-
-urlIm_Animalusu=$$(idImgnUsu).css("background-image");
-console.log("url: "+urlIm_Animalusu)
-imgn_Animal= urlIm_Animalusu.replace('url("http://localhost:3000/browser/www/', "");
-imgAUsu=imgn_Animal.replace('")', "")
-console.log("animal es: " + nombre_Animal);
-console.log("es: " + tipo_Animal);
-console.log("es: " + genero_Animal);
-console.log(descripcion_Animal);
-console.log(imgAUsu);*/
-
 $$("#nomAniUsu").html(nombre_Animal);
 $$("#fotoAUsu").attr("src", urlAnimal);
 $$("#tipoYGeneroUsu").html(tipo_Animal+", "+genero_Animal);
 $$("#descripAUsu").html(descripcion_Animal);
 
 $$("#adoptar").on("click", function(){mainView.router.navigate("/peticionAdopcion/")});
-
 
 
 
@@ -492,8 +548,8 @@ $$(document).on('page:init', '.page[data-name="rescatadosOrg"]', function (e) {
                 urlAnimal=docResOrg.data().url_Animal
 
                 console.log("-"+nombre_Animal+"-  adoptado por " + nomAdoptante + " indice: " + indice + " fecha: " + fechaDeAdopcion);
-                var tarjeAdoptadoOrg='<div id="tarjetaAdOrg'+indice+'" class="card demo-card-header-pic"><div id="imgAdOrg'+indice+'" style="background-image:url('+urlAnimal+')" class="card-header align-items-flex-end row"> <p id="nomAnimAdOrg'+indice+'" class="txtCards align-items-flex-end noMargin">'+nombre_Animal+
-                 '</p> </div> <div class="card-content card-content-padding"> <p id="nomAdOrg'+indice+'" class=" align-items-flex-end noMargin"> Fecha Adopción: '+fechaDeAdopcion+'</p> <p id="descAdOrg'+indice+'" class="text-align-justify maxTarjeta noMargin">'+descripcion_Animal+'</p> </div> <div class="card-footer"> <a id="verAdOrg' +indice+ '" href="#" onclick="setAnimalAdoptadoDeOrg(\''+nombre_Animal+'\')" class="link verAnimal">' + 'Leer Más' + '</a></div> </div>'; // /verAnimaldop/verAdop'+indice+'/
+
+                  var tarjeAdoptadoOrg='<a href="#" onclick="setAnimalAdoptadoDeOrg(\''+nombre_Animal+'\')" class="link verOrg"> <div id="org" class="card demo-card-header-pic "><div style="background-image:url('+urlAnimal+')" class="card-header align-items-flex-end txtCards"> ' + nombre_Animal +' </div>  <div class="card-content card-content-padding"> <p class="text-color-black"> <b> Fecha Adopción: '+fechaDeAdopcion+'</b></p> <p  class="text-align-justify maxTarjeta noMargin text-color-black">' + descripcion_Animal+'</p> </div> </div></a>'
 
                 $$("#bloqueAdoptadosOrg").append(tarjeAdoptadoOrg);
 
@@ -750,8 +806,9 @@ $$(document).on('page:init', '.page[data-name="misAdopcion"]', function (e) {
             descripcion_Animal=docActual.data().Descripcion_Animal
             urlAnimal=docActual.data().url_Animal
             console.log("-"+nombre_Animal+"-  que es " + genero_Animal + " indice: " + indice);
-            var tarjeAnimal='<div id="tarjeta'+indice+'" class="card demo-card-header-pic"><div id="imgA'+indice+'" style="background-image:url('+urlAnimal+')" class="card-header align-items-flex-end row"> <p id="nomA'+indice+'" class="txtCards align-items-flex-end noMargin">'+nombre_Animal+
-             '</p> </div> <div class="card-content card-content-padding"> <div class="row justify-content-space-around noMargin"> <p id="tipoA'+indice+'" class=" align-items-flex-end noMargin">'+tipo_Animal+'</p> <p class=" align-items-flex-end noMargin"> - </p> <p id="generoA'+indice+'" class="align-items-flex-end noMargin">'+genero_Animal +'</p> </div><p id="descA'+indice+'" class="text-align-justify maxTarjeta noMargin">'+descripcion_Animal+'</p> </div> <div class="card-footer"> <a id="verA' +indice+ '" href="#" onclick="setAnimal(\''+nombre_Animal+'\')" class="link verAnimal">' + 'Leer Más' + '</a></div> </div>'; //
+
+
+            var tarjeAnimal='<a href="#" onclick="setAnimal(\''+nombre_Animal+'\')" class="link verOrg"> <div id="org" class="card demo-card-header-pic "><div style="background-image:url('+urlAnimal+')" class="card-header align-items-flex-end txtCards"> ' + nombre_Animal +' </div>  <div class="card-content card-content-padding"> <p class="text-color-black"> ' + tipo_Animal+', '+ genero_Animal +'</p> <p  class="text-align-justify maxTarjeta noMargin text-color-black">' + descripcion_Animal+'</p> </div> </div></a>'
 
             $$("#bloqueAdopcion").append(tarjeAnimal);
 
@@ -781,6 +838,25 @@ $$(document).on('page:init', '.page[data-name="verAnimal"]', function (e, page) 
       }
     });
 
+    var popup = app.popup.create({
+
+      el: '#popupEditarAnimal',
+      on: {
+        opened: function () {
+          console.log('Popup opened')
+        }
+      }
+    });
+
+    $$("#editarTipoAnimal").val(tipo_Animal);
+    $$("#editarNombreAnimal").val(nombre_Animal);
+    $$("#editarGeneroAnimal").val(genero_Animal);
+    $$("#editDescripcion_animal").text(descripcion_Animal);
+    $$("#editFotoAnimal").attr("src", urlAnimal);
+
+    $$("#galeriaEditAnimal").on("click", fnGaleriaEditAnimal);
+    $$("#camaraEditAnimal").on("click", fnCamaraEditAnimal);
+
     console.log("animal es:-" +nombre_Animal+"-");
     console.log("es: " + tipo_Animal);
     console.log("es: " + genero_Animal);
@@ -793,6 +869,10 @@ $$(document).on('page:init', '.page[data-name="verAnimal"]', function (e, page) 
     $$("#descripA").html(descripcion_Animal);
 
     $$("#adoptado").on("click", fnMarcarComoAdoptado);
+    $$("#editarAni").on("click", fnEditarAnimal);
+    $$("#borrarAni").on("click", fnBorrarAnimal);
+
+
 
 
 })
@@ -820,10 +900,10 @@ $$(document).on('page:init', '.page[data-name="misRescatados"]', function (e) {
             edadUsuario=docRes.data().Edad_Adoptante
 
             console.log("-"+nombre_Animal+"-  adoptado por " + nomAdoptante + " indice: " + indice);
-            var tarjeAdoptado='<div id="tarjeta'+indice+'" class="card demo-card-header-pic"><div id="imgAdop'+indice+'" style="background-image:url('+urlAnimal+')" class="card-header align-items-flex-end row"> <p id="nomAnimAdop'+indice+'" class="txtCards align-items-flex-end noMargin">'+nombre_Animal+
-             '</p> </div> <div class="card-content card-content-padding">  <p id="nomAdop'+indice+'" class="align-items-flex-end noMargin"><b>Adoptante: '+nomAdoptante+' '+apeAdoptante+'</b></p> <p id="descAdop'+indice+'" class="text-align-justify maxTarjeta noMargin">'+descripcion_Animal+'</p> </div> <div class="card-footer"> <a id="verAdop' +indice+ '" href="#" onclick="setAnimalAdoptado(\''+nombre_Animal+'\')" class="link verAnimal">' + 'Leer Más' + '</a></div> </div>'; // /verAnimaldop/verAdop'+indice+'/
-                                                                                //<div class="row justify-content-space-around noMargin"> </div>
-            $$("#bloqueAdoptados").append(tarjeAdoptado);                       //<p class=" align-items-flex-end noMargin"><b> -</b> </p> <p id="apeAdop'+indice+'" class="align-items-flex-end noMargin"><b>'+apeAdoptante +'</b></p>
+
+             var tarjeAdoptado='<a href="#" onclick="setAnimalAdoptado(\''+nombre_Animal+'\')" class="link verOrg"> <div id="org" class="card demo-card-header-pic "><div style="background-image:url('+urlAnimal+')" class="card-header align-items-flex-end txtCards"> ' + nombre_Animal +' </div>  <div class="card-content card-content-padding"> <p class="text-color-black"> <b>Adoptante: '+nomAdoptante+' '+apeAdoptante+'</b></p> <p  class="text-align-justify maxTarjeta noMargin text-color-black">' + descripcion_Animal+'</p> </div> </div></a>'
+
+            $$("#bloqueAdoptados").append(tarjeAdoptado);
 
           })
       })
@@ -1005,8 +1085,7 @@ $$(document).on('page:init', '.page[data-name="misPeticionesAdop"]', function (e
     // Do something here when page with data-name="about" attribute loaded and initialized
     console.log("estoy en misPeticionesAdop");
 
-    ultimaVistaPeticion=Date.now();
-    console.log(ultimaVistaPeticion)
+  /*
 
     var refMisPeticiones=colPeticionAdopcion.where("emailorg", "==", emailOrg);
 
@@ -1015,37 +1094,9 @@ $$(document).on('page:init', '.page[data-name="misPeticionesAdop"]', function (e
         querySnapshot.forEach((doc) => {
 
             //peticiones.push([doc.data().timeStampAdop, doc.data().Animal]);
-            nombre_Animal=doc.data().Animal
-            tipo_Animal=doc.data().Tipo_Animal
-            genero_Animal=doc.data().Genero_Animal
-            descripcion_Animal=doc.data().Descripcion_Animal
-            nomAdoptante=doc.data().Nombre
-            apeAdoptante=doc.data().Apellido
-            edadUsuario=doc.data().Edad
-            profesionAdoptante=doc.data().Profesion_Adop
-            localidadAdoptante=doc.data().Localidad
-            provinciaAdoptante=doc.data().Provincia
-            telefonoAdoptante=doc.data().Telefono
-            direccionAdoptante=doc.data().Direccion
-            linkRedesAdoptante=doc.data().Redes
-            porqueAdoptante=doc.data().Porque_Adop
-            cicloVidaAdoptante=doc.data().Ciclo_Adop
-            compromisoAdoptante=doc.data().Compromiso_Adop
-            necesidadesAdoptante=doc.data().Necesidades_Adop
-            alergiasAdoptante=doc.data().Alergias_Adop
-            viviendaAdoptante=doc.data().Vivienda
-            familiaAdoptante=doc.data().Familia
-            viviendaPropiaAdoptante=doc.data().Vivienda_Prop_Adop
-            perimisoPropAdoptante=doc.data().Permiso_Prop_Adop
-            mudanzaAdoptante=doc.data().Mudanza_Adop
-            castracionAdoptante=doc.data().Castracion_Adop
-            tieneMascotasAdoptante=doc.data().Tiene_Mascotas
-            cuidaMascotasAdoptante=doc.data().Cuida_Mascotas
-            algoMasAdoptante=doc.data().Agrega
-            emailAdoptante=doc.data().email
-            timeStampAdop=doc.data().time_Stamp_Adop
 
-            /*cantPeticiones=peticiones.length;
+
+            cantPeticiones=peticiones.length;
             console.log("cant: "+ cantPeticiones);
             for (i=1; i<=cantPeticiones; i++){
               //stampPeticion="stampPeticion"+i
@@ -1054,61 +1105,23 @@ $$(document).on('page:init', '.page[data-name="misPeticionesAdop"]', function (e
               animalPeticion= peticiones[1][1];
               console.log(stampPeticion)
               console.log(animalPeticion)
-            }*/
+            }
 
-        var acordionT=`  <li class="accordion-item">
-                          <a class="item-content item-link" href="#">
-                            <div class="item-inner">
-                              <div class="item-title text-color-white"><b>Petición para: `+nombre_Animal+`</b></div>
-                              </div>
-                          </a>
-                          <div class="accordion-item-content">
-                            <div class="block">
-                                <h4 class="item-title centrar text-color-white"><b>DATOS DEL ADOPTANTE</b></h4>
-                                <p class="text-align-center text-color-white"><b> Nombre Completo:</b> `+nomAdoptante+` `+apeAdoptante+`</p>
-                                <p class="text-align-center text-color-white"><b> Edad:</b> `+edadUsuario+`</p>
-                                <p class="text-align-center text-color-white"><b> Razón Adopción:</b> `+porqueAdoptante+`</p>
-                                <p class="text-align-center text-color-white"><b> Compromiso de por vida:</b> `+cicloVidaAdoptante+`</p>
-                                <p class="text-align-center text-color-white"><b> Cuidados del Animal:</b> `+compromisoAdoptante+`</p>
-                                <p class="text-align-center text-color-white"><b> Podes cubrir sus necesidades:</b> `+necesidadesAdoptante+`</p>
-                                <p class="text-align-center text-color-white"><b> Tiene Mascotas:</b> `+tieneMascotasAdoptante+`</p>
-                                <p class="text-align-center text-color-white"><b> Cuidado de sus mascotas:</b> `+cuidaMascotasAdoptante+`</p>
-                                <p class="text-align-center text-color-white"> <b> Grupo Familiar :</b> `+familiaAdoptante+`</p>
-                                <p class="text-align-center text-color-white"><b> Alergías:</b> `+alergiasAdoptante+`</p>
-                                <p class="text-align-center text-color-white"><b> Opinión sobre Castración:</b> `+castracionAdoptante+`</p>
-
-                                <h4 class="item-title centrar text-color-white"><b>DATOS DEL HOGAR</b></h4>
-                                <p class="text-align-center text-color-white"> <b> Vive en:</b> `+viviendaPropiaAdoptante+`</p>
-                                <p class="text-align-center text-color-white"> <b> Tipo de Vivienda:</b> `+viviendaAdoptante+`</p>
-                                <p class="text-align-center text-color-white"> <b> Permiso del Propietario:</b> `+perimisoPropAdoptante+`</p>
-                                <p class="text-align-center text-color-white"> <b> En caso de mudanza:</b> `+mudanzaAdoptante+`</p>
-
-                                <h4 class="item-title centrar text-color-white"> <b>DATOS DE CONTACTO</b></h4>
-                                <p class="text-align-center text-color-white"> <b> Es de:</b> `+localidadAdoptante+`, `+provinciaAdoptante+`  </p>
-                                <p class="text-align-center text-color-white"> <b> Profesión:</b> `+profesionAdoptante+`</p>
-                                <p class="text-align-center text-color-white"> <b> Teléfono:</b> `+telefonoAdoptante+`</p>
-                                <p class="text-align-center text-color-white"> <b> E-mail:</b> `+emailAdoptante+`</p>
-                                <p class="text-align-center text-color-white"> <b> Redes:</b> `+linkRedesAdoptante+`</p>
-                                <p class="text-align-center text-color-white"> <b> Agrega:</b> `+algoMasAdoptante+`</p>
-                              </div>
-                            </div>
-                        </li>`;
-
-          $$("#acordionPeticionesAdop").append(acordionT);
 
         });  ////falta resolver que se muestre cuando hay una nueva...
         console.log("ultimapeticion: " + timeStampAdop);
-        /*cordova.plugins.notification.local.schedule({
-  	      title: 'Tenés una nueva Petición',
-      	  trigger: { in: 1, unit: 'minute' },
+          cordova.plugins.notification.local.schedule({
+          title: 'Tenés una Petición de Adopción',
+          trigger: { in: 10, unit: 'second' },
           foreground: true,
-   	      vibrate: true
-        });*/
+          vibrate: true
+        });
     });
 
+*/
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
-/*    var refMisPeticiones=colPeticionAdopcion.where("emailorg", "==", emailOrg);
+   var refMisPeticiones=colPeticionAdopcion.where("emailorg", "==", emailOrg);
     var indice=0;
 
     refMisPeticiones.get()
@@ -1145,7 +1158,7 @@ $$(document).on('page:init', '.page[data-name="misPeticionesAdop"]', function (e
         cuidaMascotasAdoptante=doc.data().Cuida_Mascotas
         algoMasAdoptante=doc.data().Agrega
         emailAdoptante=doc.data().email
-
+        timeStampAdop=doc.data().time_Stamp_Adop
 
     var acordionT=`  <li class="accordion-item">
                       <a class="item-content item-link" href="#">
@@ -1192,7 +1205,7 @@ $$(document).on('page:init', '.page[data-name="misPeticionesAdop"]', function (e
     .catch( function(error){
       console.log("Error: "+ error);
     });
-*/
+
 
 })
 
@@ -1379,7 +1392,7 @@ function fnRegistrar(){
 
 
 
-function fnRegistrarUsuario(){
+function fnRegistrarUsuario(){                             //// Tengo que decidir si usar geolocation o gps
   email = $$("#emailRegistro").val();
   password = $$("#passwordRegistro").val();
   nombreUsuario = $$("#nomUsu").val();
@@ -1392,6 +1405,8 @@ function fnRegistrarUsuario(){
   if (email=="" || password=="" || nombreUsuario=="" || apellidoUsuario=="" || provincia=="" || localidad=="" || fechaNacUsuario=="" ) {
     app.dialog.alert("Completá todos los campos!!", "Oops");                    /*Comprobar que esten todos los campos comletos*/
   } else {
+
+
       firebase.auth().createUserWithEmailAndPassword(email, password)
               .then( function() {
 
@@ -1588,6 +1603,36 @@ function fnIniciarSesion (){
               tipodeUsuario= doc.data().TipoUsuario
               provincia= doc.data().Provincia
               localidad= doc.data().Localidad
+
+
+                  url = 'https://geocoder.ls.hereapi.com/6.2/geocode.json';
+                  app.request.json(url, {
+                  searchtext: ','+localidad+','+ provincia,
+                  //searchtext: 'Rivadavia 300, Plottier, Neuquén',
+                  apiKey: '9ZP-Ymz47rJhyadmWM7OeTtmy9c5tu_0bX68jatLVa8',
+                  gen: '9'
+                }, function (data) {
+                   // hacer algo con data
+                   console.log("geo:" + data);
+                   datos=JSON.stringify(data);
+                   console.log(datos)
+                   //datosJson=JSON.parse(JSON.stringify(data));
+                   latitud=data.Response.View[0].Result[0].Location.DisplayPosition.Latitude;
+                   longitud=data.Response.View[0].Result[0].Location.DisplayPosition.Longitude;
+                   console.log("lati: "+ latitud);
+                   console.log("long: "+ longitud);
+
+
+
+
+
+
+
+
+
+              }, function(xhr, status) { console.log("error geo: "+status); }   );
+
+
               console.log( "Accedió: " +  nombreUsuario+ " " + apellidoUsuario + " que es " + tipodeUsuario + " de " + localidad  + " " + provincia );
               mainView.router.navigate("/usuarioHome/");
           }
@@ -1610,6 +1655,29 @@ function fnIniciarSesion (){
               fechaCreacionOrg=doc.data().Fecha_Crea_Org
               descripcionOrg=doc.data().Descripción
               urlFotoPerfilOrg=doc.data().url_FotoPerfil
+
+
+                  url = 'https://geocoder.ls.hereapi.com/6.2/geocode.json';
+                  app.request.json(url, {
+                  searchtext: ','+localidadOrg+','+ provinciaOrg,
+                  //searchtext: 'Rivadavia 300, Plottier, Neuquén',
+                  apiKey: '9ZP-Ymz47rJhyadmWM7OeTtmy9c5tu_0bX68jatLVa8',
+                  gen: '9'
+                }, function (data) {
+                   // hacer algo con data
+                   console.log("geo:" + data);
+                   datos=JSON.stringify(data);
+                   console.log(datos)
+                   //datosJson=JSON.parse(JSON.stringify(data));
+                   latitud=data.Response.View[0].Result[0].Location.DisplayPosition.Latitude;
+                   longitud=data.Response.View[0].Result[0].Location.DisplayPosition.Longitude;
+                   console.log("lati: "+ latitud);
+                   console.log("long: "+ longitud);
+
+
+              }, function(xhr, status) { console.log("error geo: "+status); }   );
+
+
               console.log( "Accedió: " +  nombreOrganizacion+ " que es una " + tipodeUsuario + " de " + localidadOrg  + " " + provinciaOrg + " y su responsable es: " + nombreRespOrganizacion + " " + apellidoRespOrganizacion);
               mainView.router.navigate("/orgHome/");
           }
@@ -2381,9 +2449,10 @@ function setAnimal (nombreA){
              genero_Animal= docActual.data().Genero_Animal
              descripcion_Animal=docActual.data().Descripcion_Animal
              urlAnimal=docActual.data().url_Animal
+             id_AnimalBD=docActual.id
              console.log("animal es: " + nombre_Animal)
              console.log("es un " + tipo_Animal)
-
+             console.log("id animal: "+ id_AnimalBD);
         })
         if (tipodeUsuario=="usuario"){
           console.log("me jui pa usuario")
@@ -3024,3 +3093,156 @@ function getFileBlob(url, cb) {
 
 
  }
+
+
+ function fnEditarAnimal(){
+   console.log("editar animal")
+   console.log(nombre_Animal);
+   console.log("id ani: "+ id_AnimalBD);
+
+
+
+
+     nuevaDescripcion=$$("#editDescripcion_animal").text();
+     nuevoTipoAni=$$("#editarTipoAnimal").val();
+     nuevoGeneroAni=$$("#editarGeneroAnimal").val();
+     nuevoNombreAni=$$("#editarNombreAnimal").val();
+     nuevaUrlAni=$$("#editFotoAnimal").attr("src");
+
+     colAnimalesEnAdopcion.doc(id_AnimalBD).update({
+       Descripcion_Animal: nuevaDescripcion,
+       Nombre_Animal:nuevoNombreAni,
+       Genero_Animal:nuevoGeneroAni,
+       Tipo_Animal:nuevoTipoAni,
+       url_Animal:nuevaUrlAni,
+      })
+     .then(function() {
+       console.log("actualizado ok: "+ nuevoNombreAni);
+       descripcion_Animal=nuevaDescripcion;
+       nombre_Animal=nuevoNombreAni;
+       genero_Animal=nuevoGeneroAni;
+       tipo_Animal=nuevoTipoAni;
+       urlAnimal=nuevaUrlAni;
+       app.dialog.alert("Se guardó la edición", "¡Listo!", function(){
+         app.popup.close("#popupEditarAnimal");
+         mainView.router.navigate("/misAdopcion/");
+        })
+     })
+     .catch(function(error) {
+     console.log("Error: " + error);
+     });
+
+
+}
+
+
+
+
+function fnCamaraEditAnimal() {
+// FOTO DESDE CAMARA
+    navigator.camera.getPicture(onSuccessCamaraEditPerfil,onErrorCamara,
+            {
+                quality: 70,
+                destinationType: Camera.DestinationType.FILE_URI,
+                sourceType: Camera.PictureSourceType.CAMERA,
+                correctOrientation: true,
+
+            });
+}
+
+
+function fnGaleriaEditAnimal() {
+    navigator.camera.getPicture(onSuccessCamaraEditPerfil,onErrorCamara,
+            {
+                quality: 50,
+                destinationType: Camera.DestinationType.FILE_URI,
+                sourceType: Camera.PictureSourceType.PHOTOLIBRARY
+            });
+
+}
+
+/*function onSuccessCamara(imageURI) {
+    $$("#foto").attr("src", imageURI);
+   // RESTA QUE ESTA FOTO SUBA AL STORAGE…. O HACER OTRA COSA...
+
+}*/
+
+function onSuccessCamaraEditPerfil(imageData) {
+  ind++;
+  console.log("imgdata: "+imageData)
+  getFileObject(imageData, function(fileObject) { //fn1
+     var uploadTask = storageRef.child('perfiles/img'+nombreOrganizacion+ind+'.jpg').put(fileObject); //recibe un archivo blob y lo sube al cloud storage
+     uploadTask.on('state_changed', function(snapshot) {                   //promesa que administra o supervisa el estado de la carga cuando cambie el estado de su snapshot, mostrando el estado del snapsht,
+         console.log(snapshot);                                            //
+     }, function(error) { //funcion de error
+         console.log(error);
+         app.dialog.alert(error)
+     }, function() {     //funcion que si todo sale bien:
+         uploadTask.snapshot.ref.getDownloadURL().then( //obtengo el url de descarga
+           function(downloadURL) {
+           console.log('el archivo esta disponible en', downloadURL);//Muestro el link
+             app.dialog.alert('La imagen ya está subida', "¡Genial!")
+           //aca abajo puedo elegir que hacer con mi imagen que ya esta cargada y la puedo manejar a partir de mi download link
+            urlAnimal=downloadURL;
+            $$("#editFotoAnimal").attr("src", urlAnimal);
+            console.log("url: " + urlAnimal)
+         });
+     });
+   });
+
+   // lo de abajo se ejecuta en la funcion on succes (es necesario ejecutar solo getFileFbject) dentro del succes
+//toma un blob y un nombre y cambia fecha y nombre, luego devuelve el blob
+var blobToFile = function(blob, name) {
+ blob.lastModifiedDate = new Date()    //modifica la ultima fecha del blob
+ blob.name = name                      //modifica el nombre del blob
+ return blob
+}
+//A partir de la ubicacion de nuestro file y una funcion (cb) ejecuta getfileBlob (funcion especificada abajo)
+function getFileObject(filePathOrUrl, cb) {
+ getFileBlob(filePathOrUrl, function(blob) { //fn2      //llama a la funcion getFileBlob con el url introducido y una funcion que:
+     cb(blobToFile(blob, 'img'+nombreOrganizacion+ind+'.jpg'));             //ejecuta nuestro cb (callback) sobre el blob con nombre y fecha cambiada (el nombre sera 'test.jpg')
+ });
+};
+//obtiene un file desde el servidor utilizando un url,  lo transfrma a tipo blob y ejecuta una funcion (cb) para luego enviarlo al servidor
+function getFileBlob(url, cb) {
+ var xhr= new XMLHttpRequest()   //creo una nueva instancia de XMLHttpRequest
+ xhr.open('GET', url)            //inicializo una peticion asincronica del url al server
+ xhr.responseType = "blob"       // declaro que el valor del tipo de respuesta es blob (para luego usarlo mas adelante)
+ xhr.addEventListener('load', ()=>{//Le agrego un event listener que cuando cargue  se va a ejecutar
+   cb(xhr.response)              //mi cb (callback) con la respuesta del servidor
+ })
+ xhr.send()                      //Envia la peticion nuevamente.
+}
+//Se ejecuta la funcion getfileObject con nuestra imagen y el cb que:
+/*orden de funcionamiento:
+1. getFileObject(imageData, fn1)    || inserto un url
+2. getFileBlob (url, fn2)           || realizo desde ese url una peticion, me devuelve un blob
+3. fn2                              || ejecuto la funcion 1 con el resultado de:
+4. bloblToFile(blob, test.jpg)      || desde mi blob obtengo un file
+5. fn1                              ||
+*/
+
+
+ }
+
+
+
+function fnBorrarAnimal(){
+
+
+      app.dialog.confirm("¿Vas a borrar a "+nombre_Animal+ "?", "¡Hey!", function(){
+
+          var borrarAni=colAnimalesEnAdopcion.doc(id_AnimalBD).delete()
+
+          .then(function() {
+          console.log("documento borrado");
+          app.dialog.alert("¡Ya se borró de tus animales en adopción!", "¡Listo!", function(){
+              mainView.router.navigate('/misAdopcion/')} )
+          })
+          .catch(function(error) {
+          console.log("Error: " + error);
+          });
+      })
+
+
+  }

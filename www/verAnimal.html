@@ -20,6 +20,25 @@
         <div class="block block-strong bg-color-purple">
           <p id="descripA" class="text-color-white text-align-justify"></p>
         </div>
+        <div class="row">
+          <div class="col block block-strong no-hairlines FormatoBtnIni  noMargin">
+            <button data-popup=".popupEditarAnimal" class="popup-open button btn button-large button-fill button-preloader ${isLoading ? 'button-loading' : ''} @click=${()=> showInfinite(true)}"
+              @click=${load}>
+              <span class="preloader"></span>
+              <span>Editar</span>
+            </button>
+          </div>
+
+          <div class="col block block-strong no-hairlines FormatoBtnIni  noMargin">
+            <button id="borrarAni" class="button btn button-large button-fill button-preloader ${isLoading ? 'button-loading' : ''} @click=${()=> showInfinite(true)}"
+              @click=${load}>
+              <span class="preloader"></span>
+              <span>Borrar</span>
+            </button>
+          </div>
+        </div>
+
+
         <div class="block block-strong no-hairlines FormatoBtnIni  noMargin">
           <button id="adoptado" class="button btn button-large button-fill button-preloader ${isLoading ? 'button-loading' : ''} @click=${()=> showInfinite(true)}"
             @click=${load}>
@@ -65,6 +84,110 @@
 
           </div>
         </div>
+
+
+  <!----------------- POPUP PARA EDITAR ANIMAL ----------------->
+
+              <div id="popupEditarAnimal" class="popup popupEditarAnimal">
+                  <div class="view">
+                    <div class="page">
+                      <div class="navbar">
+                        <div class="navbar-bg"></div>
+                        <div class="navbar-inner">
+                          <div class="left">
+                            <a href="#" class="link popup-close">
+                                <i class="icon icon-back"></i>
+                                <span class="ios-only">Back</span>
+                            </a>
+                          </div>
+                          <div class="title center">Editar</div>
+                        </div>
+                      </div>
+                      <div class="page-content">
+                        <div class="block">
+                          <div class="block-title">Completá todos los campos</div>
+
+                            <div class="list no-hairlines-md">                       <!-- Inputs formulario -->
+                              <ul>
+
+
+
+                                <li class="item-content item-input">
+                                  <div class="item-inner">
+                                    <div class="item-title item-label">¿Que Animal es?</div>
+                                    <div class="item-input-wrap input-dropdown-wrap">
+                                      <select id="editarTipoAnimal" placeholder="Seleccioná el animal...">
+                                        <option value="Perro">Perro</option>
+                                        <option value="Gato">Gato</option>
+                                      </select>
+                                    </div>
+                                  </div>
+                                </li>
+
+                                <li class="item-content item-input">
+                                  <div class="item-inner">
+                                    <div class="item-title item-label">Nombre</div>
+                                    <div class="item-input-wrap">
+                                      <input id="editarNombreAnimal" type="text" placeholder="Ingresa su Nombre" />
+                                      <span class="input-clear-button"></span>
+                                    </div>
+                                  </div>
+                                </li>
+                                <li class="item-content item-input">
+                                  <div class="item-inner">
+                                    <div class="item-title item-label">Género</div>
+                                    <div class="item-input-wrap input-dropdown-wrap">
+                                      <select id="editarGeneroAnimal" placeholder="Seleccioná el género...">
+                                        <option value="Hembra">Hembra</option>
+                                        <option value="Macho">Macho</option>
+                                      </select>
+                                    </div>
+                                  </div>
+                                </li>
+
+                                <li>
+                                  <div class="row">
+                                    <div class="block-title">Cambiar Foto</div>
+                                    <div class="block-header">Te recomendamos no usar fotos verticales! </div>
+                                      <div class="col">
+                                          <button class="col button button-outline button-round button-raised" id="galeriaEditAnimal">GALERIA</button>
+                                      </div>
+                                      <div class="col">
+                                          <button class="col button button-outline button-round button-raised" id="camaraEditAnimal">CAMARA</button>
+                                      </div>
+                                  </div>
+                                  <div class="row block">
+                                      <div class=" block col">
+                                          <img src="" id="editFotoAnimal" width="100%">
+                                      </div>
+                                  </div>
+                              </li>
+
+                              </ul>
+                            </div>
+                            <div class="block-title">Actualizá su historia</div>
+                            <div class="block-header">Completá toda la información que crees necesaria para la familia que quiera adoptar</div>
+                            <div class="text-editor text-editor-init" data-placeholder="Ingresa el texto acá..."
+                                data-buttons='[["bold", "italic", "underline", "strikeThrough"], ["orderedList", "unorderedList"]]'>
+                              <div id="editDescripcion_animal" class="text-editor-content" contenteditable></div>
+                            </div>
+
+
+
+
+                          <div class="block block-strong no-hairlines FormatoBtnIni  noMargin ">
+                            <button id="editarAni" class="button btn button-large button-fill">
+                              <span>¡Actualizar!</span>
+                            </button>
+                          </div>
+                        </div>
+
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+
 
 
 
