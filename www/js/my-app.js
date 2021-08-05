@@ -42,6 +42,8 @@ var app = new Framework7({
       {path: '/infoOrg/',url: 'infoOrg.html',},
 
 
+      {path: '/publicarZona/',url: 'publicarZona.html',},
+
 
       // Rutas de organizacion
       {path: '/orgHome/',url: 'orgHome.html',},
@@ -149,7 +151,7 @@ colFamiliasTransito= db.collection("familiasTransito");
 colRecomendaciones=db.collection("recomendaciones");
 colPeticionAdopcion=db.collection("peticionesAdop");
 colAnimalesAdoptados=db.collection("animalesAdoptados");
-
+colAnimalesEnZona=db.collection("animalesEnZona");
 // -------------- Variables para Animales ------------------//
 
 var nombre_Animal="";
@@ -165,6 +167,18 @@ var platform="";
 var latitud="";
 var longitud="";
 var pos="";
+
+var latitudZona="";
+var longitudZona="";
+
+var nombre_AnimalZona="";
+var tipoAnimalZona="";
+var descripcion_AnimalZona="";
+var tipo_Publicacion="";
+var urlAnimalZona="";
+var ubicacionZona="";
+
+
 // -------------------------------------------------------- ------------------//
 // Handle Cordova Device Ready Event
 $$(document).on('deviceready', function() {
@@ -282,10 +296,11 @@ $$(document).on('page:init', '.page[data-name="verZona"]', function (e) {
 
 
               	coords = {lat: latitud, lng: longitud};
-              //	marker = new H.map.Marker(coords);
+                coordsA= {lat: -41.9569187, lng: -71.5340764};
+              	marker = new H.map.Marker(coordsA);
 
               	// Add the marker to the map and center the map at the location of the marker:
-              	//map.addObject(marker);
+              	map.addObject(marker);
               	map.setCenter(coords);
 
                 var behavior = new H.mapevents.Behavior(new H.mapevents.MapEvents(map));
@@ -295,10 +310,17 @@ $$(document).on('page:init', '.page[data-name="verZona"]', function (e) {
 
 
 
+})
 
 
+//    -------------------------PAGE INIT PUBLICAR ZONA-----------------------------------------------
+$$(document).on('page:init', '.page[data-name="publicarZona"]', function (e) {
+    // Do something here when page with data-name="about" attribute loaded and initialized
+    console.log("estoy en publicarZona");
 
-
+    $$("#publicarEnZona").on("click", fnPublicaEnZona);
+    $$("#btnGaleriaZona").on("click", fnGaleriaZona);
+    $$("#btnCamaraZona").on("click", fnCamaraZona);
 
 
 
@@ -1621,15 +1643,6 @@ function fnIniciarSesion (){
                    longitud=data.Response.View[0].Result[0].Location.DisplayPosition.Longitude;
                    console.log("lati: "+ latitud);
                    console.log("long: "+ longitud);
-
-
-
-
-
-
-
-
-
               }, function(xhr, status) { console.log("error geo: "+status); }   );
 
 
@@ -3246,3 +3259,174 @@ function fnBorrarAnimal(){
 
 
   }
+
+  function fnPublicaEnZona(){
+
+    app.dialog.confirm("Vas a publicar un animal en tu Zona", "Confirmar!", function(){
+      if (tipodeUsuario=="org"){
+        email=emailOrg;
+        localidad=localidadOrg;
+        provincia=provinciaOrg;
+      }
+
+      // FALTA EL TIMESTAMP
+
+
+      nombre_AnimalZona=$$("#nombreAniZona").val();
+      tipoAnimalZona=$$("#tipoAniZona").val();
+      descripcion_AnimalZona=$$("#descripcion_animalZona").text();
+      tipo_Publicacion=$$("#tipoPubliZona").val();
+      urlAnimalZona=$$("#fotoAniZona").attr("src");
+      ubicacionZona=$$("#ubiAniZona").val();
+      contactoZona=$$("#contactoZona").val();
+
+
+            url = 'https://geocoder.ls.hereapi.com/6.2/geocode.json';
+            app.request.json(url, {
+            searchtext: ubicacionZona+','+localidad+','+ provincia,
+            //searchtext: 'Rivadavia 300, Plottier, Neuquén',
+            apiKey: '9ZP-Ymz47rJhyadmWM7OeTtmy9c5tu_0bX68jatLVa8',
+            gen: '9'
+          }, function (data) {
+             // hacer algo con data
+             console.log("geo:" + data);
+             datosZ=JSON.stringify(data);
+             console.log(datosZ)
+             //datosJson=JSON.parse(JSON.stringify(data));
+             latitudZona=data.Response.View[0].Result[0].Location.DisplayPosition.Latitude;
+             longitudZona=data.Response.View[0].Result[0].Location.DisplayPosition.Longitude;
+             console.log("latiZona: "+ latitudZona);
+             console.log("longZona: "+ longitudZona);
+
+
+             console.log("se va a publicar: "+nombre_AnimalZona + " que es: " + tipoAnimalZona + " y esta: " +  tipo_Publicacion);
+             console.log("la url es: "+ urlAnimalZona);
+
+             var nuevoAnimalEnZona={
+               email:email,
+               Tipo_Animal: tipoAnimalZona,
+               Nombre_Animal: nombre_AnimalZona,
+               Tipo_Publicacion: tipo_Publicacion,
+               Descripcion_Animal: descripcion_AnimalZona,
+               url_Animal:urlAnimalZona,
+               latitud:latitudZona,
+               longitud:longitudZona,
+               telefono:contactoZona,
+             }
+
+             colAnimalesEnZona.add(nuevoAnimalEnZona)
+               .then(function (docRef){
+                 console.log("Se guardo en bd con el id: ", docRef.id);
+                 app.dialog.confirm("¡Ya se publicó a " + nombre_AnimalZona + " en tu zona!  ", "¡Genial!", function(){
+                   if(tipodeUsuario=="org"){
+                     mainView.router.navigate("/orgHome/")
+                   }
+                   if(tipodeUsuario=="usuario"){
+                     mainView.router.navigate("/usuarioHome/")
+                   }
+
+                   });
+               })
+               .catch(function(error){
+                 console.log("Error: " + error);
+               });
+           });
+
+
+
+
+        }, function(xhr, status) { console.log("error geo: "+status); }   );
+
+
+
+
+
+  }
+
+
+  function fnCamaraZona() {
+  // FOTO DESDE CAMARA
+      navigator.camera.getPicture(onSuccessCamaraZona,onErrorCamara,
+              {
+                  quality: 70,
+                  destinationType: Camera.DestinationType.FILE_URI,
+                  sourceType: Camera.PictureSourceType.CAMERA,
+                  correctOrientation: true,
+
+              });
+  }
+
+
+  function fnGaleriaZona() {
+      navigator.camera.getPicture(onSuccessCamaraZona,onErrorCamara,
+              {
+                  quality: 50,
+                  destinationType: Camera.DestinationType.FILE_URI,
+                  sourceType: Camera.PictureSourceType.PHOTOLIBRARY
+              });
+
+  }
+
+  /*function onSuccessCamara(imageURI) {
+      $$("#foto").attr("src", imageURI);
+     // RESTA QUE ESTA FOTO SUBA AL STORAGE…. O HACER OTRA COSA...
+
+  }*/
+
+  function onSuccessCamaraZona(imageData) {
+    ind++;
+    console.log("imgdata: "+imageData)
+    getFileObject(imageData, function(fileObject) { //fn1
+       var uploadTask = storageRef.child('zona/img'+ind+'.jpg').put(fileObject); //recibe un archivo blob y lo sube al cloud storage
+       uploadTask.on('state_changed', function(snapshot) {                   //promesa que administra o supervisa el estado de la carga cuando cambie el estado de su snapshot, mostrando el estado del snapsht,
+           console.log(snapshot);                                            //
+       }, function(error) { //funcion de error
+           console.log(error);
+           app.dialog.alert(error)
+       }, function() {     //funcion que si todo sale bien:
+           uploadTask.snapshot.ref.getDownloadURL().then( //obtengo el url de descarga
+             function(downloadURL) {
+             console.log('el archivo esta disponible en', downloadURL);//Muestro el link
+               app.dialog.alert('La imagen ya está subida', "¡Genial!")
+             //aca abajo puedo elegir que hacer con mi imagen que ya esta cargada y la puedo manejar a partir de mi download link
+              urlAnimalZona=downloadURL;
+              $$("#fotoAniZona").attr("src", urlAnimalZona);
+              console.log("url: " + urlAnimalZona)
+           });
+       });
+     });
+
+     // lo de abajo se ejecuta en la funcion on succes (es necesario ejecutar solo getFileFbject) dentro del succes
+  //toma un blob y un nombre y cambia fecha y nombre, luego devuelve el blob
+  var blobToFile = function(blob, name) {
+   blob.lastModifiedDate = new Date()    //modifica la ultima fecha del blob
+   blob.name = name                      //modifica el nombre del blob
+   return blob
+  }
+  //A partir de la ubicacion de nuestro file y una funcion (cb) ejecuta getfileBlob (funcion especificada abajo)
+  function getFileObject(filePathOrUrl, cb) {
+   getFileBlob(filePathOrUrl, function(blob) { //fn2      //llama a la funcion getFileBlob con el url introducido y una funcion que:
+       cb(blobToFile(blob, 'img'+ind+'.jpg'));             //ejecuta nuestro cb (callback) sobre el blob con nombre y fecha cambiada (el nombre sera 'test.jpg')
+   });
+  };
+  //obtiene un file desde el servidor utilizando un url,  lo transfrma a tipo blob y ejecuta una funcion (cb) para luego enviarlo al servidor
+  function getFileBlob(url, cb) {
+   var xhr= new XMLHttpRequest()   //creo una nueva instancia de XMLHttpRequest
+   xhr.open('GET', url)            //inicializo una peticion asincronica del url al server
+   xhr.responseType = "blob"       // declaro que el valor del tipo de respuesta es blob (para luego usarlo mas adelante)
+   xhr.addEventListener('load', ()=>{//Le agrego un event listener que cuando cargue  se va a ejecutar
+     cb(xhr.response)              //mi cb (callback) con la respuesta del servidor
+   })
+   xhr.send()                      //Envia la peticion nuevamente.
+  }
+  //Se ejecuta la funcion getfileObject con nuestra imagen y el cb que:
+  /*orden de funcionamiento:
+  1. getFileObject(imageData, fn1)    || inserto un url
+  2. getFileBlob (url, fn2)           || realizo desde ese url una peticion, me devuelve un blob
+  3. fn2                              || ejecuto la funcion 1 con el resultado de:
+  4. bloblToFile(blob, test.jpg)      || desde mi blob obtengo un file
+  5. fn1                              ||
+  */
+
+
+   }

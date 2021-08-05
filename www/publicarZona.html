@@ -1,0 +1,123 @@
+<!-- We don't need a full layout in this file because this page will be parsed with Ajax.  -->
+<div class="page" data-name="publicarZona">
+  <div class="navbar">
+      <div class="navbar-bg"></div>
+      <div class="navbar-inner">
+          <div class="left">
+            <a href="#" class="link">
+                <i class="icon icon-back"></i>
+                <span class="ios-only">Back</span>
+            </a>
+          </div>
+          <div class="title mrgTitNav"> Publicar Nuevo! </div>
+
+      </div>
+
+  </div>
+
+  <!-- Toolbar -->
+  <div class="toolbar tabbar toolbar-bottom">
+      <div class="toolbar-inner">
+          <a id="publicarEnZona" href="#" class="tab-link btnToolbar">PUBLICAR!</a>
+      </div>
+  </div>
+
+
+
+    <div class="page-content">
+      <div class="block">
+        <div class="block-title">Completá todos los campos</div>
+
+          <div class="list no-hairlines-md">                       <!-- Inputs formulario -->
+            <ul>
+
+
+
+              <li class="item-content item-input">
+                <div class="item-inner">
+                  <div class="item-title item-label">¿Que tipo de publicación?</div>
+                  <div class="item-input-wrap input-dropdown-wrap">
+                    <select id="tipoPubliZona" placeholder="Seleccioná...">
+                      <option value="Perdido">Mi animal está perdido</option>
+                      <option value="Encontrado">Encontré un animal</option>
+                    </select>
+                  </div>
+                </div>
+              </li>
+
+              <li class="item-content item-input">
+                <div class="item-inner">
+                  <div class="item-title item-label">Nombre</div>
+                  <div class="item-input-wrap">
+                    <input id="nombreAniZona" type="text" placeholder="Ingresa su Nombre" />
+                    <span class="input-clear-button"></span>
+                  </div>
+                </div>
+              </li>
+              <li class="item-content item-input">
+                <div class="item-inner">
+                  <div class="item-title item-label">Tipo de Animal</div>
+                  <div class="item-input-wrap input-dropdown-wrap">
+                    <select id="tipoAniZona" placeholder="Seleccioná el tipo...">
+                      <option value="Perro">Perro/a</option>
+                      <option value="Gato">Gato/a</option>
+                    </select>
+                  </div>
+                </div>
+              </li>
+
+              <li>
+                <div class="row">
+                  <div class="block-title">Agregá una foto</div>
+                  <div class="block-header">Te recomendamos no usar fotos verticales! </div>
+                    <div class="col">
+                        <button class="col button button-outline button-round button-raised" id="btnGaleriaZona">GALERIA</button>
+                    </div>
+                    <div class="col">
+                        <button class="col button button-outline button-round button-raised" id="btnCamaraZona">CAMARA</button>
+                    </div>
+                </div>
+                <div class="row block">
+                    <div class=" block col">
+                        <img src="" id="fotoAniZona" width="100%">
+                    </div>
+                </div>
+            </li>
+
+
+            <li class="item-content item-input">
+              <div class="item-inner">
+                <div class="item-title item-label">Ubicación</div>
+                <div class="item-input-wrap">
+                  <input id="ubiAniZona" type="text" placeholder="Ingresá la dirección donde se perdió/encontró" />
+                  <span class="input-clear-button"></span>
+                </div>
+              </div>
+            </li>
+
+            <li class="item-content item-input">
+              <div class="item-inner">
+                <div class="item-title item-label">Contacto</div>
+                <div class="item-input-wrap">
+                  <input id="contactoZona" type="tel" placeholder="Ingresá un telefono" />
+                  <span class="input-clear-button"></span>
+                </div>
+              </div>
+            </li>
+
+            </ul>
+          </div>
+          <div class="block">
+            <div class="block-title">Agregá una descripción</div>
+            <div class="block-header">Completá toda la información que crees necesaria para encontrarlo o para que encuentre a su familia</div>
+            <div class="text-editor text-editor-init" data-placeholder="Ingresa el texto acá..."
+                data-buttons='[["bold", "italic", "underline", "strikeThrough"], ["orderedList", "unorderedList"]]'>
+              <div id="descripcion_animalZona" class="text-editor-content" contenteditable></div>
+            </div>
+          </div>
+
+
+
+      </div>
+    </div>
+</div>
