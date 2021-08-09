@@ -299,3 +299,9 @@ display: none !important;
   height: 50px;
   width: 50px;
 }
+
+.H_imprint{ display:none; visibility:hidden }
+
+.margenIcono{
+  margin-right: 10px;
+}

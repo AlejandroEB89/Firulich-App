@@ -4,12 +4,12 @@
       <div class="navbar-bg"></div>
       <div class="navbar-inner">
           <div class="left">
-            <a href="#" class="link">
+            <a href="/verZona/" class="link">
                 <i class="icon icon-back"></i>
                 <span class="ios-only">Back</span>
             </a>
           </div>
-          <div class="title mrgTitNav"> Publicar Nuevo! </div>
+          <div class="title"> Publicar Nuevo! </div>
 
       </div>
 
@@ -33,19 +33,19 @@
 
 
 
-              <li class="item-content item-input">
+              <li id="tipoPubliManejador" class="item-content item-input">
                 <div class="item-inner">
                   <div class="item-title item-label">¿Que tipo de publicación?</div>
                   <div class="item-input-wrap input-dropdown-wrap">
                     <select id="tipoPubliZona" placeholder="Seleccioná...">
                       <option value="Perdido">Mi animal está perdido</option>
-                      <option value="Encontrado">Encontré un animal</option>
+                      <option value="Encontrado">Encontré un animal deambulando</option>
                     </select>
                   </div>
                 </div>
               </li>
 
-              <li class="item-content item-input">
+              <li id="nombreManejador" class="item-content item-input activo">
                 <div class="item-inner">
                   <div class="item-title item-label">Nombre</div>
                   <div class="item-input-wrap">
@@ -85,15 +85,8 @@
             </li>
 
 
-            <li class="item-content item-input">
-              <div class="item-inner">
-                <div class="item-title item-label">Ubicación</div>
-                <div class="item-input-wrap">
-                  <input id="ubiAniZona" type="text" placeholder="Ingresá la dirección donde se perdió/encontró" />
-                  <span class="input-clear-button"></span>
-                </div>
-              </div>
-            </li>
+
+
 
             <li class="item-content item-input">
               <div class="item-inner">
@@ -116,6 +109,28 @@
             </div>
           </div>
 
+          <div class="list no-hairlines">
+          <ul>
+            <li class="item-content item-input">
+              <div class="item-inner">
+                <div class="item-title item-label">Ubicación</div>
+                <div class="item-input-wrap">
+                  <input id="ubiAniZona" type="text" placeholder="Ingresá la dirección donde se perdió/encontró" />
+                  <span class="input-clear-button"></span>
+                </div>
+              </div>
+            </li>
+            <li>
+              <div class="col">
+                  <button class="col button button-outline button-round button-raised" id="btnAgregarMarcador">Agregar al Mapa</button>
+              </div>
+            </li>
+
+
+
+          </ul>
+          </div>
+          <div style="width: 100%; height: 45vh; border:2px solid #000;" id="mapContainerZ"></div>
 
 
       </div>

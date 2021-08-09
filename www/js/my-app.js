@@ -43,7 +43,7 @@ var app = new Framework7({
 
 
       {path: '/publicarZona/',url: 'publicarZona.html',},
-
+      {path: '/verAnimalZona/',url: 'verAnimalZona.html',},
 
       // Rutas de organizacion
       {path: '/orgHome/',url: 'orgHome.html',},
@@ -79,8 +79,6 @@ var nombreOrganizacion="";
 var nombreRespOrganizacion="";
 var fechaCreacionOrg="";
 var apellidoRespOrganizacion="";
-var latitud="";
-var longitud="";
 var redesOrg="";
 var email="";
 var emailOrg="";
@@ -164,21 +162,25 @@ var ind="";
 // --------------Variables para mapas ------------------------------------------ ------------------//
 var map="";
 var platform="";
-var latitud="";
-var longitud="";
+var latitudCenter="";
+var longitudCenter="";
 var pos="";
 
+var emailZona="";
 var latitudZona="";
 var longitudZona="";
-
 var nombre_AnimalZona="";
 var tipoAnimalZona="";
 var descripcion_AnimalZona="";
 var tipo_Publicacion="";
 var urlAnimalZona="";
 var ubicacionZona="";
-
-
+var timeStampZona="";
+var localidadZona="";
+var provinciaZona="";
+var tipoUbi="";
+var idAniZona="";
+var indexZona=0;
 // -------------------------------------------------------- ------------------//
 // Handle Cordova Device Ready Event
 $$(document).on('deviceready', function() {
@@ -274,15 +276,20 @@ $$(document).on('page:init', '.page[data-name="registro"]', function (e) {
 $$(document).on('page:init', '.page[data-name="verZona"]', function (e) {
     // Do something here when page with data-name="about" attribute loaded and initialized
     console.log("estoy en verZona");
+    $$("#publicarPerdido").on("click", fnPublicaEnZona)
 
 
+    $$("#verNomZona").append(localidadZona)
+    $$("#atrasZona").on("click", function(){
+      if(tipodeUsuario=="org"){
+        mainView.router.navigate("/orgHome/")
+      }
+      if(tipodeUsuario=="usuario"){
+        mainView.router.navigate("/usuarioHome/")
+      }
+    });
 
-
-
-
-              var defaultLayers = platform.createDefaultLayers();
-
-
+            var defaultLayers = platform.createDefaultLayers();
 
           	// Instantiate (and display) a map object:
           	map = new H.Map(
@@ -290,24 +297,70 @@ $$(document).on('page:init', '.page[data-name="verZona"]', function (e) {
               	defaultLayers.vector.normal.map,
               	{
                 	zoom: 14,
-                	center: { lat: latitud, lng: longitud }
+                	center: { lat: latitudCenter, lng: longitudCenter }
                   });
 
 
+            coordsCenter={lat: latitudCenter, lng: longitudCenter};
+            var behavior = new H.mapevents.Behavior(new H.mapevents.MapEvents(map));
+            var ui = H.ui.UI.createDefault(map, defaultLayers, 'es-ES');    ///TypeError: cant read property UI of undefined
+            map.setCenter(coordsCenter);
 
-              	coords = {lat: latitud, lng: longitud};
-                coordsA= {lat: -41.9569187, lng: -71.5340764};
-              	marker = new H.map.Marker(coordsA);
+            var refAnimalesEnZona= colAnimalesEnZona.where("provincia", "==", provinciaZona).where("localidad", "==", localidadZona).orderBy("timeStamp", "desc")
+            refAnimalesEnZona.get()
+              .then(function(querySnapshot) {
+                console.log("adentro del then")
+                  querySnapshot.forEach(function(docActual){
+                    console.log("adentro del forEach")
+                    nombre_AnimalZona=docActual.data().Nombre_Animal
+                    tipo_Publicacion= docActual.data().Tipo_Publicacion
+                    tipoAnimalZona=docActual.data().Tipo_Animal
+                    descripcion_AnimalZona=docActual.data().Descripcion_Zona
+                    urlAnimalZona=docActual.data().url_Animal
+                    emailZona=docActual.data().email
+                    timeStampZona=docActual.data().timeStamp
+                    latitudZona=docActual.data().latitud
+                    longitudZona=docActual.data().longitud
+                    contactoZona=docActual.data().telefono
+                    ubicacionZona=docActual.data().direccion
+                    localidadZona=docActual.data().localidad
+                    provinciaZona=docActual.data().provincia
+                    idAniZona=docActual.id
+                    fechaPubliZona=docActual.data().fechaPubli
+                    console.log("-"+nombre_AnimalZona+"-" + tipo_Publicacion + "- en direccion: " + ubicacionZona+ "-lati:"+latitudZona+" -longi:"+longitudZona);
 
-              	// Add the marker to the map and center the map at the location of the marker:
-              	map.addObject(marker);
-              	map.setCenter(coords);
 
-                var behavior = new H.mapevents.Behavior(new H.mapevents.MapEvents(map));
-                var ui = H.ui.UI.createDefault(map, defaultLayers, 'es-ES');    ///TypeError: cant read property UI of undefined
+                    coordsA= {lat: latitudZona, lng: longitudZona};
+                    pngIcono="img/"+tipoAnimalZona+"-"+tipo_Publicacion+".png";
+                    console.log(pngIcono)
+                    var icon=new H.map.Icon(pngIcono);
+
+                  	marker = new H.map.Marker(coordsA, {icon: icon});
+
+                  	// Add the marker to the map and center the map at the location of the marker:
+                  	map.addObject(marker);
+
+                    var bubble = new H.ui.InfoBubble(coordsA, {
+                        content: '<b>Hello Worldooo!</b>'
+                     });
+                     // Add info bubble to the UI:
+                     ui.addBubble(bubble);
 
 
+                    if(tipo_Publicacion=="Encontrado"){
+                      infoCard="Visto en: "
+                    } else {
+                      infoCard="Se perdió en: "
+                    }
+                    var tarjeAnimalZona='<a href="#" onclick="setAnimalZona(\''+idAniZona+'\')" class="link verOrg"> <div id="org" class="card demo-card-header-pic "><div style="background-image:url('+urlAnimalZona+')" class="card-header justify-content-flex-start align-items-flex-end txtCards"> <div class="align-items-flex-end margenIcono"> <img src="'+pngIcono+'"></div> ' + nombre_AnimalZona +' </div>  <div class="card-content card-content-padding"> <p class="text-color-black"> ' + infoCard+  ubicacionZona +'</p> <p  class="text-align-justify maxTarjeta noMargin text-color-black">' + descripcion_AnimalZona+'</p> </div> </div></a>'
 
+                    $$("#bloqueZona").append(tarjeAnimalZona);
+
+                  })
+              })
+              .catch( function(error){
+                console.log("Error : "+ error);
+              });
 
 
 })
@@ -317,14 +370,255 @@ $$(document).on('page:init', '.page[data-name="verZona"]', function (e) {
 $$(document).on('page:init', '.page[data-name="publicarZona"]', function (e) {
     // Do something here when page with data-name="about" attribute loaded and initialized
     console.log("estoy en publicarZona");
+    console.log("tipo de ubicacion: "+ tipoUbi);
 
-    $$("#publicarEnZona").on("click", fnPublicaEnZona);
-    $$("#btnGaleriaZona").on("click", fnGaleriaZona);
-    $$("#btnCamaraZona").on("click", fnCamaraZona);
+
+
+    var defaultLayers = platform.createDefaultLayers();
+
+    // Instantiate (and display) a map object:
+    var map = new H.Map(
+          document.getElementById('mapContainerZ'),
+        defaultLayers.vector.normal.map,
+        {
+          zoom: 14,
+          center: { lat: latitudCenter, lng: longitudCenter }
+          });
+
+
+    coordsCenter={lat: latitudCenter, lng: longitudCenter};
+    var behavior = new H.mapevents.Behavior(new H.mapevents.MapEvents(map));
+    var ui = H.ui.UI.createDefault(map, defaultLayers, 'es-ES');    ///TypeError: cant read property UI of undefined
+    map.setCenter(coordsCenter);
+
+    $$("#btnAgregarMarcador").on("click", function (){
+
+      if(tipoUbi=="direccion"){
+        console.log("Agregar dire al mapa con direccion")
+        ubicacionZona=$$("#ubiAniZona").val();
+
+                   url = 'https://geocoder.ls.hereapi.com/6.2/geocode.json';
+                   app.request.json(url, {
+                   searchtext: ubicacionZona+','+localidadZona+','+ provinciaZona,
+                   //searchtext: 'Rivadavia 300, Plottier, Neuquén',
+                   apiKey: '9ZP-Ymz47rJhyadmWM7OeTtmy9c5tu_0bX68jatLVa8',
+                   gen: '9'
+                 }, function (data) {
+                    // hacer algo con data
+                    console.log("geo:" + data);
+                    console.dir(data)
+                    datosZ=JSON.stringify(data);
+                    console.log(datosZ)
+                    //datosJson=JSON.parse(JSON.stringify(data));
+                    latitudZona=data.Response.View[0].Result[0].Location.DisplayPosition.Latitude;
+                    longitudZona=data.Response.View[0].Result[0].Location.DisplayPosition.Longitude;
+                    console.log("lati dire ingresada: "+ latitudZona);
+                    console.log("long dire ingresada: "+ longitudZona);
+
+                    coordsZ= {lat: latitudZona, lng: longitudZona};
+                    /*pngIcono="img/"+tipoAnimalZona+"-"+tipo_Publicacion+".png";
+                    console.log(pngIcono)
+                    var icon=new H.map.Icon(pngIcono);*/
+
+
+                    function addDraggableMarker(map, behavior){
+
+                      var marker = new H.map.Marker(coordsZ, {
+                        // mark the object as volatile for the smooth dragging
+                        volatility: true
+                      });
+                      // Ensure that the marker can receive drag events
+                      marker.draggable = true;
+                      map.addObject(marker);
+
+                      // disable the default draggability of the underlying map
+                      // and calculate the offset between mouse and target's position
+                      // when starting to drag a marker object:
+                      map.addEventListener('dragstart', function(ev) {
+                        var target = ev.target,
+                            pointer = ev.currentPointer;
+                        if (target instanceof H.map.Marker) {
+                          var targetPosition = map.geoToScreen(target.getGeometry());
+                        //  targetPositionZ=JSON.stringify(targetPosition);
+                        //  console.log("targetPos: "+ targetPositionZ)
+                          target['offset'] = new H.math.Point(pointer.viewportX - targetPosition.x, pointer.viewportY - targetPosition.y);
+                          behavior.disable();
+                        }
+                      }, false);
+
+
+                      // re-enable the default draggability of the underlying map
+                      // when dragging has completed
+                      map.addEventListener('dragend', function(ev) {
+                        var target = ev.target;
+                        if (target instanceof H.map.Marker) {
+                          //console.log("%j", target);
+                          console.dir(target);
+                          latitudPre=target.$["0"]
+                          longitudPre=target.$["1"]
+
+                          stringLati=latitudPre.toString();
+                          stringLati="-"+stringLati;
+                          console.log("Correccion lati: " + stringLati);
+                          stringLongi=longitudPre.toString();
+                          console.log("-"+stringLati+"-")
+                          var length = 11;
+                          var trimmedlat= stringLati.substring(0, length);
+                          var trimmedlong= stringLongi.substring(0, length);
+                          console.log("longi nueva por drag: "+ trimmedlong)
+                          console.log("lati nueva por drag: "+ trimmedlat)
+
+                          longitudZona=trimmedlong;
+                          latitudZona=trimmedlat;
+
+
+
+                          nuevasCoords={lat: latitudZona, lng: longitudZona};
+                          map.setCenter(nuevasCoords);
+
+
+                  /// INTENTO DE SACAR LA NUEVA DIRECCION DESPUES DEL DRAG PERO NO OTORGA BUENOS RESULTADOS (me da como resultado bariloche) ////
+                          url = 'https://reverse.geocoder.ls.hereapi.com/6.2/reversegeocode.json';
+                          app.request.json(url, {
+                              prox: latitudZona+','+ longitudZona,
+                              mode: 'retrieveAddresses',
+                              apiKey: '9ZP-Ymz47rJhyadmWM7OeTtmy9c5tu_0bX68jatLVa8',
+                              gen: '9'
+                            }, function (data) {
+                               // hacer algo con data
+                               console.dir(data);
+                          }, function(xhr, status) { console.log("error geo: "+status); }   );
+
+
+
+
+                          behavior.enable();
+                        }
+                      }, false);
+
+                      // Listen to the drag event and move the position of the marker
+                      // as necessary
+                       map.addEventListener('drag', function(ev) {
+                        var target = ev.target,
+                            pointer = ev.currentPointer;
+                        if (target instanceof H.map.Marker) {
+                          target.setGeometry(map.screenToGeo(pointer.viewportX - target['offset'].x, pointer.viewportY - target['offset'].y));
+
+                        //  targetZ=JSON.stringify(target);
+                          //console.log("target set geo: " + targetZ)
+                        }
+                      }, false);
+                    }
+
+
+
+                    addDraggableMarker(map, behavior);
+
+
+
+
+                  }, function(xhr, status) { console.log("error geo: "+status); } )
+
+
+            }//Fin del if(tipoUbi)
+
+      if(tipoUbi=="gps"){
+
+        var onSuccessGPS = function(position) {
+           /*    alert('Latitude: '          + position.coords.latitude          + '\n' +
+                     'Longitude: '         + position.coords.longitude         + '\n' +
+                     'Altitude: '          + position.coords.altitude          + '\n' +
+                     'Accuracy: '          + position.coords.accuracy          + '\n' +
+                     'Altitude Accuracy: ' + position.coords.altitudeAccuracy  + '\n' +
+                     'Heading: '           + position.coords.heading           + '\n' +
+                     'Speed: '             + position.coords.speed             + '\n' +
+                     'Timestamp: '         + position.timestamp                + '\n');
+       */
+                     latitudZona=position.coords.latitude;
+                     longitudZona=position.coords.longitude;
+                     console.log("posGPS: "+latitudZona+" "+ longitudZona);
+
+                     coordsGPS={lat: latitudZona, lng: longitudZona};
+                     var marker = new H.map.Marker(coordsGPS, {
+                       // mark the object as volatile for the smooth dragging
+                       volatility: true
+                     });
+                     // Ensure that the marker can receive drag events
+                     map.addObject(marker);
+
+
+           };
+
+           // onError Callback receives a PositionError object
+           //
+           function onErrorGPS(error) {
+               alert('code: '    + error.code    + '\n' +
+                     'message: ' + error.message + '\n');
+           }
+
+           navigator.geolocation.getCurrentPosition(onSuccessGPS, onErrorGPS);
+
+
+         } //fin tipoUbi GPS
+
+      }) //fin onclick agregar al mapa
+
+    $$("#tipoPubliZona").on("change", function(){
+      tipo_Publicacion=$$("#tipoPubliZona").val();
+      if(tipo_Publicacion=="Encontrado"){
+        console.log("animal deambulando")
+        $$("#nombreManejador").removeClass("activo");
+        $$("#nombreManejador").addClass("hidden");
+      } else {
+        console.log("animal extraviado")
+        $$("#nombreManejador").removeClass("hidden");
+        $$("#nombreManejador").addClass("activo");
+      }
+    });
+
+    $$("#publicarEnZona").on("click", fnPublicarEnMapa);
+    $$("#btnGaleriaZona").on("click", fnGaleriaZona);       //// VER COMO SOLUCIONAR LA UBICACION MANUALMENTE
+    $$("#btnCamaraZona").on("click", fnCamaraZona);        //podria ser que pongo poublicar y me sale un dialog con las opciones de ingresar direccion o de acceder a la ubicación
 
 
 
 })
+
+//    -------------------------PAGE INIT verAnimalZona (Animales en zona) -----------------------------------------------
+$$(document).on('page:init', '.page[data-name="verAnimalZona"]', function (e) {
+    // Do something here when page with data-name="about" attribute loaded and initialized
+
+/// FALTA MOSTRAR ALGUNOS DATOS COMO TELEFONO Y VER DE PODER ELIMINARLO
+// EL TEMA DE LAS BURBUJAS CONECTADAS CON VER ANIMALZONA
+
+if(tipo_Publicacion=="Perdido"){
+  $$("#nomAniZona").append(nombre_AnimalZona+" se perdió");
+  $$("#tipoPubliZona").append(tipoAnimalZona+" extraviado/a");
+  //datosHtml='<p class="col text-color-white centrar">Contacto: '+contactoZona+'</p> <p class="col text-color-white centrar">'+ubicacionZona+", "+localidadZona+'</p> '
+  //$$("#datosZona").append(datosHtml);
+}
+if(tipo_Publicacion=="Encontrado"){
+  $$("#nomAniZona").html(tipoAnimalZona+" encontrado");
+  $$("#tipoPubliZona").append(tipoAnimalZona+" deambulando");
+  //datosHtml='<p class="col text-color-white centrar">'+ubicacionZona+", "+localidadZona+'</p> '
+  //$$("#datosZona").append(datosHtml);
+}
+
+$$("#ubicacionZona").append(ubicacionZona);
+$$("#telZona").append(contactoZona);
+
+
+$$("#fotoAZona").attr("src", urlAnimalZona);
+$$("#fechaPubliZona").append(fechaPubliZona);
+$$("#descripAZona").html(descripcion_AnimalZona);
+
+
+$$("#adoptar").on("click", function(){mainView.router.navigate("/peticionAdopcion/")});
+
+
+
+})
+
 
 
 
@@ -1626,6 +1920,9 @@ function fnIniciarSesion (){
               provincia= doc.data().Provincia
               localidad= doc.data().Localidad
 
+              localidadZona=localidad;
+              provinciaZona=provincia;
+              emailZona=email;
 
                   url = 'https://geocoder.ls.hereapi.com/6.2/geocode.json';
                   app.request.json(url, {
@@ -1639,10 +1936,10 @@ function fnIniciarSesion (){
                    datos=JSON.stringify(data);
                    console.log(datos)
                    //datosJson=JSON.parse(JSON.stringify(data));
-                   latitud=data.Response.View[0].Result[0].Location.DisplayPosition.Latitude;
-                   longitud=data.Response.View[0].Result[0].Location.DisplayPosition.Longitude;
-                   console.log("lati: "+ latitud);
-                   console.log("long: "+ longitud);
+                   latitudCenter=data.Response.View[0].Result[0].Location.DisplayPosition.Latitude;
+                   longitudCenter=data.Response.View[0].Result[0].Location.DisplayPosition.Longitude;
+                   console.log("lati: "+ latitudCenter);
+                   console.log("long: "+ longitudCenter);
               }, function(xhr, status) { console.log("error geo: "+status); }   );
 
 
@@ -1669,6 +1966,9 @@ function fnIniciarSesion (){
               descripcionOrg=doc.data().Descripción
               urlFotoPerfilOrg=doc.data().url_FotoPerfil
 
+              localidadZona=localidadOrg;
+              provinciaZona=provinciaOrg;
+              emailZona=emailOrg;
 
                   url = 'https://geocoder.ls.hereapi.com/6.2/geocode.json';
                   app.request.json(url, {
@@ -1682,10 +1982,10 @@ function fnIniciarSesion (){
                    datos=JSON.stringify(data);
                    console.log(datos)
                    //datosJson=JSON.parse(JSON.stringify(data));
-                   latitud=data.Response.View[0].Result[0].Location.DisplayPosition.Latitude;
-                   longitud=data.Response.View[0].Result[0].Location.DisplayPosition.Longitude;
-                   console.log("lati: "+ latitud);
-                   console.log("long: "+ longitud);
+                   latitudCenter=data.Response.View[0].Result[0].Location.DisplayPosition.Latitude;
+                   longitudCenter=data.Response.View[0].Result[0].Location.DisplayPosition.Longitude;
+                   console.log("lati: "+ latitudCenter);
+                   console.log("long: "+ longitudCenter);
 
 
               }, function(xhr, status) { console.log("error geo: "+status); }   );
@@ -3260,89 +3560,6 @@ function fnBorrarAnimal(){
 
   }
 
-  function fnPublicaEnZona(){
-
-    app.dialog.confirm("Vas a publicar un animal en tu Zona", "Confirmar!", function(){
-      if (tipodeUsuario=="org"){
-        email=emailOrg;
-        localidad=localidadOrg;
-        provincia=provinciaOrg;
-      }
-
-      // FALTA EL TIMESTAMP
-
-
-      nombre_AnimalZona=$$("#nombreAniZona").val();
-      tipoAnimalZona=$$("#tipoAniZona").val();
-      descripcion_AnimalZona=$$("#descripcion_animalZona").text();
-      tipo_Publicacion=$$("#tipoPubliZona").val();
-      urlAnimalZona=$$("#fotoAniZona").attr("src");
-      ubicacionZona=$$("#ubiAniZona").val();
-      contactoZona=$$("#contactoZona").val();
-
-
-            url = 'https://geocoder.ls.hereapi.com/6.2/geocode.json';
-            app.request.json(url, {
-            searchtext: ubicacionZona+','+localidad+','+ provincia,
-            //searchtext: 'Rivadavia 300, Plottier, Neuquén',
-            apiKey: '9ZP-Ymz47rJhyadmWM7OeTtmy9c5tu_0bX68jatLVa8',
-            gen: '9'
-          }, function (data) {
-             // hacer algo con data
-             console.log("geo:" + data);
-             datosZ=JSON.stringify(data);
-             console.log(datosZ)
-             //datosJson=JSON.parse(JSON.stringify(data));
-             latitudZona=data.Response.View[0].Result[0].Location.DisplayPosition.Latitude;
-             longitudZona=data.Response.View[0].Result[0].Location.DisplayPosition.Longitude;
-             console.log("latiZona: "+ latitudZona);
-             console.log("longZona: "+ longitudZona);
-
-
-             console.log("se va a publicar: "+nombre_AnimalZona + " que es: " + tipoAnimalZona + " y esta: " +  tipo_Publicacion);
-             console.log("la url es: "+ urlAnimalZona);
-
-             var nuevoAnimalEnZona={
-               email:email,
-               Tipo_Animal: tipoAnimalZona,
-               Nombre_Animal: nombre_AnimalZona,
-               Tipo_Publicacion: tipo_Publicacion,
-               Descripcion_Animal: descripcion_AnimalZona,
-               url_Animal:urlAnimalZona,
-               latitud:latitudZona,
-               longitud:longitudZona,
-               telefono:contactoZona,
-             }
-
-             colAnimalesEnZona.add(nuevoAnimalEnZona)
-               .then(function (docRef){
-                 console.log("Se guardo en bd con el id: ", docRef.id);
-                 app.dialog.confirm("¡Ya se publicó a " + nombre_AnimalZona + " en tu zona!  ", "¡Genial!", function(){
-                   if(tipodeUsuario=="org"){
-                     mainView.router.navigate("/orgHome/")
-                   }
-                   if(tipodeUsuario=="usuario"){
-                     mainView.router.navigate("/usuarioHome/")
-                   }
-
-                   });
-               })
-               .catch(function(error){
-                 console.log("Error: " + error);
-               });
-           });
-
-
-
-
-        }, function(xhr, status) { console.log("error geo: "+status); }   );
-
-
-
-
-
-  }
-
 
   function fnCamaraZona() {
   // FOTO DESDE CAMARA
@@ -3374,10 +3591,10 @@ function fnBorrarAnimal(){
   }*/
 
   function onSuccessCamaraZona(imageData) {
-    ind++;
+    indexZona++;
     console.log("imgdata: "+imageData)
     getFileObject(imageData, function(fileObject) { //fn1
-       var uploadTask = storageRef.child('zona/img'+ind+'.jpg').put(fileObject); //recibe un archivo blob y lo sube al cloud storage
+       var uploadTask = storageRef.child(imageData).put(fileObject); //recibe un archivo blob y lo sube al cloud storage
        uploadTask.on('state_changed', function(snapshot) {                   //promesa que administra o supervisa el estado de la carga cuando cambie el estado de su snapshot, mostrando el estado del snapsht,
            console.log(snapshot);                                            //
        }, function(error) { //funcion de error
@@ -3427,6 +3644,167 @@ function fnBorrarAnimal(){
   4. bloblToFile(blob, test.jpg)      || desde mi blob obtengo un file
   5. fn1                              ||
   */
+
+
+   }
+
+   function setAnimalZona(id){
+     console.log("set animal zona")
+     console.log("id: "+idAniZona)
+     var refAniZona= colAnimalesEnZona.doc(id);
+     refAniZona.get()
+       .then(function(docActual) {
+                nombre_AnimalZona=docActual.data().Nombre_Animal
+                tipoAnimalZona= docActual.data().Tipo_Animal
+                tipo_Publicacion= docActual.data().Tipo_Publicacion
+                descripcion_AnimalZona=docActual.data().Descripcion_Zona
+                urlAnimalZona=docActual.data().url_Animal
+                id_AnimalZona=docActual.id
+                emailZona=docActual.data().email
+                ubicacionZona=docActual.data().direccion
+                contactoZona=docActual.data().telefono
+                latitudZona=docActual.data().latitud
+                longitudZona=docActual.data().longitud
+                localidadZona=docActual.data().localidad
+                provinciaZona=docActual.data().provincia
+                timeStampZona=docActual.data().timeStamp
+                fechaPubliZona=docActual.data().fechaPubli
+                console.log("animal es: " + nombre_AnimalZona)
+                console.log("tipoPubli " + tipo_Publicacion)
+                console.log("id animal: "+ id_AnimalZona);
+
+             mainView.router.navigate('/verAnimalZona/');
+       })
+       .catch( function(error){
+         console.log("Error : "+ error);
+       });
+
+   }
+
+
+   function fnPublicaEnZona(){
+       app.dialog.create({
+           title: '¡Atención!',
+           text: 'Podés publicar accediendo a tu ubicación actual o ingresando una dirección',
+           buttons: [
+
+             {text: 'Con mi ubicación',
+               onClick: function(){                                              //quizas seria mejor si al hacer click en es usuario--haga laconsulta de las peticiones de ese animal y muestre los nombres de los adoptantes en un dialog..
+                 tipoUbi="gps";
+                 mainView.router.navigate("/publicarZona/")
+               } //fin onclick ubicacion
+             }, //fin primer boton
+           {text: 'Con una dirección',
+               onClick: function(){
+                 tipoUbi="direccion";
+                 mainView.router.navigate("/publicarZona/")
+               }//fin onClick ingreso manual
+           }, //  fin boton direccion
+
+           {text: 'Cancelar',
+             onClick:function(){
+                 console.log("cancelar todo")
+               },
+           },
+         ],
+         verticalButtons: true,
+       }).open();
+
+   }
+
+
+
+   function fnPublicarEnMapa (){
+     console.log("Publicar En Mapa")
+     console.log("emailzona: " +emailZona)
+     console.log("localidad: "+localidadZona)
+     console.log("pcia: "+provinciaZona)
+
+
+     var hoyZ=new Date();                         // conversion de Date a fecha de publicacion
+     var anioZ=hoyZ.getFullYear();
+     var mesZ=hoyZ.getMonth()+1;
+     var diaZ=hoyZ.getDate();
+
+     if(diaZ < 10){
+       diaZ = '0' + diaZ;
+      }
+
+      if(mesZ < 10){
+          mesZ = '0' + mesZ;
+      }
+
+     fechaPubliZona =diaZ+"/"+mesZ+"/"+anioZ ;
+
+
+     timeStampZona=Date.now();
+
+     tipoAnimalZona=$$("#tipoAniZona").val();
+     descripcion_AnimalZona=$$("#descripcion_animalZona").text();
+     tipo_Publicacion=$$("#tipoPubliZona").val();
+     if(tipo_Publicacion=="Encontrado"){
+      nombre_AnimalZona="Visto en la calle"
+     }else{
+       nombre_AnimalZona=$$("#nombreAniZona").val();
+     }
+
+     urlAnimalZona=$$("#fotoAniZona").attr("src");
+     ubicacionZona=$$("#ubiAniZona").val();
+     contactoZona=$$("#contactoZona").val();
+     if(contactoZona==""){
+       contactoZona="---"
+     }
+
+            console.log("se va a publicar: "+nombre_AnimalZona + " que es: " + tipoAnimalZona + " y esta: " +  tipo_Publicacion);
+            console.log("la url es: "+ urlAnimalZona);
+            console.log("a publicar con: "+ tipoUbi)
+
+            var nuevoAnimalEnZona={
+              timeStamp: timeStampZona,
+              email:emailZona,
+              Tipo_Animal: tipoAnimalZona,
+              Nombre_Animal: nombre_AnimalZona,
+              Tipo_Publicacion: tipo_Publicacion,
+              Descripcion_Zona: descripcion_AnimalZona,
+              url_Animal:urlAnimalZona,
+              latitud:latitudZona,
+              longitud:longitudZona,
+              telefono:contactoZona,
+              direccion:ubicacionZona,
+              localidad:localidadZona,
+              provincia:provinciaZona,
+              fechaPubli:fechaPubliZona,
+            }
+
+            colAnimalesEnZona.add(nuevoAnimalEnZona)
+              .then(function (docRef){
+                console.log("Se guardo en bd con el id: ", docRef.id);
+                if (tipo_Publicacion=="Encontrado"){
+                  app.dialog.confirm("¡Ya publicaste al animalito deambulando en tu zona!", "¡Genial!", function(){
+                    if(tipodeUsuario=="org"){
+                      mainView.router.navigate("/orgHome/")
+                    }
+                    if(tipodeUsuario=="usuario"){
+                      mainView.router.navigate("/usuarioHome/")
+                    }
+
+                    });
+                } else{
+                  app.dialog.confirm("¡Ya publicaste a "+nombre_AnimalZona+" en tu zona!", "¡Genial!", function(){
+                    if(tipodeUsuario=="org"){
+                      mainView.router.navigate("/orgHome/")
+                    }
+                    if(tipodeUsuario=="usuario"){
+                      mainView.router.navigate("/usuarioHome/")
+                    }
+
+                    });
+                }
+
+              })
+              .catch(function(error){
+                console.log("Error: " + error);
+              });
 
 
    }
