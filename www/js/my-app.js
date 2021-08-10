@@ -1597,7 +1597,7 @@ $$(document).on('page:init', '.page[data-name="misPeticionesAdop"]', function (e
 
 /*
 ////////////// INTENTO 1 FALLIDO //////////////////////////////////////
-
+                var idNot=Date.now();
                 console.log("idnoti: "+idNot)
                 for (i=0; i<cantPetic; i++){
                   if(peticiones[i][3]>idNot){
