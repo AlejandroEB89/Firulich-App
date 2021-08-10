@@ -189,6 +189,7 @@ $$(document).on('deviceready', function() {
       'apikey': 'nREUKFWksz9bAOp4X0mDLYLsCWmoSZ0ps2XiFwmvIkg'
  });
 
+
 /*
 // CODIGO PARA GEOLOCALIZACION DEL DISPOSITIVO ///
  var onSuccessGPS = function(position) {
@@ -217,6 +218,9 @@ $$(document).on('deviceready', function() {
 */
 
 });
+
+
+
 
 // Option 1. Using one 'page:init' handler for all pages
 $$(document).on('page:init', function (e) {
@@ -335,16 +339,90 @@ $$(document).on('page:init', '.page[data-name="verZona"]', function (e) {
                     console.log(pngIcono)
                     var icon=new H.map.Icon(pngIcono);
 
-                  	marker = new H.map.Marker(coordsA, {icon: icon});
+////////////////////////////   GRUPO PARA ANIMALES PERDIDOS     ////////////////////////////////////////////////////
 
-                  	// Add the marker to the map and center the map at the location of the marker:
-                  	map.addObject(marker);
+            if(tipo_Publicacion=="Perdido"){
 
-                    var bubble = new H.ui.InfoBubble(coordsA, {
-                        content: '<b>Hello Worldooo!</b>'
-                     });
-                     // Add info bubble to the UI:
-                     ui.addBubble(bubble);
+                function addMarkerToGroup(groupPerdidos, coordsA, html) {
+                  var marker = new H.map.Marker(coordsA, {icon: icon});
+                  // add custom data to the marker
+                  marker.setData(html);
+                  groupPerdidos.addObject(marker);
+                }
+
+                /**
+                 * Add two markers showing the position of Liverpool and Manchester City football clubs.
+                 * Clicking on a marker opens an infobubble which holds HTML content related to the marker.
+                 * @param {H.Map} map A HERE Map instance within the application
+                 */
+                function addInfoBubble(map) {
+                  var groupPerdidos = new H.map.Group();
+
+                  map.addObject(groupPerdidos);
+
+                  // add 'tap' event listener, that opens info bubble, to the group
+                  groupPerdidos.addEventListener('tap', function (evt) {
+                    // event target is the marker itself, group is a parent event target
+                    // for all objects that it contains
+                    var bubble = new H.ui.InfoBubble(evt.target.getGeometry(), {
+                      // read custom data
+                      content: evt.target.getData()
+                    });
+                    // show info bubble
+                    ui.addBubble(bubble);
+                  }, false);
+
+                  addMarkerToGroup(groupPerdidos, coordsA,
+                    '<div>'+nombre_AnimalZona+'</div><div>'+tipoAnimalZona+', '+tipo_Publicacion+'<br /></div><div>'+ubicacionZona+'</div><div>'+contactoZona+'</div><br /><div><a href="#" onclick="setAnimalZona(\''+idAniZona+'\')"> Ver </a></div>',);
+
+                }
+
+                addInfoBubble(map);
+            }
+////////////////////////////   GRUPO PARA ANIMALES DEAMBULANDO     ////////////////////////////////////////////////////
+
+            if(tipo_Publicacion=="Encontrado"){
+
+                function addMarkerToGroup(groupEncontrados, coordsA, html) {
+                  var marker = new H.map.Marker(coordsA, {icon: icon});
+                  // add custom data to the marker
+                  marker.setData(html);
+                  groupEncontrados.addObject(marker);
+                }
+
+                /**
+                 * Add two markers showing the position of Liverpool and Manchester City football clubs.
+                 * Clicking on a marker opens an infobubble which holds HTML content related to the marker.
+                 * @param {H.Map} map A HERE Map instance within the application
+                 */
+                function addInfoBubble(map) {
+                  var groupEncontrados = new H.map.Group();
+
+                  map.addObject(groupEncontrados);
+
+                  // add 'tap' event listener, that opens info bubble, to the group
+                  groupEncontrados.addEventListener('tap', function (evt) {
+                    // event target is the marker itself, group is a parent event target
+                    // for all objects that it contains
+                    var bubble = new H.ui.InfoBubble(evt.target.getGeometry(), {
+                      // read custom data
+                      content: evt.target.getData()
+                    });
+                    // show info bubble
+                    ui.addBubble(bubble);
+                  }, false);
+
+                  addMarkerToGroup(groupEncontrados, coordsA,
+                    '<div>'+tipoAnimalZona+', '+tipo_Publicacion+'</div>' +
+                    '<div>'+nombre_AnimalZona+'</div> <div>'+ubicacionZona+'</div><br /><div> <a href="#" onclick="setAnimalZona(\''+idAniZona+'\')"> Ver </a></div>',);
+
+                }
+
+                addInfoBubble(map);
+            }
+
+
+
 
 
                     if(tipo_Publicacion=="Encontrado"){
@@ -1401,43 +1479,12 @@ $$(document).on('page:init', '.page[data-name="misPeticionesAdop"]', function (e
     // Do something here when page with data-name="about" attribute loaded and initialized
     console.log("estoy en misPeticionesAdop");
 
-  /*
-
-    var refMisPeticiones=colPeticionAdopcion.where("emailorg", "==", emailOrg);
-
-    refMisPeticiones.onSnapshot((querySnapshot) => {
-        var peticiones = [] ; // [ [timestamp, Animal], [timestamp, Animal] ] // armo otro arreglo con el timestamp y el animal que corresponde
-        querySnapshot.forEach((doc) => {
-
-            //peticiones.push([doc.data().timeStampAdop, doc.data().Animal]);
 
 
-            cantPeticiones=peticiones.length;
-            console.log("cant: "+ cantPeticiones);
-            for (i=1; i<=cantPeticiones; i++){
-              //stampPeticion="stampPeticion"+i
-              //animalPeticion="aniamlPeticion"+i
-              stampPeticion= peticiones[0][0];
-              animalPeticion= peticiones[1][1];
-              console.log(stampPeticion)
-              console.log(animalPeticion)
-            }
 
-
-        });  ////falta resolver que se muestre cuando hay una nueva...
-        console.log("ultimapeticion: " + timeStampAdop);
-          cordova.plugins.notification.local.schedule({
-          title: 'Tenés una Petición de Adopción',
-          trigger: { in: 10, unit: 'second' },
-          foreground: true,
-          vibrate: true
-        });
-    });
-
-*/
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
-   var refMisPeticiones=colPeticionAdopcion.where("emailorg", "==", emailOrg);
+   var refMisPeticiones=colPeticionAdopcion.where("emailorg", "==", emailOrg).orderBy("time_Stamp_Adop", "desc");
     var indice=0;
 
     refMisPeticiones.get()
@@ -1521,6 +1568,86 @@ $$(document).on('page:init', '.page[data-name="misPeticionesAdop"]', function (e
     .catch( function(error){
       console.log("Error: "+ error);
     });
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+        var refMisPeticiones=colPeticionAdopcion.where("emailorg", "==", emailOrg).orderBy("time_Stamp_Adop")
+
+        refMisPeticiones.onSnapshot((querySnapshot) => {
+            var peticiones = [] ; // [ [timestamp, Animal], [timestamp, Animal] ] // armo otro arreglo con el timestamp y el animal que corresponde
+            querySnapshot.forEach((doc) => {
+                  nomAdoptante=doc.data().Nombre
+                  nombre_Animal=doc.data().Animal
+                  timeStampAdop=doc.data().time_Stamp_Adop
+                  console.log("timeStamp: "+ timeStampAdop)
+                  var peti=[nomAdoptante, nombre_Animal, timeStampAdop]
+                  console.log("Peticion: ", peti.join(", "));
+                  peticiones.push(peti);
+
+
+
+
+              });
+
+                  console.log("Peticiones: ", peticiones.join("--"));
+                  cantPetic=peticiones.length;
+                  console.log(cantPetic)
+
+/*
+////////////// INTENTO 1 FALLIDO //////////////////////////////////////
+
+                console.log("idnoti: "+idNot)
+                for (i=0; i<cantPetic; i++){
+                  if(peticiones[i][3]>idNot){
+                    cordova.plugins.notification.local.schedule({
+                    id:idNot,
+                    title: 'Tenés una Petición de Adopción',
+                    text: nomAdoptante +' quiere adoptar a '+nombre_Animal,
+                    trigger: { in: 5, unit: 'second' },
+                    foreground: true,
+                    vibrate: true,
+
+                });
+                  }
+                }
+
+*/
+/////////////////// INTENTO 2 nunca se dispara (idNot siempre es mayor)////////////////////////////////////
+/*
+                var idNot=Date.now();
+                if(idNot<timeStampAdop){
+                  cordova.plugins.notification.local.schedule({
+                  id:idNot,
+                  title: 'Tenés una Petición de Adopción',
+                  text: nomAdoptante +' quiere adoptar a '+nombre_Animal,
+                  trigger: { in: 5, unit: 'second' },
+                  foreground: true,
+                  vibrate: true,
+
+              });
+                }
+*/
+////////////////////////////////////// OTRA OPCION (se dispara siempre que entro a la pagina) ///////////////////
+                  var idNot=Date.now();
+                  cordova.plugins.notification.local.schedule({
+                  id:idNot,
+                  title: 'Tenés una Petición de Adopción',
+                  text: nomAdoptante +' quiere adoptar a '+nombre_Animal,
+                  trigger: { in: 5, unit: 'second' },
+                  foreground: true,
+                  vibrate: true,
+
+                  });
+
+
+        });
+
+
+
+
+
 
 
 })
