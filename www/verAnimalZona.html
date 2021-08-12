@@ -62,7 +62,9 @@
 
           </ul>
         </div>
+        <div id="btnesEditar" class="row">
 
+        </div>
 
       </div>
 
@@ -71,6 +73,109 @@
         <div class="item-media"><img src="img/firu!.png"
             height="90" /></div>
       </div>
+
+<!-- --------------------POPUP DE EDICION-------------------------------- -->
+      <div id="popupEditarAnimalZ" class="popup popupEditarAnimalZ">
+          <div class="view">
+            <div class="page">
+              <div class="navbar">
+                <div class="navbar-bg"></div>
+                <div class="navbar-inner">
+                  <div class="left">
+                    <a href="#" class="link popup-close">
+                        <i class="icon icon-back"></i>
+                        <span class="ios-only">Back</span>
+                    </a>
+                  </div>
+                  <div class="title center">Editar Animal</div>
+                </div>
+              </div>
+              <div class="page-content">
+                <div class="block">
+                  <div class="block-title">Completá todos los campos</div>
+
+                    <div class="list no-hairlines-md">                       <!-- Inputs formulario -->
+                      <ul>
+
+
+
+                        <li id="nombreManejadorZ" class="item-content item-input activo">
+                          <div class="item-inner">
+                            <div class="item-title item-label">Nombre</div>
+                            <div class="item-input-wrap">
+                              <input id="nombreEditAniZona" type="text" placeholder="Ingresa su Nombre" />
+                              <span class="input-clear-button"></span>
+                            </div>
+                          </div>
+                        </li>
+                        <li class="item-content item-input">
+                          <div class="item-inner">
+                            <div class="item-title item-label">Tipo de Animal</div>
+                            <div class="item-input-wrap input-dropdown-wrap">
+                              <select id="tipoAniZonaEdit" placeholder="Seleccioná el tipo...">
+                                <option value="Perro">Perro/a</option>
+                                <option value="Gato">Gato/a</option>
+                              </select>
+                            </div>
+                          </div>
+                        </li>
+
+                        <li>
+                          <div class="row">
+                            <div class="block-title">Cambiá la foto</div>
+                            <div class="block-header">Te recomendamos no usar fotos verticales! </div>
+                              <div class="col">
+                                  <button class="col button button-outline button-round button-raised" id="btnEditGaleriaZona">GALERIA</button>
+                              </div>
+                              <div class="col">
+                                  <button class="col button button-outline button-round button-raised" id="btnEditCamaraZona">CAMARA</button>
+                              </div>
+                          </div>
+                          <div class="row block">
+                              <div class=" block col">
+                                  <img src="" id="fotoEditAniZona" width="100%">
+                              </div>
+                          </div>
+                      </li>
+
+
+
+
+
+                      <li class="item-content item-input">
+                        <div class="item-inner">
+                          <div class="item-title item-label">Contacto</div>
+                          <div class="item-input-wrap">
+                            <input id="contactoEditZona" type="tel" placeholder="Ingresá un telefono" />
+                            <span class="input-clear-button"></span>
+                          </div>
+                        </div>
+                      </li>
+
+                      </ul>
+                    </div>
+                    <div class="block">
+                      <div class="block-title">Agregá una descripción</div>
+                      <div class="block-header">Completá toda la información que crees necesaria para encontrarlo o para que encuentre a su familia</div>
+                      <div class="text-editor text-editor-init" data-placeholder="Ingresa el texto acá..."
+                          data-buttons='[["bold", "italic", "underline", "strikeThrough"], ["orderedList", "unorderedList"]]'>
+                        <div id="descripcionEdit_animalZona" class="text-editor-content" contenteditable></div>
+                      </div>
+                    </div>
+
+
+
+                  <div class="block block-strong no-hairlines FormatoBtnIni  noMargin ">
+                    <button id="editarAniZona" class="button btn button-large button-fill">
+                      <span>¡Actualizar!</span>
+                    </button>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </div>
 
 
 

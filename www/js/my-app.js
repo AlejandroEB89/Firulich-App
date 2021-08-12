@@ -179,7 +179,7 @@ var timeStampZona="";
 var localidadZona="";
 var provinciaZona="";
 var tipoUbi="";
-var idAniZona="";
+var id_AnimalZona="";
 var indexZona=0;
 // -------------------------------------------------------- ------------------//
 // Handle Cordova Device Ready Event
@@ -329,7 +329,7 @@ $$(document).on('page:init', '.page[data-name="verZona"]', function (e) {
                     ubicacionZona=docActual.data().direccion
                     localidadZona=docActual.data().localidad
                     provinciaZona=docActual.data().provincia
-                    idAniZona=docActual.id
+                    id_AnimalZona=docActual.id
                     fechaPubliZona=docActual.data().fechaPubli
                     console.log("-"+nombre_AnimalZona+"-" + tipo_Publicacion + "- en direccion: " + ubicacionZona+ "-lati:"+latitudZona+" -longi:"+longitudZona);
 
@@ -373,7 +373,7 @@ $$(document).on('page:init', '.page[data-name="verZona"]', function (e) {
                   }, false);
 
                   addMarkerToGroup(groupPerdidos, coordsA,
-                    '<div>'+nombre_AnimalZona+'</div><div>'+tipoAnimalZona+', '+tipo_Publicacion+'<br /></div><div>'+ubicacionZona+'</div><div>'+contactoZona+'</div><br /><div><a href="#" onclick="setAnimalZona(\''+idAniZona+'\')"> Ver </a></div>',);
+                    '<div>'+nombre_AnimalZona+'</div><div>'+tipoAnimalZona+', '+tipo_Publicacion+'<br /></div><div>'+ubicacionZona+'</div><div>'+contactoZona+'</div><br /><div><a href="#" onclick="setAnimalZona(\''+id_AnimalZona+'\')"> Ver </a></div>',);
 
                 }
 
@@ -414,7 +414,7 @@ $$(document).on('page:init', '.page[data-name="verZona"]', function (e) {
 
                   addMarkerToGroup(groupEncontrados, coordsA,
                     '<div>'+tipoAnimalZona+', '+tipo_Publicacion+'</div>' +
-                    '<div>'+nombre_AnimalZona+'</div> <div>'+ubicacionZona+'</div><br /><div> <a href="#" onclick="setAnimalZona(\''+idAniZona+'\')"> Ver </a></div>',);
+                    '<div>'+nombre_AnimalZona+'</div> <div>'+ubicacionZona+'</div><br /><div> <a href="#" onclick="setAnimalZona(\''+id_AnimalZona+'\')"> Ver </a></div>',);
 
                 }
 
@@ -423,14 +423,16 @@ $$(document).on('page:init', '.page[data-name="verZona"]', function (e) {
 
 
 
-
+//////////////////////////////////////// CARDS LISTA Y DETALLES //////////////////////////////////////
 
                     if(tipo_Publicacion=="Encontrado"){
                       infoCard="Visto en: "
                     } else {
                       infoCard="Se perdió en: "
                     }
-                    var tarjeAnimalZona='<a href="#" onclick="setAnimalZona(\''+idAniZona+'\')" class="link verOrg"> <div id="org" class="card demo-card-header-pic "><div style="background-image:url('+urlAnimalZona+')" class="card-header justify-content-flex-start align-items-flex-end txtCards"> <div class="align-items-flex-end margenIcono"> <img src="'+pngIcono+'"></div> ' + nombre_AnimalZona +' </div>  <div class="card-content card-content-padding"> <p class="text-color-black"> ' + infoCard+  ubicacionZona +'</p> <p  class="text-align-justify maxTarjeta noMargin text-color-black">' + descripcion_AnimalZona+'</p> </div> </div></a>'
+                                                                                                                                                                                                                                                //
+                    iconoCard="img/"+tipoAnimalZona+"-"+tipo_Publicacion+"2.png";
+                    var tarjeAnimalZona='<a href="#" onclick="setAnimalZona(\''+id_AnimalZona+'\')" class="link verOrg"> <div id="org" class="card demo-card-header-pic "><div style="background-image:url('+urlAnimalZona+')" class="card-header justify-content-flex-start align-items-flex-end txtCards"> <div class=" margenIcono"> <img src="'+iconoCard+'" width="40px"></div>' + nombre_AnimalZona +' </div>  <div class="card-content card-content-padding"> <p class="text-color-black"> ' + infoCard+  ubicacionZona +'</p> <p  class="text-align-justify maxTarjeta noMargin text-color-black">' + descripcion_AnimalZona+'</p> </div> </div></a>'
 
                     $$("#bloqueZona").append(tarjeAnimalZona);
 
@@ -666,32 +668,100 @@ $$(document).on('page:init', '.page[data-name="publicarZona"]', function (e) {
 $$(document).on('page:init', '.page[data-name="verAnimalZona"]', function (e) {
     // Do something here when page with data-name="about" attribute loaded and initialized
 
-/// FALTA MOSTRAR ALGUNOS DATOS COMO TELEFONO Y VER DE PODER ELIMINARLO
-// EL TEMA DE LAS BURBUJAS CONECTADAS CON VER ANIMALZONA
 
-if(tipo_Publicacion=="Perdido"){
-  $$("#nomAniZona").append(nombre_AnimalZona+" se perdió");
-  $$("#tipoPubliZona").append(tipoAnimalZona+" extraviado/a");
-  //datosHtml='<p class="col text-color-white centrar">Contacto: '+contactoZona+'</p> <p class="col text-color-white centrar">'+ubicacionZona+", "+localidadZona+'</p> '
-  //$$("#datosZona").append(datosHtml);
-}
-if(tipo_Publicacion=="Encontrado"){
-  $$("#nomAniZona").html(tipoAnimalZona+" encontrado");
-  $$("#tipoPubliZona").append(tipoAnimalZona+" deambulando");
-  //datosHtml='<p class="col text-color-white centrar">'+ubicacionZona+", "+localidadZona+'</p> '
-  //$$("#datosZona").append(datosHtml);
-}
+    console.log("tipo Usu: "+ tipodeUsuario)
+    console.log("emailZ: "+ emailZona);
+    console.log("email: "+ email)
+    console.log("emailOrg: "+ emailOrg)
 
-$$("#ubicacionZona").append(ubicacionZona);
-$$("#telZona").append(contactoZona);
+    var popup = app.popup.create({
+
+      el: '#popupEditarAnimalZ',
+      on: {
+        opened: function () {
+          console.log('Popup opened')
+        }
+      }
+    });
 
 
-$$("#fotoAZona").attr("src", urlAnimalZona);
-$$("#fechaPubliZona").append(fechaPubliZona);
-$$("#descripAZona").html(descripcion_AnimalZona);
+
+    var botonesEdit=`<div class="col block block-strong no-hairlines FormatoBtnIni  noMargin">
+      <button data-popup=".popupEditarAnimalZ" class="popup-open button btn button-large button-fill button-preloader">
+        <span class="preloader"></span>
+        <span>Editar</span>
+      </button>
+    </div>
+
+    <div class="col block block-strong no-hairlines FormatoBtnIni  noMargin">
+      <button id="borrarAniZ" class="button btn button-large button-fill button-preloader">
+        <span class="preloader"></span>
+        <span>Borrar</span>
+      </button>
+    </div>`
 
 
-$$("#adoptar").on("click", function(){mainView.router.navigate("/peticionAdopcion/")});
+    if(tipodeUsuario=="org"){
+      if(emailZona==emailOrg){
+        $$("#btnesEditar").append(botonesEdit);
+      }
+    }
+    if(tipodeUsuario=="usuario"){
+      if(emailZona==email){
+        $$("#btnesEditar").append(botonesEdit);
+      }
+    }
+
+    if(tipo_Publicacion=="Perdido"){
+      $$("#nomAniZona").append(nombre_AnimalZona+" se perdió");
+      $$("#tipoPubliZona").append(tipoAnimalZona+" extraviado/a");
+      //datosHtml='<p class="col text-color-white centrar">Contacto: '+contactoZona+'</p> <p class="col text-color-white centrar">'+ubicacionZona+", "+localidadZona+'</p> '
+      //$$("#datosZona").append(datosHtml);
+    }
+    if(tipo_Publicacion=="Encontrado"){
+      $$("#nomAniZona").html(tipoAnimalZona+" encontrado");
+      $$("#tipoPubliZona").append(tipoAnimalZona+" deambulando");
+      //datosHtml='<p class="col text-color-white centrar">'+ubicacionZona+", "+localidadZona+'</p> '
+      //$$("#datosZona").append(datosHtml);
+    }
+
+
+    $$("#ubicacionZona").append(ubicacionZona);
+    $$("#telZona").append(contactoZona);
+
+
+    $$("#fotoAZona").attr("src", urlAnimalZona);
+    $$("#fechaPubliZona").append(fechaPubliZona);
+    $$("#descripAZona").html(descripcion_AnimalZona);
+
+
+    //////////////////// POPUP EDIT /////////////////////////////////////////
+
+    if(tipo_Publicacion=="Encontrado"){
+      console.log("animal deambulando")
+      $$("#nombreManejadorZ").removeClass("activo");
+      $$("#nombreManejadorZ").addClass("hidden");
+
+    } else {
+      console.log("animal extraviado")
+
+      $$("#nombreEditAniZona").val(nombre_AnimalZona);
+      $$("#nombreManejadorZ").removeClass("hidden");
+      $$("#nombreManejadorZ").addClass("activo");
+    }
+    console.log("contacto: "+ contactoZona)
+    $$("#tipoAniZonaEdit").val(tipoAnimalZona);
+    $$("#fotoEditAniZona").attr("src", urlAnimalZona);
+    $$("#contactoEditZona").val(contactoZona);
+    $$("#descripcionEdit_animalZona").html(descripcion_AnimalZona);
+
+    $$("#editarAniZona").on("click", fnEditarAniZona);
+    $$("#btnEditCamaraZona").on("click", fnCamaraEditAnimalZona);
+    $$("#btnEditGaleriaZona").on("click", fnGaleriaEditAnimalZona);
+    $$("#borrarAniZ").on("click", fnBorrarDeZona);
+
+    /////// ////////////////////////////////////////////////////////
+
 
 
 
@@ -1599,11 +1669,11 @@ $$(document).on('page:init', '.page[data-name="misPeticionesAdop"]', function (e
 ////////////// INTENTO 1 FALLIDO //////////////////////////////////////
                 var idNot=Date.now();
                 console.log("idnoti: "+idNot)
-                for (i=0; i<cantPetic; i++){
-                  if(peticiones[i][3]>idNot){
-                    cordova.plugins.notification.local.schedule({
-                    id:idNot,
-                    title: 'Tenés una Petición de Adopción',
+                for (i=0; i<cantPetic; i++){                           //la idea era recorrer el array peticiones
+                  if(peticiones[i][3]>idNot){                           //y comparar el date now con el timestamp
+                    cordova.plugins.notification.local.schedule({       //de la peticion.
+                    id:idNot,                                           //Si el de la peticion es mayor que dispare la
+                    title: 'Tenés una Petición de Adopción',                  //notificación
                     text: nomAdoptante +' quiere adoptar a '+nombre_Animal,
                     trigger: { in: 5, unit: 'second' },
                     foreground: true,
@@ -1618,8 +1688,8 @@ $$(document).on('page:init', '.page[data-name="misPeticionesAdop"]', function (e
 /*
                 var idNot=Date.now();
                 if(idNot<timeStampAdop){
-                  cordova.plugins.notification.local.schedule({
-                  id:idNot,
+                  cordova.plugins.notification.local.schedule({           //lo mismo que anterior pero solo compara la ultima
+                  id:idNot,                                               //peticion.
                   title: 'Tenés una Petición de Adopción',
                   text: nomAdoptante +' quiere adoptar a '+nombre_Animal,
                   trigger: { in: 5, unit: 'second' },
@@ -1631,9 +1701,9 @@ $$(document).on('page:init', '.page[data-name="misPeticionesAdop"]', function (e
 */
 ////////////////////////////////////// OTRA OPCION (se dispara siempre que entro a la pagina) ///////////////////
                   var idNot=Date.now();
-                  cordova.plugins.notification.local.schedule({
-                  id:idNot,
-                  title: 'Tenés una Petición de Adopción',
+                  cordova.plugins.notification.local.schedule({             //cada veq que se entra a la pagina
+                  id:idNot,                                                 //se dispara una notificación con la ultima
+                  title: 'Tenés una Petición de Adopción',                  //petición
                   text: nomAdoptante +' quiere adoptar a '+nombre_Animal,
                   trigger: { in: 5, unit: 'second' },
                   foreground: true,
@@ -3777,7 +3847,7 @@ function fnBorrarAnimal(){
 
    function setAnimalZona(id){
      console.log("set animal zona")
-     console.log("id: "+idAniZona)
+     console.log("id: "+id_AnimalZona)
      var refAniZona= colAnimalesEnZona.doc(id);
      refAniZona.get()
        .then(function(docActual) {
@@ -3935,3 +4005,154 @@ function fnBorrarAnimal(){
 
 
    }
+
+
+function fnEditarAniZona(){
+  console.log("editar animal Zona")
+  console.log(nombre_AnimalZona);
+  console.log("id ani: "+ id_AnimalZona);
+
+
+///CONTINUAR CON EDITAR ----FALTA PARTE DE BASE DE DATOY LAS CAMARAS NADA MAS -- BORRAR
+
+
+    nuevaDescripcionZ=$$("#descripcionEdit_animalZona").text();
+    nuevoTipoAniZ=$$("#tipoAniZonaEdit").val();
+    nuevoNombreAniZ=$$("#nombreEditAniZona").val();
+    nuevaUrlAniZ=$$("#fotoEditAniZona").attr("src");
+    console.log("url: "+nuevaUrlAniZ)
+    colAnimalesEnZona.doc(id_AnimalZona).update({
+      Descripcion_Zona: nuevaDescripcionZ,
+      Nombre_Animal:nuevoNombreAniZ,
+      Tipo_Animal:nuevoTipoAniZ,
+      url_Animal:nuevaUrlAniZ,
+     })
+    .then(function() {
+      console.log("actualizado ok: "+ nuevoNombreAniZ);
+      descripcion_AnimalZona=nuevaDescripcionZ;
+      nombre_AnimalZona=nuevoNombreAniZ;
+      tipoAnimalZona=nuevoTipoAniZ;
+      urlAnimalZona=nuevaUrlAniZ;
+      app.dialog.alert("Se guardó la edición", "¡Listo!", function(){
+        app.popup.close("#popupEditarAnimalZ");
+        mainView.router.navigate("/verZona/");
+       })
+    })
+    .catch(function(error) {
+    console.log("Error: " + error);
+    });
+
+
+}
+
+
+
+
+function fnCamaraEditAnimalZona() {
+// FOTO DESDE CAMARA
+   navigator.camera.getPicture(onSuccessCamaraEdAnZona,onErrorCamara,
+           {
+               quality: 70,
+               destinationType: Camera.DestinationType.FILE_URI,
+               sourceType: Camera.PictureSourceType.CAMERA,
+               correctOrientation: true,
+
+           });
+}
+
+
+function fnGaleriaEditAnimalZona() {
+   navigator.camera.getPicture(onSuccessCamaraEdAnZona,onErrorCamara,
+           {
+               quality: 50,
+               destinationType: Camera.DestinationType.FILE_URI,
+               sourceType: Camera.PictureSourceType.PHOTOLIBRARY
+           });
+
+}
+
+/*function onSuccessCamara(imageURI) {
+   $$("#foto").attr("src", imageURI);
+  // RESTA QUE ESTA FOTO SUBA AL STORAGE…. O HACER OTRA COSA...
+
+}*/
+
+function onSuccessCamaraEdAnZona(imageData) {
+  indexZona++;
+  console.log("imgdata: "+imageData)
+  getFileObject(imageData, function(fileObject) { //fn1
+     var uploadTask = storageRef.child(imageData).put(fileObject); //recibe un archivo blob y lo sube al cloud storage
+     uploadTask.on('state_changed', function(snapshot) {                   //promesa que administra o supervisa el estado de la carga cuando cambie el estado de su snapshot, mostrando el estado del snapsht,
+         console.log(snapshot);                                            //
+     }, function(error) { //funcion de error
+         console.log(error);
+         app.dialog.alert(error)
+     }, function() {     //funcion que si todo sale bien:
+         uploadTask.snapshot.ref.getDownloadURL().then( //obtengo el url de descarga
+           function(downloadURL) {
+           console.log('el archivo esta disponible en', downloadURL);//Muestro el link
+             app.dialog.alert('La imagen ya está subida', "¡Genial!")
+           //aca abajo puedo elegir que hacer con mi imagen que ya esta cargada y la puedo manejar a partir de mi download link
+            urlAnimalZona=downloadURL;
+            $$("#fotoEditAniZona").attr("src", urlAnimalZona);
+            console.log("url: " + urlAnimalZona)
+         });
+     });
+   });
+
+       // lo de abajo se ejecuta en la funcion on succes (es necesario ejecutar solo getFileFbject) dentro del succes
+    //toma un blob y un nombre y cambia fecha y nombre, luego devuelve el blob
+    var blobToFile = function(blob, name) {
+     blob.lastModifiedDate = new Date()    //modifica la ultima fecha del blob
+     blob.name = name                      //modifica el nombre del blob
+     return blob
+    }
+    //A partir de la ubicacion de nuestro file y una funcion (cb) ejecuta getfileBlob (funcion especificada abajo)
+    function getFileObject(filePathOrUrl, cb) {
+     getFileBlob(filePathOrUrl, function(blob) { //fn2      //llama a la funcion getFileBlob con el url introducido y una funcion que:
+         cb(blobToFile(blob, 'img'+ind+'.jpg'));             //ejecuta nuestro cb (callback) sobre el blob con nombre y fecha cambiada (el nombre sera 'test.jpg')
+     });
+    };
+    //obtiene un file desde el servidor utilizando un url,  lo transfrma a tipo blob y ejecuta una funcion (cb) para luego enviarlo al servidor
+    function getFileBlob(url, cb) {
+     var xhr= new XMLHttpRequest()   //creo una nueva instancia de XMLHttpRequest
+     xhr.open('GET', url)            //inicializo una peticion asincronica del url al server
+     xhr.responseType = "blob"       // declaro que el valor del tipo de respuesta es blob (para luego usarlo mas adelante)
+     xhr.addEventListener('load', ()=>{//Le agrego un event listener que cuando cargue  se va a ejecutar
+       cb(xhr.response)              //mi cb (callback) con la respuesta del servidor
+     })
+     xhr.send()                      //Envia la peticion nuevamente.
+    }
+    //Se ejecuta la funcion getfileObject con nuestra imagen y el cb que:
+    /*orden de funcionamiento:
+    1. getFileObject(imageData, fn1)    || inserto un url
+    2. getFileBlob (url, fn2)           || realizo desde ese url una peticion, me devuelve un blob
+    3. fn2                              || ejecuto la funcion 1 con el resultado de:
+    4. bloblToFile(blob, test.jpg)      || desde mi blob obtengo un file
+    5. fn1                              ||
+    */
+
+
+ }
+
+
+
+function fnBorrarDeZona(){
+  console.log("id a borrar: "+id_AnimalZona)
+
+      app.dialog.confirm("¿Vas a eliminar la publicación de tu zona?", "¡Hey!", function(){
+
+          var borrarAniZ=colAnimalesEnZona.doc(id_AnimalZona).delete()
+
+          .then(function() {
+          console.log("documento borrado");
+          app.dialog.alert("¡La publicación se eliminó de tu zona correctamente!", "¡Listo!", function(){
+              mainView.router.navigate('/verZona/')} )
+          })
+          .catch(function(error) {
+          console.log("Error: " + error);
+          });
+      })
+
+
+  }
