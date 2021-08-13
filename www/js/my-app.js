@@ -456,9 +456,13 @@ $$(document).on('page:init', '.page[data-name="publicarZona"]', function (e) {
     // Do something here when page with data-name="about" attribute loaded and initialized
     console.log("estoy en publicarZona");
     console.log("tipo de ubicacion: "+ tipoUbi);
-
-
-
+    if(tipodeUsuario=="org"){
+      emailZona=emailOrg;
+    }
+    if (tipodeUsuario=="usuario"){
+      emailZona=email;
+    }
+    console.log("email pubicante: "+ emailZona);
     var defaultLayers = platform.createDefaultLayers();
 
     // Instantiate (and display) a map object:
@@ -3940,7 +3944,7 @@ function fnBorrarAnimal(){
                 console.log("animal es: " + nombre_AnimalZona)
                 console.log("tipoPubli " + tipo_Publicacion)
                 console.log("id animal: "+ id_AnimalZona);
-
+                console.log("email publicante: "+emailZona);
              mainView.router.navigate('/verAnimalZona/');
        })
        .catch( function(error){
