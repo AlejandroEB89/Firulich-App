@@ -9,48 +9,91 @@
                 <span class="ios-only">Back</span>
             </a>
           </div>
-          <div class="title"> Organizaciones </div>
+          <div class="title centrar">Organizaciones</div>
 
       </div>
   </div>
 
-<div class="page-content">
-  <div class="block-title centrar"> Grupos Animaleros Voluntarios </div>
+  <div class="page-content">
+    <div class="block block-strong no-hairlines FormatoBtnIni  noMargin ">
+      <button class="button btn button-large button-fill popup-open" data-popup=".popupOtrasZonas">
+        <span>Ver Otras Zonas</span>
+      </button>
+    </div>
+    <div class="block-title centrar noMargin"> Grupos Animaleros Voluntarios </div>
+    <div id="bloqueOrganizaciones" class="block formatoBloques noMargin">
 
-<div id="bloqueOrganizaciones" class="block formatoBloques">
-  <!--  <div class="list media-list">
-        <ul id="listaOrganiza">
-
-
-          <li>
-              <a href="/VerOrgDesdeUsu/" class="item-link item-content">
-              <div class="item-media"> <img src="https://cdn.framework7.io/placeholder/people-160x160-1.jpg"
-                  width="80" /></div>
-              <div class="item-inner">
-                <div class="item-title-row">
-                  <div class="item-title">Madrinas Solidarias</div>
-                  <div class="item-after">Ver</div>
-                </div>
-                <div class="item-subtitle">El Bolsón</div>
-                <div class="item-text"> Somos un grupo de personas que dedicamos nuestro tiempo y esfuerzo a salvar animales de la calle. Nulla sagittis
-                  tellus ut turpis condimentum, ut dignissim lacus tincidunt. Cras dolor metus, ultrices condimentum
-                  sodales sit amet, pharetra sodales eros. Phasellus vel felis tellus. Mauris rutrum ligula nec
-                  dapibus feugiat. In vel dui laoreet, commodo augue id, pulvinar lacus.</div>
-              </div>
-              </a>
-            </li>
-
-
-
-          </ul>-->
     </div>
 
+    <div id="popupOtrasZonas" class="popup popupOtrasZonas">
+        <div class="view">
+          <div class="page">
+            <div class="navbar">
+              <div class="navbar-bg"></div>
+              <div class="navbar-inner">
+                <div class="left">
+                  <a href="#" class="link popup-close">
+                      <i class="icon icon-back"></i>
+                      <span class="ios-only">Back</span>
+                  </a>
+                </div>
+                <div class="title center">Elegir Zona</div>
+              </div>
+            </div>
+
+            <div class="page-content">
+              <div class="block formatoBloques no-hairlines">
+                <h1 class="centrar">¿De qué lugar querés ver las organizaciones?</h1>
+                <p class="justificar"> Ingresa provincia y localidad.</p>
+                <div class="list no-hairlines">
+                  <ul>
+                    <li>
+                      <div class="item-content item-input">
+                        <div class="item-inner">
+                          <div class="item-title item-label">Provincia</div>
+                          <div class="item-input-wrap">
+                            <select id="pciaOtraZona" name="provincia">
+                              <option value="Río Negro" selected="selected">Río Negro</option>
+                              <option value="Chubut">Chubut</option>
+                              <option value="Neuquén">Neuquén</option>
+                            </select>
+                          </div>
+                        </div>
+                      </div>
+                    </li>
+                    <li>
+                      <div class="item-content item-input">
+                        <div class="item-inner ">
+                          <div class="item-title item-label">Localidad</div>
+                          <div class="item-input-wrap">
+                            <input id="locOtraZona" type="text" placeholder="Ingresa tu localidad" required />
+                          </div>
+                        </div>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+
+
+                <div class="block block-strong no-hairlines FormatoBtnIni  noMargin popup-close">
+                  <button id="verOtrasZonas" class="button btn button-large button-fill">
+                    <span>VER ORGANIZACIONES</span>
+                  </button>
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
 
 
 
-</div>
 
 
 
 
+
+
+  </div>
 </div>

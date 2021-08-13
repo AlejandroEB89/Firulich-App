@@ -30,6 +30,7 @@ var app = new Framework7({
       // Rutas de usuario
       {path: '/usuarioHome/',url: 'usuarioHome.html', options : { transition: "f7-fade"}},
       {path: '/listaOrg/',url: 'listaOrg.html',},
+      {path: '/listaOrgOtraZona/',url: 'listaOrgOtraZona.html',},
       {name:'VerOrgDesdeUsu', path: '/VerOrgDesdeUsu/:id/',url: 'VerOrgDesdeUsu.html',},  //
       {path: '/enAdopcionOrg/',url: 'enAdopcionOrg.html',},
       {path: '/verAnimalDesdeUsu/:id',url: 'verAnimalDesdeUsu.html',},
@@ -108,6 +109,10 @@ var cuentaMpOrg="";
 var tituloRec="";
 var txtRec="";
 var idRec="";
+
+var locOtraZona="";
+var pciaOtraZona="";
+var zonaListaOr="";
 
 // -------------- Variables para Adoptante ------------------//
 
@@ -797,8 +802,18 @@ $$(document).on('page:init', '.page[data-name="usuarioHome"]', function (e) {
 $$(document).on('page:init', '.page[data-name="listaOrg"]', function (e) {
     // Do something here when page with data-name="about" attribute loaded and initialized
   console.log("estoy en listaOrg");
+  zonaListaOrg="mi";
+  var popup = app.popup.create({
 
-  var refOrganizaciones= colOrganizaciones;
+    el: '#popupOtrasZonas',
+    on: {
+      opened: function () {
+        console.log('Popup opened')
+      }
+    }
+  });
+
+  var refOrganizaciones= colOrganizaciones.where("Localidad", "==", localidad);
   var indice=0;
 
   refOrganizaciones.get()
@@ -824,7 +839,52 @@ $$(document).on('page:init', '.page[data-name="listaOrg"]', function (e) {
     });
 
 
+    $$("#verOtrasZonas").on("click", function(){
+      pciaOtraZona=$$("#pciaOtraZona").val();
+      locOtraZona=$$("#locOtraZona").val();
+      mainView.router.navigate("/listaOrgOtraZona/")
+    });
+
+
 })
+
+
+//    -------------------------PAGE INIT LISTA ORGANIZACIONES OTRA ZONA (desde usuario)-----------------------------------------------
+$$(document).on('page:init', '.page[data-name="listaOrgOtraZona"]', function (e) {
+    // Do something here when page with data-name="about" attribute loaded and initialized
+  console.log("estoy en listaOrgOtraZona");
+
+  zonaListaOrg="otra";
+  var refOrgOtrasZonas= colOrganizaciones.where("Localidad", "==", locOtraZona);
+
+  refOrgOtrasZonas.get()
+    .then(function(querySnapshot) {
+        querySnapshot.forEach(function(docActual){
+
+          nombreOrganizacion=docActual.data().Nombre
+          localidadOrg= docActual.data().Localidad
+          provinciaOrg= docActual.data().Provincia
+          descripcionOrg=docActual.data().Descripción
+          emailRefOrg=docActual.id
+          urlFotoPerfilOrg=docActual.data().url_FotoPerfil
+          console.log(nombreOrganizacion+ " de " + localidadOrg + " " + provinciaOrg + " " + emailRefOrg);
+
+          tarjetasOrgOtraZona='<a href="#" onclick="setOrganizacion(\''+nombreOrganizacion+'\')" class="link verOrg"> <div id="org" class="card demo-card-header-pic "><div style="background-image:url('+urlFotoPerfilOrg+')" class="card-header align-items-flex-end"> </div>  <div class="card-content card-content-padding"><div><p class="txtCards align-items-flex-end noMargin text-color-black"> ' + nombreOrganizacion +'</p> </div> <p class="text-color-black"> ' + localidadOrg+', '+ provinciaOrg +'</p> <p  class="text-align-justify maxTarjeta noMargin text-color-black">' + descripcionOrg+'</p> </div> </div></a>'    //,+localidadOrg+,+provinciaOrg+,+descripcionOrg+        //\''+nombreOrganizacion+'\'
+
+          $$("#orgOtrasZonas").append(tarjetasOrgOtraZona); //    /VerOrgDesdeUsu/verOr'+indice+'/
+
+        })
+    })
+    .catch( function(error){
+      console.log("Error: "+ error);
+    });
+
+
+    $$("#volverAMiZona").on("click", function(){mainView.router.navigate("/listaOrg/")});
+
+    //SOLO FALTA VER EL TEMA DE ATRAS -----estoy en otra zona, entro a org y vuelvo atras y en vez de volver a esa zona vuelve mi zona
+})
+
 
 //    -------------------------PAGE INIT VerOrgDesdeUsu (desde el perfil de usuario) -----------------------------------------------
 $$(document).on('page:init', '.page[data-name="VerOrgDesdeUsu"]', function (e, page) {
@@ -835,9 +895,20 @@ $$(document).on('page:init', '.page[data-name="VerOrgDesdeUsu"]', function (e, p
     orgElegida=page.route.params.id;
     linkAOrg="/VerOrgDesdeUsu/"+orgElegida+"/";
 
+
     console.log(nombreOrganizacion+ " " + localidadOrg + " " + provinciaOrg);
     console.log(descripcionOrg);
     console.log(emailOrg);
+    console.log(e)
+    $$("#volverAListaOrg").on("click", function(){
+      if(zonaListaOrg=="mi"){
+        console.log("estoy en mi zona")
+        mainView.router.navigate("/listaOrg/")
+      } else {
+        console.log("ingrese otra zona")
+        mainView.router.navigate("/listaOrgOtraZona/")
+      }
+    });
 
 
     $$("#VerNomORG").html(nombreOrganizacion);
