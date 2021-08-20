@@ -249,6 +249,7 @@ $$(document).on('page:init', '.page[data-name="index"]', function (e) {
 $$(document).on('page:init', '.page[data-name="registro"]', function (e) {
     // Do something here when page with data-name="about" attribute loaded and initialized
     console.log("estoy en registro");
+var idPcia="";
 
     calendarModal = app.calendar.create({
            inputEl: '#fechanac',
@@ -276,6 +277,90 @@ $$(document).on('page:init', '.page[data-name="registro"]', function (e) {
     $$("#btnGaleriaPerfil").on("click", fnGaleriaPerfil);
     $$("#btnRegistrar").on("click", fnRegistrar);
     $$("#toggleTipoUsuario").on("change", fnTipodeRegistro);
+
+    $$("#provincia").on("change", function(){ // Al cambiar la pcia seleccionada se hace consulta a la Api de pcias
+      $$("#localidad").html("");
+      $$("#departamento").html("");
+      provSelect=$$("#provincia").val()
+      console.log(provSelect)
+      fetch('https://apis.datos.gob.ar/georef/api/provincias')
+        .then(res => res.json())
+        .then (data => {
+
+          apiPcia=data.provincias
+          console.log(apiPcia)
+
+          for(i=0;i <= 23; i++){   //recorro el array de pcias y si es igual a la seleccionada guardo ese Id
+            if(apiPcia[i].nombre == provSelect){
+                idPcia=apiPcia[i].id
+                console.log("id Pcia: "+idPcia)
+
+                //con ese id se lo paso a la consulta de localidades asociadas a ese id
+                //https://apis.datos.gob.ar/georef/api/municipios?provincia=${idPcia}&campos=id,nombre&max=150
+
+
+              //  https://apis.datos.gob.ar/georef/api/localidades?provincia=${idPcia}&campos=id,nombre&max=100
+
+
+                fetch(`https://apis.datos.gob.ar/georef/api/departamentos?provincia=${idPcia}&max=150`)
+                  .then(deptos => deptos.json())
+                  .then (data => {
+                    console.log(data);
+                    console.dir(data.departamentos);
+                    arrayDeptos=data.departamentos;
+
+                    arrayDeptos.forEach(function(d){
+                    console.log(d.nombre)
+                    depto=d.nombre;
+                    optionDepto=`<option value="${d.nombre}">${d.nombre}</option>`;
+                    $$("#departamento").append(optionDepto);
+                    })
+                  })
+              }
+            }
+          })
+
+      });
+
+
+  $$("#departamento").on("change", function(){
+      $$("#localidad").html("");
+      deptoSelect=$$("#departamento").val();
+      console.log(deptoSelect)
+      console.log(idPcia);
+      fetch(`https://apis.datos.gob.ar/georef/api/departamentos?provincia=${idPcia}&max=150`)
+        .then(deptos => deptos.json())
+        .then (data => {
+          console.log(data);
+          console.dir(data.departamentos);
+          arrayDeptos=data.departamentos;
+
+          arrayDeptos.forEach(function(d){
+            if(d.nombre==deptoSelect){
+              console.log(d.nombre)
+              idDepto=d.id;
+
+              fetch(`https://apis.datos.gob.ar/georef/api/localidades?departamento=${idDepto}&max=100`)
+              .then(deptos => deptos.json())
+              .then (data => {
+
+                arrayLocalidades=data.localidades
+                console.log(arrayLocalidades)
+                arrayLocalidades.forEach(function(l){
+                  console.log(l.nombre)
+                  optionLocal=`<option value="${l.nombre}">${l.nombre}</option>`;
+                  $$("#localidad").append(optionLocal);
+
+                })
+
+              })
+            }
+          })
+
+        })
+    });
+
+
 
 
 
@@ -3345,7 +3430,7 @@ function fnCamara() {
 // FOTO DESDE CAMARA
     navigator.camera.getPicture(onSuccessCamara,onErrorCamara,
             {
-                quality: 70,
+                quality: 50,
                 destinationType: Camera.DestinationType.FILE_URI,
                 sourceType: Camera.PictureSourceType.CAMERA,
                 correctOrientation: true,
@@ -3487,7 +3572,7 @@ function fnEditarCamara2() {
 // FOTO DESDE CAMARA
     navigator.camera.getPicture(onSuccessCamara2,onErrorCamara,
             {
-                quality: 70,
+                quality: 50,
                 destinationType: Camera.DestinationType.FILE_URI,
                 sourceType: Camera.PictureSourceType.CAMERA,
                 correctOrientation: true,
