@@ -1,5 +1,5 @@
 
-# Repositorio Proyecto Mascotas 
+# Firulich-App
 
 
 Se trata de una aplicación para ayudar al grupo de animaleros de la zona a reducir el tiempo que les lleva publicar en redes casos de animales encontrados, y gestionar fácilmente la búsqueda de familias adoptantes o transitorias. 
