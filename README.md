@@ -7,5 +7,4 @@ Esta aplicación les permitiría tener los datos de las familias que se postulan
 Y por ultimo tendrá una sección para que cualquier persona pueda publicar mascotas perdidas o encontradas con fotos y ubicación. 
 
 
-<img src="![WhatsApp Image 2022-10-04 at 20 06 21](https://user-images.githubusercontent.com/85176308/193947301-5b0129db-0ca0-4f32-a89b-a704c1bec8c8.jpeg)" alt="drawing" width="200"/>
 
